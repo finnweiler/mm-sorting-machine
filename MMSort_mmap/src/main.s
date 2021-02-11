@@ -40,8 +40,8 @@ TMPREG  .req      r5
 RETREG  .req      r6
 WAITREG .req      r8
 RLDREG  .req      r9
-GPIOREG .req      r10
-COLREG  .req      r11
+GPIOREG .req      r10           @ Adresse von den Pins, benutzen um Pins anzusprechen
+COLREG  .req      r11           @ aktuell gescannte Farbe wird gespeichert
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @ - START OF DATA SECTION @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -212,6 +212,141 @@ main:
         @ initialize all other hardware
         b         hw_init
 
+
+        @@@@@@ Miri new code
+
+        @ Richtung muss davor in r2 gespeichert worden sein (0 = clockwise, 1 = counter clockwise)!!
+        @ Anzahl Schritte muss davor in r3 gespeichert worden sein!!
+        @ color_wheel does one step in the direction clockwise or counter-clockwise
+        steps_motor_color_wheel:
+                @@@ test r3 2 steps
+                mov     r3, #2
+                @@@ delete later !!!!
+
+                @@@ test r2 = 0 clockwise
+                mov     r2, #1
+                @@@ delete later!!!
+
+                @@@ set GPIO Output Pins 17 and 27 to high-level
+                @ set Pin 17 to high level
+                mov     r1, #1
+                mov     r0, r1, lsl #17
+                str     r0, [GPIOREG, #28]
+
+                @ set Pin 27 to high-level
+                mov     r1, #1
+                mov     r0, r1, lsl #27
+                str     r0, [GPIOREG, #28]
+                
+                @@@ sets the DirCW Pin of the Color Wheel, which controls the direction
+                set_direction_color_wheel:
+                        @ checks the received direction stored in r2 (0=clockwise, 1=counter-clockwise)
+                        if_check_direction_color_wheel:
+                                mov r0, #1
+                                cmp r2, r0
+                                blt clockwise_color_wheel
+                                beq counter_clockwise_color_wheel
+                                @ default: choose direcion clockwise
+                                b clockwise_color_wheel
+                                @ set Pin 16 to low level to turn the color wheel clockwise
+                                clockwise_color_wheel:
+                                        mov     r1, #1
+                                        mov     r0, r1, lsl #16
+                                        str     r0, [GPIOREG, #40]
+                                        b       step_counter_color_wheel
+                                @ set Pin 16 to high level to turn the color wheel counter-clockwise
+                                counter_clockwise_color_wheel:
+                                        mov     r1, #1
+                                        mov     r0, r1, lsl #16
+                                        str     r0, [GPIOREG, #28]
+                                        b       step_counter_color_wheel
+                
+                @ checks the amount of steps (stored in r3) and performs them
+                step_counter_color_wheel:
+                mov     TMPREG, #0
+                @ checks if the final amount of steps is reached
+                step_counter_loop_color_wheel:
+                        cmp     TMPREG, r3
+                        beq     steps_motor_outlet      @@@@@@@@@@@@ change later !!!
+                        add     TMPREG, TMPREG, #1
+                        b one_step_color_wheel
+                
+                @ set 'Step' Pin 13 to high and then to low level to do one step with the color wheel
+                one_step_color_wheel:
+                        @ set 'Step' Pin 13 to high level
+                        mov     r1, #1
+                        mov     r0, r1, lsl #13
+                        str     r0, [GPIOREG, #28]
+                                
+                        @ set 'Step' Pin 13 to low level
+                        mov     r1, #1
+                        mov     r0, r1, lsl #13
+                        str     r0, [GPIOREG, #40]
+                        b       step_counter_loop_color_wheel
+        
+
+        @ Richtung muss davor in r2 gespeichert worden sein (0 = clockwise, 1 = counter clockwise)!!
+        @ Anzahl Schritte muss davor in r3 gespeichert worden sein!!
+        @ Outlet does the required amount of steps in the required direction (clockwise or counter-clockwise)
+        steps_motor_outlet:
+                @@@ set GPIO Output Pins 11 and 27 to high-level
+                @ set Pin 11 to high level
+                mov     r1, #1
+                mov     r0, r1, lsl #11
+                str     r0, [GPIOREG, #28]
+
+                @ set Pin 27 to high-level
+                mov     r1, #1
+                mov     r0, r1, lsl #27
+                str     r0, [GPIOREG, #28]
+                
+                @@@ sets the 'DirOut' Pin 26 of the Outlet, which controls the direction
+                set_direction_outlet:
+                        @ checks the received direction stored in r2 (0=clockwise, 1=counter-clockwise)
+                        if_check_direction_outlet:
+                                mov r0, #1
+                                cmp r2, r0
+                                blt clockwise_outlet
+                                beq counter_clockwise_outlet
+                                @ default: choose direction clockwise
+                                b clockwise_outlet
+                                @ set Pin 26 to low level to turn the outlet clockwise
+                                clockwise_outlet:
+                                        mov     r1, #1
+                                        mov     r0, r1, lsl #26
+                                        str     r0, [GPIOREG, #40]
+                                        b       step_counter_outlet
+                                @ set Pin 26 to high level to turn the outlet counter-clockwise
+                                counter_clockwise_outlet:
+                                        mov     r1, #1
+                                        mov     r0, r1, lsl #26
+                                        str     r0, [GPIOREG, #28]
+                                        b       step_counter_outlet
+                
+                @ checks the amount of steps (stored in r3) and performs them
+                step_counter_outlet:
+                mov     TMPREG, #0
+                @ checks if the final amount of steps is reached
+                step_counter_loop_outlet:
+                        cmp     TMPREG, r3
+                        beq     end_of_app      @@@@@@@@@@@@ change later !!!
+                        add     TMPREG, TMPREG, #1
+                        b one_step_outlet
+                
+                @ set 'Step' Pin 12 to high and then to low level to do one step with the outlet
+                one_step_outlet:
+                        @ set 'Step' Pin 12 to high level
+                        mov     r1, #1
+                        mov     r0, r1, lsl #12
+                        str     r0, [GPIOREG, #28]
+                                
+                        @ set 'Step' Pin 12 to low level
+                        mov     r1, #1
+                        mov     r0, r1, lsl #12
+                        str     r0, [GPIOREG, #40]
+                        b       step_counter_loop_outlet
+
+
 hw_init:
         ldr       r1, =gpio_mmap_adr          @ reload the addr for accessing the GPIOs
         ldr       GPIOREG, [r1]
@@ -221,13 +356,25 @@ hw_init:
         @   configuration of inputs is not necessary cause the pins are
         @   configured as inputs after reset
 
+                    @Pins 9  8  7  6  5  4  3  2  1  0
+        ldr     r0, =#0b000000001001001001001001000000
+        str     r0, [GPIOREG] @Function Select Register 0 (Pin 0 - 9)
+
+                    @    19 18 17 16 15 14 13 12 11 10
+        ldr     r0, =#0b001001001001000000001001001000
+        str     r0, [GPIOREG, #4] @Function Select Register 1 (Pin 10 - 19) 
+
+                    @          27 26 25 24 23 22 21 20
+        ldr     r0, =#0b000000001001000000000000000000
+        str     r0, [GPIOREG, #8] @Function Select Register 2???? (Pin 20 - 29)
+
+
         @ TODO: BRANCH HERE TO YOUR APPLICATION CODE
         @ b         ...
-
         @ WARNING:
         @   call "end_of_app" if you're done with your application
 
-
+        b steps_motor_color_wheel       @@@@@@@@@@@@@@@ change later !!!
 
 @ --------------------------------------------------------------------------------------------------------------------
 @
