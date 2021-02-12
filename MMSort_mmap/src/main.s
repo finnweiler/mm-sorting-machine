@@ -222,11 +222,31 @@ main:
         @ initialize all other hardware
         b         hw_init
 
-        @@@@@@ Miri new code
+        @ regulates the sequence of the machine's functions
         application_code:
+                bl      start_feeder
+                @@@@ test values for the motors
+                mov     r4, #2  @ 2 steps
+                mov     r2, #1  @ turn counter-clockwise
+                @@@@
                 bl      steps_motor_color_wheel
                 bl      steps_motor_outlet
+                bl      stop_feeder
                 b       end_of_app
+
+        @ starts the feeder by setting Pin 19 to high level
+        start_feeder:
+                mov     r1, #1
+                mov     r0, r1, lsl #19
+                str     r0, [GPIOREG, #28]
+                bx      lr
+        
+        @ stops the feeder by setting Pin 19 to low level
+        stop_feeder:
+                mov     r1, #1
+                mov     r0, r1, lsl #19
+                str     r0, [GPIOREG, #40]
+                bx      lr
 
 
         @ Richtung muss davor in r2 gespeichert worden sein (0 = clockwise, 1 = counter clockwise)!!
@@ -237,14 +257,6 @@ main:
                 @ stores the value of lr in address_of_return to be able to leave the function later
                 ldr r1, address_of_return
                 str lr, [r1]
-
-                @@@ test r4 2 steps
-                mov     r4, #2
-                @@@ delete later !!!!
-
-                @@@ test r2 = 0 clockwise
-                mov     r2, #1
-                @@@ delete later!!!
 
                 @@@ set GPIO Output Pins 17 and 27 to high-level
                 @ set Pin 17 to high level
@@ -286,26 +298,30 @@ main:
                 @ checks if the final amount of steps is reached
                 step_counter_loop_color_wheel:
                         cmp     TMPREG, r4
-                        beq     end_motor_color_wheel      @@@@@@@@@@@@ change later !!!
+                        beq     end_motor_color_wheel
                         add     TMPREG, TMPREG, #1
                         b one_step_color_wheel
                 
-                @ set 'Step' Pin 13 to high and then to low level to do one step with the color wheel
-                one_step_color_wheel:
+                        @ set 'Step' Pin 13 to high and then to low level to do one step with the color wheel
+                        one_step_color_wheel:
 
-                        @ set 'Step' Pin 13 to high level
-                        mov     r1, #1
-                        mov     r0, r1, lsl #13
-                        str     r0, [GPIOREG, #28]
+                                @ set 'Step' Pin 13 to high level
+                                mov     r1, #1
+                                mov     r0, r1, lsl #13
+                                str     r0, [GPIOREG, #28]
 
-                        @ add short delay
-                        bl      wait_sleep
-    
-                        @ set 'Step' Pin 13 to low level
-                        mov     r1, #1
-                        mov     r0, r1, lsl #13
-                        str     r0, [GPIOREG, #40]
-                        b       step_counter_loop_color_wheel
+                                @ add short delay
+                                bl      wait_sleep
+        
+                                @ set 'Step' Pin 13 to low level
+                                mov     r1, #1
+                                mov     r0, r1, lsl #13
+                                str     r0, [GPIOREG, #40]
+
+                                @ add short delay
+                                bl      wait_sleep
+
+                                b       step_counter_loop_color_wheel
                 
                 @leaves the function steps_motor_color_wheel
                 end_motor_color_wheel:
@@ -318,17 +334,10 @@ main:
         @ Anzahl Schritte muss davor in r4 gespeichert worden sein!!
         @ Outlet performs the required number of steps in the required direction (clockwise or counter-clockwise)
         steps_motor_outlet:
+        
                 @ stores the value of lr in address_of_return to be able to leave the function later
                 ldr r1, address_of_return
                 str lr, [r1]
-
-                @@@ test r4 2 steps
-                mov     r4, #2
-                @@@ delete later !!!!
-
-                @@@ test r2 = 0 clockwise
-                mov     r2, #1
-                @@@ delete later!!!
 
                 @@@ set GPIO Output Pins 11 and 27 to high-level
                 @ set Pin 11 to high level
@@ -370,26 +379,29 @@ main:
                 @ checks if the final amount of steps is reached
                 step_counter_loop_outlet:
                         cmp     TMPREG, r4
-                        beq     end_motor_outlet      @@@@@@@@@@@@ change later !!!
+                        beq     end_motor_outlet
                         add     TMPREG, TMPREG, #1
                         b one_step_outlet
                 
-                @ set 'Step' Pin 12 to high and then to low level to do one step with the outlet
-                one_step_outlet:
-                        @ set 'Step' Pin 12 to high level
-                        mov     r1, #1
-                        mov     r0, r1, lsl #12
-                        str     r0, [GPIOREG, #28]
+                        @ set 'Step' Pin 12 to high and then to low level to do one step with the outlet
+                        one_step_outlet:
+                                @ set 'Step' Pin 12 to high level
+                                mov     r1, #1
+                                mov     r0, r1, lsl #12
+                                str     r0, [GPIOREG, #28]
 
-                        @ add short delay
-                        bl      wait_sleep
+                                @ add short delay
+                                bl      wait_sleep
 
-                        low:
-                        @ set 'Step' Pin 12 to low level
-                        mov     r1, #1
-                        mov     r0, r1, lsl #12
-                        str     r0, [GPIOREG, #40]
-                        b       step_counter_loop_outlet
+                                @ set 'Step' Pin 12 to low level
+                                mov     r1, #1
+                                mov     r0, r1, lsl #12
+                                str     r0, [GPIOREG, #40]
+
+                                @ add short delay
+                                bl      wait_sleep
+
+                                b       step_counter_loop_outlet
 
                 @ leaves the function steps_motor_color_wheel
                 end_motor_outlet:
@@ -397,6 +409,7 @@ main:
                         ldr lr, [r1]
                         bx lr
         
+        @ creates a short break
         wait_sleep:
                 @ stores the values of lr in addr_of_wait_return to be able to leave the function later
                 ldr     r1, address_of_wait_return
@@ -408,7 +421,6 @@ main:
                 ldr     r1, address_of_wait_return
                 ldr     lr, [r1]
                 bx      lr
-
 
 address_of_return:      .word return
 address_of_wait_return: .word wait_return
