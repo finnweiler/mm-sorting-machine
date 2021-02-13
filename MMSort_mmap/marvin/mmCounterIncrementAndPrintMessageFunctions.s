@@ -13,6 +13,7 @@ mmCounterVariable: .word 0
 
 .text
 @ Function that increments the mmCounter Variable by 1 to indicate a successful m&m allocation
+@ no necessary input registers and no ouput
 incrementCounter:
     @ str lr, [sp, #-8]!
     ldr r0, address_of_mmCounterVariable
@@ -22,6 +23,7 @@ incrementCounter:
     @ ldr lr, [sp], #+8
     bx lr
 @ Function that prints into the console (stdout) the current number of successfully allocated m&m's
+@ no necessary input registers
 @ example output: MM-Counter: 21
 printMMCounterIntoConsole:
     str lr, [sp, #-8]!
