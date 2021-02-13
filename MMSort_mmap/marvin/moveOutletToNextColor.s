@@ -6,7 +6,8 @@
 @ -> Vermutung 400/6 = ca. 67 steps
 @ Stimmt das?
 
-@ Question2: Ist das COLREG die Fabe, wo ich quasi hin will, oder da wo ich gerade schon bin? Quasi Destination oder CurrentPosition?
+@ Question2: Ist das COLREG die Fabe, wo ich quasi hin will, oder da wo ich gerade schon bin? Quasi Destination oder CurrentPosition? 
+@ Meine Inputs sind ja nur die aktuelle Farbe und die kommende Farbe. Welche Register soll ich dafür verwenden? R12 und R13?
 
 @ Question3: Wollen diese Farbreihenfolge verwenden? Hat ein Regenbogenmuster ;)
 @ Rainbow Color Order
