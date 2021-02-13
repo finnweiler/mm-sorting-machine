@@ -72,9 +72,11 @@ timerir_mmap_adr:
 timerir_mmap_fd:
         .word     0
 
-return:
+return_motor:
         .word     0
-wait_return:
+return_cw_90:
+        .word     0
+return_wait:
         .word     0
 
 @ - END OF DATA SECTION @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -225,11 +227,12 @@ main:
         @ regulates the sequence of the machine's functions
         application_code:
                 bl      start_feeder
+                bl      color_wheel_turn_90_degrees
                 @@@@ test values for the motors
                 mov     r4, #2  @ 2 steps
                 mov     r2, #1  @ turn counter-clockwise
                 @@@@
-                bl      steps_motor_color_wheel
+                @bl      steps_motor_color_wheel
                 bl      steps_motor_outlet
                 bl      stop_feeder
                 b       end_of_app
@@ -249,14 +252,14 @@ main:
                 bx      lr
 
 
-        @ Richtung muss davor in r2 gespeichert worden sein (0 = clockwise, 1 = counter clockwise)!!
-        @ Anzahl Schritte muss davor in r4 gespeichert worden sein!!
-        @ color_wheel performs the required number of steps in the direction clockwise or counter-clockwise
+        @ direction of rotation has to be stored in r2 before (0 = clockwise, 1 = counter clockwise)
+        @ number of steps has to be stored in r4 before
+        @ Color wheel performs the required number of steps in the direction clockwise or counter-clockwise
         steps_motor_color_wheel:
 
                 @ stores the value of lr in address_of_return to be able to leave the function later
-                ldr r1, address_of_return
-                str lr, [r1]
+                ldr     r1, address_of_return_motor
+                str     lr, [r1]
 
                 @@@ set GPIO Output Pins 17 and 27 to high-level
                 @ set Pin 17 to high level
@@ -273,12 +276,12 @@ main:
                 set_direction_color_wheel:
                         @ checks the received direction stored in r2 (0=clockwise, 1=counter-clockwise)
                         if_check_direction_color_wheel:
-                                mov r0, #1
-                                cmp r2, r0
-                                blt clockwise_color_wheel
-                                beq counter_clockwise_color_wheel
+                                mov     r0, #1
+                                cmp     r2, r0
+                                blt     clockwise_color_wheel
+                                beq     counter_clockwise_color_wheel
                                 @ default: choose direcion clockwise
-                                b clockwise_color_wheel
+                                b       clockwise_color_wheel
                                 @ set Pin 16 to low level to turn the color wheel clockwise
                                 clockwise_color_wheel:
                                         mov     r1, #1
@@ -300,7 +303,7 @@ main:
                         cmp     TMPREG, r4
                         beq     end_motor_color_wheel
                         add     TMPREG, TMPREG, #1
-                        b one_step_color_wheel
+                        b       one_step_color_wheel
                 
                         @ set 'Step' Pin 13 to high and then to low level to do one step with the color wheel
                         one_step_color_wheel:
@@ -325,19 +328,38 @@ main:
                 
                 @leaves the function steps_motor_color_wheel
                 end_motor_color_wheel:
-                        ldr r1, address_of_return
-                        ldr lr, [r1]
-                        bx lr
+                        ldr     r1, address_of_return_motor
+                        ldr     lr, [r1]
+                        bx      lr
+        
+        
+        @ function that turns the color wheel 90 degrees clockwise
+        @ no necessary input registers
+        color_wheel_turn_90_degrees:
+                @ stores the value of lr in address_of_return to be able to leave the function later
+                ldr     r1, address_of_return_cw_90
+                str     lr, [r1]
+
+                @ stores the direction and the steps in r2 and r4
+                mov     r2, #0
+                mov     r4, #400
+
+                bl      steps_motor_color_wheel
+
+                @ leaves the function color_wheel_90_degrees
+                ldr     r1, address_of_return_cw_90
+                ldr     lr, [r1]
+                bx      lr
         
 
-        @ Richtung muss davor in r2 gespeichert worden sein (0 = clockwise, 1 = counter clockwise)!!
-        @ Anzahl Schritte muss davor in r4 gespeichert worden sein!!
+        @ direction of rotation has to be stored in r2 before (0 = clockwise, 1 = counter clockwise)
+        @ number of steps has to be stored in r4 before
         @ Outlet performs the required number of steps in the required direction (clockwise or counter-clockwise)
         steps_motor_outlet:
         
                 @ stores the value of lr in address_of_return to be able to leave the function later
-                ldr r1, address_of_return
-                str lr, [r1]
+                ldr     r1, address_of_return_motor
+                str     lr, [r1]
 
                 @@@ set GPIO Output Pins 11 and 27 to high-level
                 @ set Pin 11 to high level
@@ -354,12 +376,12 @@ main:
                 set_direction_outlet:
                         @ checks the received direction stored in r2 (0=clockwise, 1=counter-clockwise)
                         if_check_direction_outlet:
-                                mov r0, #1
-                                cmp r2, r0
-                                blt clockwise_outlet
-                                beq counter_clockwise_outlet
+                                mov     r0, #1
+                                cmp     r2, r0
+                                blt     clockwise_outlet
+                                beq     counter_clockwise_outlet
                                 @ default: choose direction clockwise
-                                b clockwise_outlet
+                                b       clockwise_outlet
                                 @ set Pin 26 to low level to turn the outlet clockwise
                                 clockwise_outlet:
                                         mov     r1, #1
@@ -381,7 +403,7 @@ main:
                         cmp     TMPREG, r4
                         beq     end_motor_outlet
                         add     TMPREG, TMPREG, #1
-                        b one_step_outlet
+                        b       one_step_outlet
                 
                         @ set 'Step' Pin 12 to high and then to low level to do one step with the outlet
                         one_step_outlet:
@@ -405,25 +427,26 @@ main:
 
                 @ leaves the function steps_motor_color_wheel
                 end_motor_outlet:
-                        ldr r1, address_of_return
-                        ldr lr, [r1]
-                        bx lr
+                        ldr     r1, address_of_return_motor
+                        ldr     lr, [r1]
+                        bx      lr
         
-        @ creates a short break
+        @ function that creates a short break
         wait_sleep:
                 @ stores the values of lr in addr_of_wait_return to be able to leave the function later
-                ldr     r1, address_of_wait_return
+                ldr     r1, address_of_return_wait
                 str     lr, [r1]
                 @ create a short delay
                 mov     r0, #10
                 bl      usleep
                 @ leaves the function wait_sleep
-                ldr     r1, address_of_wait_return
+                ldr     r1, address_of_return_wait
                 ldr     lr, [r1]
                 bx      lr
 
-address_of_return:      .word return
-address_of_wait_return: .word wait_return
+address_of_return_motor:      .word return_motor
+address_of_return_cw_90:    .word return_cw_90
+address_of_return_wait: .word return_wait
 
 hw_init:
         ldr       r1, =gpio_mmap_adr          @ reload the addr for accessing the GPIOs
