@@ -232,37 +232,10 @@ hw_init:
     str     r0, [GPIOREG, #8] @Function Select Register 1 (Pin 20 - 29)
 
     mov     r0, #0
-    b       setPin
-
-    mov     r0, #10
-    bl      sleep
-
-    @ TODO: PLEASE INIT HW HERE
-    @ HINT:
-    @   configuration of inputs is not necessary cause the pins are
-    @   configured as inputs after reset
-
-    @ TODO: BRANCH HERE TO YOUR APPLICATION CODE
-    @ b     ...
-
-    @ WARNING:
-    @   call "end_of_app" if you're done with your application
-    b end_of_app
-
-@ Sets a GPIO pin On/Off state. 
-@ Assumes that GPIO registers have been mapped to programming memory
-@ and the selected pin is configured to be an output.
-@ Calling sequence:
-@   r0 <- pin number (starts at 0)
-@   r1 <- pin state (0 = off | 1 = on)
-
-@ Sets a GPIO output pin to on
-@ Calling seqeuence: 
-@   r0 <- pin number (starts at 0 to 31)
-setPin:
-    mov     r1, #1
-    mov     r0, r1, lsl r0
-    str     r0, [GPIOREG, #28]
+    mov     r1, #10
+    bl      stepColorWheel
+    
+    b       end_of_app
 
 
 

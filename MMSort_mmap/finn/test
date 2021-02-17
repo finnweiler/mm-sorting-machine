@@ -1,0 +1,3 @@
+#!/bin/bash
+
+as -o out/main.o main.s && as -o out/stepColorWheel.o stepColorWheel.s && gcc -o out/main out/main.o out/stepColorWheel.o && ./out/main
