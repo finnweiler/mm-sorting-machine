@@ -5,35 +5,68 @@
     .data
     .balign     4
 
-stepMessage:
-    .asciz      "stepping\n"
-clockwise:
-    .asciz      "end\n"
+loop:
+    .asciz      "loop\n"
 
     .text
-
-    .extern usleep
 
     .balign   4
     .global   calibrateColorWheel
     .type     calibrateColorWheel, %function
 
 calibrateColorWheel:
-    str     lr, [sp, #-8]!  /* preindex: sp ← sp - 8; *sp ← lr */
+    str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
+    str     r4, [sp, #-4]!
 
-    findLeftEdge:
-        ldr     r0, [r10], #+52
-        mov     r1, #12 @ select pin
-        and     r0, r0, r1
+    mov     r4, #0
+
+    findContact:
+        mov     r0, #20
+        bl      readPin
 
         cmp     r0, #0
-        beq     findHallEdge
+        beq     findRightEdge @ if hall sensor has contact # TODO: eq oder ne
 
         mov     r0, #0
         mov     r1, #1
-        b       stepColorWheel
+        bl      stepColorWheel
 
+        b       findContact
+
+    findRightEdge:
+        mov     r0, #20
+        bl      readPin
+
+        cmp     r0, #0
+        bne     findLeftEdge @ if hall sensor lost contact # TODO: eq oder ne
+
+        mov     r0, #1
+        mov     r1, #1
+        bl      stepColorWheel
+
+        b       findRightEdge
+
+    findLeftEdge:
+        mov     r0, #0
+        mov     r1, #1
+        bl      stepColorWheel
+
+        add     r4, r4, #1
+
+        mov     r0, #20
+        bl      readPin
+
+        cmp     r0, #0
+        bne     findCenter @ if hall sensor lost contact # TODO: eq oder ne
         b       findLeftEdge
 
-    ldr     lr, [sp], #+8   /* postindex; lr ← *sp; sp ← sp + 8 */
+    findCenter:
+
+        mov     r0, #1
+        mov     r1, r4, lsr #1
+        bl      stepColorWheel
+
+
+    ldr     r4, [sp], #+4
+    ldr     lr, [sp], #+4  /* Pop the top of the stack and put it in lr */
     bx      lr
