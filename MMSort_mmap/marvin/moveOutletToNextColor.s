@@ -1,6 +1,6 @@
 @ Marvin, 13.02.21, 19.02.21
 
-COLREG  .req    r11
+@ COLREG  .req    r11
 
 .data
 .balign 4
