@@ -53,11 +53,11 @@ colorIndizeToOutletPosition:
 moveOutletToNextColor:
     str lr, [sp, #-8]! /* lr needs to be stored (pushed on stack), because a subfunction gets called within this function */
 
-    ldr r1, address_of_currentAbsolutePositionOfOutlet
+    ldr r1, address_of_currentPositionOfOutlet
     ldr r1, [r1] /* load in r1 the absolute current position */
 
     bl colorIndizeToOutletPosition /* after the return of function: in r0 is the absolute destination position stored */ 
-    ldr r3, r0 /* storing the absolute destination position also in r3 to use it later again, to store in the current position variable the destinationPosition  */
+    mov r3, r0 /* storing the absolute destination position also in r3 to use it later again, to store in the current position variable the destinationPosition  */
 
     cmp r0, #-1 /* if no color got detected (colorIndizeToOutletPosition function returns -1), then don't move the outlet */
     beq end
@@ -81,7 +81,7 @@ moveOutletToNextColor:
     if_again_same_color: b end               /* return from the whole moveOutletToNextColor function */
     elif_negative_detour: add r1, r0, #+400  /* store in r1 the improved difference (short clockwise move, not unnecessary long counterclockwise move) */
     elif_positive_detour: sub r1, r0, #+400  /* store in r1 the improved difference (short counterclockwise move, not unnecessary long clockwise move) */
-    else: ldr r1, r0                         /* store in r1 the difference even if it was prior already the shortest move to the destination */
+    else: mov r1, r0                         /* store in r1 the difference even if it was prior already the shortest move to the destination */
     
     @ current information in register r1
     @ sign: charackterizes wethere clockwise or counterclockwise direction
@@ -113,15 +113,15 @@ moveOutletToNextColor:
         ldr lr, [sp], #+8
         bx lr
 
-.global main
-main:
-    str lr, [sp, #-8]!
+@ .global main
+@ main:
+@     str lr, [sp, #-8]!
 
-    @ vairable currentPositionOfOutlet : currentColorInformation with range 0,1,2,...,6 , where 0 : no color detected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown
-    @ register COLREG : destinationColorInformation with range 0,1,2,...,6 , where 0 : no color detected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown
+@     @ vairable currentPositionOfOutlet : currentColorInformation with range 0,1,2,...,6 , where 0 : no color detected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown
+@     @ register COLREG : destinationColorInformation with range 0,1,2,...,6 , where 0 : no color detected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown
 
-    bl moveOutletToNextColor
+@     bl moveOutletToNextColor
 
-    ldr lr, [sp], #+8
-    bx lr
-address_of_currentPositionOfOutlet : .word currentPositionOfOutlet
+@     ldr lr, [sp], #+8
+@     bx lr
+address_of_currentPositionOfOutlet: .word currentPositionOfOutlet

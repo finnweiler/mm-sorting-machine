@@ -237,24 +237,11 @@ hw_init:
     ldr     r0, =#0b000000001001000000000000000000
     str     r0, [GPIOREG, #8] @Function Select Register 1 (Pin 20 - 29)
 
+    @ vairable currentPositionOfOutlet : currentColorInformation with range 0,1,2,...,6 , where 0 : no color detected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown
+    @ register COLREG : destinationColorInformation with range 0,1,2,...,6 , where 0 : no color detected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown
     
-    /*
-    mov     r0, #0
-    mov     r1, #50
-    bl      stepColorWheel
-
-    mov     r0, #1
-    mov     r1, #50
-    bl      stepColorWheel */
-
-    mov     r0, #0
-    mov     r1, #3
-    bl      stepColorWheel
-    
-
-    bl      calibrateColorWheel
-
-    bl      testFunction
+    mov COLREG, #+4
+    bl moveOutletToNextColor
     
     b       end_of_app
 
