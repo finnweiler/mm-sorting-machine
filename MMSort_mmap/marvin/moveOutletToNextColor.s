@@ -93,35 +93,41 @@ moveOutletToNextColor:
     @ else: 
     b else
 
-    if_again_same_color: b end               /* return from the whole moveOutletToNextColor function */
-    elif_negative_detour: add r1, r0, #+400  /* store in r1 the improved difference (short clockwise move, not unnecessary long counterclockwise move) */
-    elif_positive_detour: sub r1, r0, #+400  /* store in r1 the improved difference (short counterclockwise move, not unnecessary long clockwise move) */
-    else: mov r1, r0                         /* store in r1 the difference even if it was prior already the shortest move to the destination */
+    if_again_same_color: 
+        b end                    /* return from the whole moveOutletToNextColor function */
+    elif_negative_detour: 
+        add r1, r0, #+400        /* store in r1 the improved difference (short clockwise move, not unnecessary long counterclockwise move) */
+        b checkForClockwiseMove  
+    elif_positive_detour: 
+        sub r1, r0, #+400        /* store in r1 the improved difference (short counterclockwise move, not unnecessary long clockwise move) */
+        b checkForClockwiseMove  
+    else: mov r1, r0             /* store in r1 the difference even if it was prior already the shortest move to the destination */
     
     @ current information in register r1
     @ sign: charackterizes wethere clockwise or counterclockwise direction
     @ absolute value: represents the amount of outlet steps it takes to get from the current color to the destination color
 
     @ if : check for clockwise move 
-    cmp r1, #0
-    bpl if_moving_clockwise
-    @ else : counterclockwise move 
-    b else_moving_counterclockwise 
+    checkForClockwiseMove:
+        cmp r1, #0
+        bpl if_moving_clockwise
+        @ else : counterclockwise move 
+        b else_moving_counterclockwise 
 
-    if_moving_clockwise:
-        mov r0, #0                
-        bl stepOutlet
+        if_moving_clockwise:
+            mov r0, #0                
+            bl stepOutlet
 
-    else_moving_counterclockwise:
-        mov r0, #1
-        mov r2, #0
-        sub r1, r2, r1                 
-        bl stepOutlet 
+        else_moving_counterclockwise:
+            mov r0, #1
+            mov r2, #0
+            sub r1, r2, r1                 
+            bl stepOutlet 
 
-    @ the outlet was successfully moved from its oldposition to its new position, threfore: currentPosition = destinationPosition
-    ldr r0, address_of_currentPositionOfOutlet
-    str r3, [r0]
-    b end 
+        @ the outlet was successfully moved from its oldposition to its new position, threfore: currentPosition = destinationPosition
+        ldr r0, address_of_currentPositionOfOutlet
+        str r3, [r0]
+        b end 
 
     end:
         @ pop initial lr from the stack and leave the whole moveOutletToNextColor function
