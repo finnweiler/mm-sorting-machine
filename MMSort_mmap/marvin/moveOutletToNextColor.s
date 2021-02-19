@@ -33,27 +33,27 @@ colorIndizeToOutletPosition:
 
     if_no_color_got_detected:
         mov r0, #-1 
-        b end
+        b end_colorIndizeToOutletPosition
     if_destination_is_blue:
         mov r0, #0
-        b end
+        b end_colorIndizeToOutletPosition
     if_destination_is_green:
         mov r0, #67
-        b end
+        b end_colorIndizeToOutletPosition
     if_destination_is_yellow:
         mov r0, #133
-        b end
+        b end_colorIndizeToOutletPosition
     if_destination_is_orange:
         mov r0, #200
-        b end
+        b end_colorIndizeToOutletPosition
     if_destination_is_red: 
         mov r0, #267
-        b end
+        b end_colorIndizeToOutletPosition
     if_destination_is_brown: 
         mov r0, #333
-        b end
+        b end_colorIndizeToOutletPosition
 
-    end:
+    end_colorIndizeToOutletPosition:
         ldr lr, [sp], #+8 @ pop initial lr from the stack and leave the whole colorIndizeToOutletPosition function
         bx lr
 
@@ -101,8 +101,10 @@ moveOutletToNextColor:
     elif_positive_detour: 
         sub r1, r0, #+400        /* store in r1 the improved difference (short counterclockwise move, not unnecessary long clockwise move) */
         b checkForClockwiseMove  
-    else: mov r1, r0             /* store in r1 the difference even if it was prior already the shortest move to the destination */
-    
+    else: 
+        mov r1, r0             /* store in r1 the difference even if it was prior already the shortest move to the destination */
+        b checkForClockwiseMove
+
     @ current information in register r1
     @ sign: charackterizes wethere clockwise or counterclockwise direction
     @ absolute value: represents the amount of outlet steps it takes to get from the current color to the destination color
