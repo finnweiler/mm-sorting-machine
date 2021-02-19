@@ -1,10 +1,20 @@
 @ Jessy 14.2.2021
 @ Color Detection Code
 
+.data 
+.balign     4
+ 
+ colorMessage:
+ .asciz     "colordetection\n"
+
 .text
- .global colordetection
+.balign     4
+.global colordetection
+.type colordetection, %function
 
 colordetection:
+
+    str lr, [sp, #-8]!
 
     @ set r11 to 0 for following additions
     mov r11, #0   
@@ -72,3 +82,6 @@ colordetection:
         @ if : no color was detected
         cmp r11, #0
         beq mov COLREG, #0
+
+        ldr lr, [sp], #+8
+        bx lr
