@@ -242,7 +242,6 @@ hw_init:
     
     mov GPIOREG, #+4
     bl colorIndizeToOutletPosition
-    
     b       end_of_app
 
 
