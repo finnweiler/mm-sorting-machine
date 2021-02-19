@@ -1,0 +1,3 @@
+as -o moveOutletToNextColor.s.o moveOutletToNextColor.s.s
+gcc -o moveOutletToNextColor.s moveOutletToNextColor.s.o
+./moveOutletToNextColor.s

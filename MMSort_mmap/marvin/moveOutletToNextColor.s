@@ -31,16 +31,31 @@ colorIndizeToOutletPosition:
     cmp COLREG, #6      
     beq if_destination_is_brown
 
-    if_no_color_got_detected: mov r0, #-1
-    if_destination_is_blue: mov r0, #0
-    if_destination_is_green: mov r0, #67
-    if_destination_is_yellow: mov r0, #133
-    if_destination_is_orange: mov r0, #200
-    if_destination_is_red: mov r0, #267
-    if_destination_is_brown: mov r0, #333
+    if_no_color_got_detected:
+        mov r0, #-1 
+        b end
+    if_destination_is_blue:
+        mov r0, #0
+        b end
+    if_destination_is_green:
+        mov r0, #67
+        b end
+    if_destination_is_yellow:
+        mov r0, #133
+        b end
+    if_destination_is_orange:
+        mov r0, #200
+        b end
+    if_destination_is_red: 
+        mov r0, #267
+        b end
+    if_destination_is_brown: 
+        mov r0, #333
+        b end
 
-    ldr lr, [sp], #+8 @ pop initial lr from the stack and leave the whole colorIndizeToOutletPosition function
-    bx lr
+    end:
+        ldr lr, [sp], #+8 @ pop initial lr from the stack and leave the whole colorIndizeToOutletPosition function
+        bx lr
 
 
 @ function computes the direction and number of steps to get from the current color position to the destination color position
