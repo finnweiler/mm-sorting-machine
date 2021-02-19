@@ -39,7 +39,7 @@ colordetection:
     bl colorfunction
 
     read_pin:
-    ldr     r1, [r10], #+64
+    ldr     r1, [r10, #52]
     mov     r2, #1
     mov     r2, r2, lsl r0
     and     r0, r2, r1
