@@ -113,15 +113,17 @@ moveOutletToNextColor:
         ldr lr, [sp], #+8
         bx lr
 
-@ .global main
-@ main:
-@     str lr, [sp, #-8]!
 
-@     @ vairable currentPositionOfOutlet : currentColorInformation with range 0,1,2,...,6 , where 0 : no color detected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown
-@     @ register COLREG : destinationColorInformation with range 0,1,2,...,6 , where 0 : no color detected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown
+.global main
+main:
+    str lr, [sp, #-8]!
 
-@     bl moveOutletToNextColor
+    @ vairable currentPositionOfOutlet : currentColorInformation with range 0,1,2,...,6 , where 0 : no color detected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown
+    @ register COLREG : destinationColorInformation with range 0,1,2,...,6 , where 0 : no color detected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown
 
-@     ldr lr, [sp], #+8
-@     bx lr
+    mov COLREG, #+4
+    bl moveOutletToNextColor
+
+    ldr lr, [sp], #+8
+    bx lr
 address_of_currentPositionOfOutlet: .word currentPositionOfOutlet
