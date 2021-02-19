@@ -57,7 +57,7 @@ moveOutletToNextColor:
     ldr r1, [r1] /* load in r1 the absolute current position */
 
     bl colorIndizeToOutletPosition /* after the return of function: in r0 is the absolute destination position stored */ 
-    ldr r3, r0 /* storing the absolute destination position also in r3 to use it later again, to store in the current position variable the destinationPosition  */
+    mov r3, r0 /* storing the absolute destination position also in r3 to use it later again, to store in the current position variable the destinationPosition  */
 
     cmp r0, #-1 /* if no color got detected (colorIndizeToOutletPosition function returns -1), then don't move the outlet */
     beq end
