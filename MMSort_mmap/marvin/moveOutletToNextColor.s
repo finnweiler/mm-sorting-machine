@@ -1,55 +1,89 @@
-@ Marvin, 13.02.21
-
-
-@ QUESTION1: Wie viele Steps brauche ich um von einer Farbe zu einer benachbarten Farbe zu kommen? 
-@ Gegebene Infos: Es gibt einmal die Angabe 400 steps/cycle und einmal 200 steps/cycle. Dann natürlich 6 colors, 360°/6=60° 
-@ -> Vermutung 400/6 = ca. 67 steps
-@ Stimmt das?
-
-@ Question2: Ist das COLREG die Fabe, wo ich quasi hin will, oder da wo ich gerade schon bin? Quasi Destination oder CurrentPosition? 
-@ Meine Inputs sind ja nur die aktuelle Farbe und die kommende Farbe. Welche Register soll ich dafür verwenden? R12 und R13?
-
-@ Question3: Wollen diese Farbreihenfolge verwenden? Hat ein Regenbogenmuster ;)
-@ Rainbow Color Order
-@ 0 : blue
-@ 1 : green
-@ 2 : yellow 
-@ 3 : orange
-@ 4 : red
-@ 5 : brown
+@ Marvin, 13.02.21, 19.02.21
 
 .data
+.balign 4
+currentPositionOfOutlet: .word 0 /* stores the absolute position of outlet. value range 0,1,2,...,399 is aquivalent to amount of outlet steps per cycle */
+
+
+@ function returns in r0 the absolute outlet position given an value in COLOREG (r11) 
+@ regarding this Rainbow Color Order {0: noColorDetected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown}
 .text
+.balign 4
+.global colorIndizeToOutletPosition
+.type colorIndizeToOutletPosition, %function
+colorIndizeToOutletPosition:
+    str lr, [sp, #-8]! /* lr needs to be stored (pushed on stack), because a subfunction gets called within this function */
+
+    cmp COLOREG, #0 
+    beq if_no_color_got_detected
+    cmp COLOREG, #1
+    beq if_desination_is_blue
+    cmp COLOREG, #2      
+    beq if_desination_is_green
+    cmp COLOREG, #3      
+    beq if_desination_is_yellow
+    cmp COLOREG, #4      
+    beq if_desination_is_orange
+    cmp COLOREG, #5      
+    beq if_desination_is_red
+    cmp COLOREG, #6      
+    beq if_desination_is_brown
+
+    if_no_color_got_detected: mov r0, #-1
+    if_desination_is_blue: mov r0, #0
+    if_desination_is_blue: mov r0, #67
+    if_desination_is_blue: mov r0, #133
+    if_desination_is_blue: mov r0, #200
+    if_desination_is_blue: mov r0, #267
+    if_desination_is_blue: mov r0, #333
+
+    ldr lr, [sp], #+8 @ pop initial lr from the stack and leave the whole colorIndizeToOutletPosition function
+    bx lr
+
+
 @ function computes the direction and number of steps to get from the current color position to the destination color position
 @ function then calls the steps_motor_outlet function with the computed parameters direction and number of steps
 @ function input: r12 - currentPosition, r13 - destinationPosition. Both have an integer value inclusivly in between 0 and 5, as there are six colors
 @ function returns nothing
+.balign 4
+.global moveOutletToNextColor
+.type moveOutletToNextColor, %function
 moveOutletToNextColor:
     str lr, [sp, #-8]! /* lr needs to be stored (pushed on stack), because a subfunction gets called within this function */
 
-    @ stores in r0 the difference between the destinationPosition and the currentPosition
-    sub r0, r13, r12
+    ldr r1, address_of_currentAbsolutePositionOfOutlet
+    ldr r1, [r1] /* load in r1 the absolute current position */
+
+    bl colorIndizeToOutletPosition /* after the return of function: in r3 is the absolute destination position stored */ 
+
+
+    cmp r0, #-1 /* if no color got detected (colorIndizeToOutletPosition function returns -1), then don't move the outlet */
+    beq end
+
+    @ stores in r0 the difference between the destinationPosition (r3) and the currentPosition (r1)
+    @ sub r0, r13, r12
+    sub r0, r3, r1
     
     @ if : checks whether destination and current postion are the same
     cmp r0, #0
     beq if_again_same_color
     @ elif: checks whether computed difference suggests a unnecessary long counterclockwise move instead of a shorter clockwise move
-    cmp r0, #-3
+    cmp r0, #-200
     bmi elif_negative_detour  
     @ elif: checks whether computed difference suggests a unnecessary long clockwise move instead of a shorter counterclockwise move
-    cmp r0, #+3
+    cmp r0, #+200
     bpl elif_positive_detour  
     @ else: 
     b else
 
-    if_again_same_color: bx lr               /* return from the whole moveOutletToNextColor function */
-    elif_negative_detour: add r1, r0, #+6    /* store in r1 the improved difference (short clockwise move, not unnecessary long counterclockwise move) */
-    elif_positive_detour: sub r1, r0, #+6    /* store in r1 the improved difference (short counterclockwise move, not unnecessary long clockwise move) */
+    if_again_same_color: b end               /* return from the whole moveOutletToNextColor function */
+    elif_negative_detour: add r1, r0, #+400  /* store in r1 the improved difference (short clockwise move, not unnecessary long counterclockwise move) */
+    elif_positive_detour: sub r1, r0, #+400  /* store in r1 the improved difference (short counterclockwise move, not unnecessary long clockwise move) */
     else: ldr r1, r0                         /* store in r1 the difference even if it was prior already the shortest move to the destination */
     
     @ current information in register r1
     @ sign: charackterizes wethere clockwise or counterclockwise direction
-    @ absolute value: represents an x * 60° rotation (Why 60°? Because (360° / six colors) = 60°) @@@@@@@@@@@@@@@@@@@ 360/6 OR 400/6 OR 200/6 @@@@@@@@@@@@@@@@@@@@@@
+    @ absolute value: represents the amount of outlet steps it takes to get from the current color to the destination color
 
     @ if : check for clockwise move 
     cmp r1, #0
@@ -58,35 +92,33 @@ moveOutletToNextColor:
     b else_moving_counterclockwise 
 
     if_moving_clockwise:
-        mov r2, #0
-        ldr r4, r1
-        mul r4, r4, #67                @@@@@@@@@@@@@@@@@ IS 67 = 400/6 the right choice ??? @@@@@@@@@@@@@@@@@@@@@ 400/6 OR 200/6
+        mov r0, #0                
         bl steps_motor_outlet
 
     else_moving_counterclockwise
-        mov r2, #1
-        sub r4, #0, r1
-        mul r4, r4, #67                @@@@@@@@@@@@@@@@@ IS 67 = 400/6 the right choice ??? @@@@@@@@@@@@@@@@@@@@@ 400/6 OR 200/6 
+        mov r0, #1
+        sub r1, #0, r1                 
         bl steps_motor_outlet 
 
     @ the outlet was successfully moved from its oldposition to its new position, threfore: currentPosition = destinationPosition
-    ldr r12, r13
+    ldr r0, address_of_currentPositionOfOutlet
+    str r3, [r0]
+    b end 
 
-    @ pop initial lr from the stack and leave the whole moveOutletToNextColor function
-    ldr lr, [sp], #+8
-    bx lr
+    end:
+        @ pop initial lr from the stack and leave the whole moveOutletToNextColor function
+        ldr lr, [sp], #+8
+        bx lr
 
 .global main
 main:
     str lr, [sp, #-8]!
 
-    @ r12 : currentPosition 
-    @ r13 : destinationPosition 
-    mov r12, #2 /* yellow */
-    mov r13, #5 /* brown */
+    @ vairable currentPositionOfOutlet : currentColorInformation with range 0,1,2,...,6 , where 0 : no color detected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown
+    @ register COLORREG : destinationColorInformation with range 0,1,2,...,6 , where 0 : no color detected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown
 
     bl moveOutletToNextColor
 
-
     ldr lr, [sp], #+8
     bx lr
+address_of_currentPositionOfOutlet : .word currentPositionOfOutlet
