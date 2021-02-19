@@ -31,11 +31,11 @@ colorIndizeToOutletPosition:
 
     if_no_color_got_detected: mov r0, #-1
     if_desination_is_blue: mov r0, #0
-    if_desination_is_blue: mov r0, #67
-    if_desination_is_blue: mov r0, #133
-    if_desination_is_blue: mov r0, #200
-    if_desination_is_blue: mov r0, #267
-    if_desination_is_blue: mov r0, #333
+    if_desination_is_green: mov r0, #67
+    if_desination_is_yellow: mov r0, #133
+    if_desination_is_orange: mov r0, #200
+    if_desination_is_red: mov r0, #267
+    if_desination_is_brown: mov r0, #333
 
     ldr lr, [sp], #+8 @ pop initial lr from the stack and leave the whole colorIndizeToOutletPosition function
     bx lr
