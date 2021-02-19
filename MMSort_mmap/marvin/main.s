@@ -240,8 +240,8 @@ hw_init:
     @ vairable currentPositionOfOutlet : currentColorInformation with range 0,1,2,...,6 , where 0 : no color detected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown
     @ register COLREG : destinationColorInformation with range 0,1,2,...,6 , where 0 : no color detected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown
     
-    mov r1, #+4
-    bl stepOutlet
+    mov GPIOREG, #+4
+    bl colorIndizeToOutletPosition
     
     b       end_of_app
 
