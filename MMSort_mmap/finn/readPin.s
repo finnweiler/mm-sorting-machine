@@ -24,7 +24,7 @@ readPin:
     ldr     r1, [r10], #+64
     mov     r2, #1
     mov     r2, r2, lsl r0
-    and     r0, r2, r1
+    @and     r0, r2, r1
 
     ldr     lr, [sp], #+8
     bx      lr

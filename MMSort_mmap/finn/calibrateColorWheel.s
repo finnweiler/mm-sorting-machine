@@ -28,7 +28,8 @@ calibrateColorWheel:
         beq     findRightEdge @ if hall sensor has contact # TODO: eq oder ne
 
         mov     r0, #0
-        mov     r1, #1
+        @mov     r1, #1
+        mov     r1, #10
         bl      stepColorWheel
 
         b       findContact
@@ -41,14 +42,16 @@ calibrateColorWheel:
         bne     findLeftEdge @ if hall sensor lost contact # TODO: eq oder ne
 
         mov     r0, #1
-        mov     r1, #1
+        @mov     r1, #1
+        mov     r1, #10
         bl      stepColorWheel
 
         b       findRightEdge
 
     findLeftEdge:
         mov     r0, #0
-        mov     r1, #1
+        @mov     r1, #1
+        mov     r1, #10
         bl      stepColorWheel
 
         add     r4, r4, #1
@@ -62,7 +65,8 @@ calibrateColorWheel:
 
     findCenter:
 
-        mov     r0, #1
+        @mov     r0, #1
+        mov     r1, #10
         mov     r1, r4, lsr #1
         bl      stepColorWheel
 

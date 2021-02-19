@@ -1,5 +1,7 @@
 @ Marvin, 13.02.21, 19.02.21
 
+COLREG  .req    r11
+
 .data
 .balign 4
 currentPositionOfOutlet: .word 0 /* stores the absolute position of outlet. value range 0,1,2,...,399 is aquivalent to amount of outlet steps per cycle */
@@ -95,9 +97,10 @@ moveOutletToNextColor:
         mov r0, #0                
         bl stepOutlet
 
-    else_moving_counterclockwise
+    else_moving_counterclockwise:
         mov r0, #1
-        sub r1, #0, r1                 
+        mov r2, #0
+        sub r1, r2, r1                 
         bl stepOutlet 
 
     @ the outlet was successfully moved from its oldposition to its new position, threfore: currentPosition = destinationPosition

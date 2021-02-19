@@ -2,7 +2,6 @@
 @ Implementierung einer InkrementCounter Funktion, um die Anzahl an richtig sortierten m&m's einzusehen
 @ Implemenierung einer PrintCouner Funktion, um in der Konsole den Counter mit kurzer Message einzusehen
 
-
 .data
 @ Message String to see the current number of successfully allocated m&m's
 .balign 4

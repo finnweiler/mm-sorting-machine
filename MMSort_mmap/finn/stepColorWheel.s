@@ -3,7 +3,8 @@
 @       r0  <- direction to turn the color wheel in (0=clockwise, 1=counter-clockwise)
 @       r1  <- number of steps that shall be done
 @       r10 <- GPIO register
-    
+
+GPIOREG .req    r10
     
     .data
     .balign     4
@@ -34,13 +35,13 @@ stepColorWheel:
         setDirectionClockwise:
             mov     r2, #1
             mov     r0, r2, lsl #16
-            str     r0, [r10, #40] 
+            str     r0, [GPIOREG, #40] 
             b       nextColorWheelStep
         @ set Pin 16 to high level to turn the color wheel counter-clockwise
         setDirectionCounterClockwise:
             mov     r2, #1
             mov     r0, r2, lsl #16
-            str     r0, [r10, #28]
+            str     r0, [GPIOREG, #28]
     
     nextColorWheelStep:
         cmp     r4, #0
@@ -54,7 +55,7 @@ stepColorWheel:
         @ set 'Step' Pin 13 to high level
         mov     r2, #1
         mov     r0, r2, lsl #13
-        str     r0, [r10, #28]
+        str     r0, [GPIOREG, #28]
 
         @ add short delay
         ldr     r0, =#100000 @ sleep 50 ms
@@ -63,7 +64,7 @@ stepColorWheel:
         @ set 'Step' Pin 13 to low level
         mov     r2, #1
         mov     r0, r2, lsl #13
-        str     r0, [r10, #40]
+        str     r0, [GPIOREG, #40]
 
         @ add short delay
         ldr     r0, =#100000 @ sleep 50 ms
