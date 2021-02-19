@@ -250,11 +250,16 @@ hw_init:
     mov     r0, #0
     mov     r1, #3
     bl      stepColorWheel
+
+/*
+    mov     r0, #0
+    mov     r1, #3
+    bl      stepColorWheel
     
 
     bl      calibrateColorWheel
 
-    bl      testFunction
+    bl      testFunction */
     
     b       end_of_app
 

@@ -1,0 +1,7 @@
+as -o out/main.o main.s && 
+as -o out/stepColorWheel.o stepColorWheel.s && 
+as -o out/calibrateColorWheel.o calibrateColorWheel.s && 
+as -o out/readPin.o readPin.s && 
+as -o out/testFunction.o testFunction.s && 
+gcc -o out/main out/main.o out/stepColorWheel.o out/calibrateColorWheel.o out/testFunction.o out/readPin.o &&
+./out/main #gdb --args 
