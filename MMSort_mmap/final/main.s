@@ -237,6 +237,8 @@ hw_init:
     ldr     r0, =#0b000000001001000000000000000000
     str     r0, [GPIOREG, #8] @Function Select Register 1 (Pin 20 - 29)
 
+    bl      sort
+    
     /* 
     mov     r0, #1
     mov     r1, #50
@@ -247,7 +249,7 @@ hw_init:
     bl      stepColorWheel*/
 
     @ bl      calibrateColorWheel
-    
+
     b       end_of_app
 
 

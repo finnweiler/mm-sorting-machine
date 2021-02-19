@@ -247,6 +247,8 @@ hw_init:
     mov     r1, #50
     bl      stepColorWheel */
 
+    ldr     r1, [r10], #+64
+
     mov     r0, #0
     mov     r1, #3
     bl      stepColorWheel
