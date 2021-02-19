@@ -5,7 +5,7 @@
 currentPositionOfOutlet: .word 0 /* stores the absolute position of outlet. value range 0,1,2,...,399 is aquivalent to amount of outlet steps per cycle */
 
 
-@ function returns in r0 the absolute outlet position given an value in COLOREG (r11) 
+@ function returns in r0 the absolute outlet position given an value in COLREG (r11) 
 @ regarding this Rainbow Color Order {0: noColorDetected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown}
 .text
 .balign 4
@@ -14,19 +14,19 @@ currentPositionOfOutlet: .word 0 /* stores the absolute position of outlet. valu
 colorIndizeToOutletPosition:
     str lr, [sp, #-8]! /* lr needs to be stored (pushed on stack), because a subfunction gets called within this function */
 
-    cmp COLOREG, #0 
+    cmp COLREG, #0 
     beq if_no_color_got_detected
-    cmp COLOREG, #1
+    cmp COLREG, #1
     beq if_desination_is_blue
-    cmp COLOREG, #2      
+    cmp COLREG, #2      
     beq if_desination_is_green
-    cmp COLOREG, #3      
+    cmp COLREG, #3      
     beq if_desination_is_yellow
-    cmp COLOREG, #4      
+    cmp COLREG, #4      
     beq if_desination_is_orange
-    cmp COLOREG, #5      
+    cmp COLREG, #5      
     beq if_desination_is_red
-    cmp COLOREG, #6      
+    cmp COLREG, #6      
     beq if_desination_is_brown
 
     if_no_color_got_detected: mov r0, #-1
@@ -54,15 +54,15 @@ moveOutletToNextColor:
     ldr r1, address_of_currentAbsolutePositionOfOutlet
     ldr r1, [r1] /* load in r1 the absolute current position */
 
-    bl colorIndizeToOutletPosition /* after the return of function: in r3 is the absolute destination position stored */ 
-
+    bl colorIndizeToOutletPosition /* after the return of function: in r0 is the absolute destination position stored */ 
+    ldr r3, r0 /* storing the absolute destination position also in r3 to use it later again, to store in the current position variable the destinationPosition  */
 
     cmp r0, #-1 /* if no color got detected (colorIndizeToOutletPosition function returns -1), then don't move the outlet */
     beq end
 
-    @ stores in r0 the difference between the destinationPosition (r3) and the currentPosition (r1)
-    @ sub r0, r13, r12
-    sub r0, r3, r1
+    @ stores in r0 the difference between the destinationPosition (r0) and the currentPosition (r1)
+    
+    sub r0, r0, r1
     
     @ if : checks whether destination and current postion are the same
     cmp r0, #0
@@ -93,12 +93,12 @@ moveOutletToNextColor:
 
     if_moving_clockwise:
         mov r0, #0                
-        bl steps_motor_outlet
+        bl stepOutlet
 
     else_moving_counterclockwise
         mov r0, #1
         sub r1, #0, r1                 
-        bl steps_motor_outlet 
+        bl stepOutlet 
 
     @ the outlet was successfully moved from its oldposition to its new position, threfore: currentPosition = destinationPosition
     ldr r0, address_of_currentPositionOfOutlet
@@ -115,7 +115,7 @@ main:
     str lr, [sp, #-8]!
 
     @ vairable currentPositionOfOutlet : currentColorInformation with range 0,1,2,...,6 , where 0 : no color detected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown
-    @ register COLORREG : destinationColorInformation with range 0,1,2,...,6 , where 0 : no color detected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown
+    @ register COLREG : destinationColorInformation with range 0,1,2,...,6 , where 0 : no color detected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown
 
     bl moveOutletToNextColor
 
