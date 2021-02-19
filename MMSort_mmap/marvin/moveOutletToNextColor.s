@@ -53,7 +53,7 @@ colorIndizeToOutletPosition:
 moveOutletToNextColor:
     str lr, [sp, #-8]! /* lr needs to be stored (pushed on stack), because a subfunction gets called within this function */
 
-    ldr r1, address_of_currentAbsolutePositionOfOutlet
+    ldr r1, address_of_currentPositionOfOutlet
     ldr r1, [r1] /* load in r1 the absolute current position */
 
     bl colorIndizeToOutletPosition /* after the return of function: in r0 is the absolute destination position stored */ 
@@ -124,4 +124,4 @@ moveOutletToNextColor:
 
 @     ldr lr, [sp], #+8
 @     bx lr
-address_of_currentPositionOfOutlet : .word currentPositionOfOutlet
+address_of_currentPositionOfOutlet: .word currentPositionOfOutlet
