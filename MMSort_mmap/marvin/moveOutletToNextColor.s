@@ -81,7 +81,7 @@ moveOutletToNextColor:
     if_again_same_color: b end               /* return from the whole moveOutletToNextColor function */
     elif_negative_detour: add r1, r0, #+400  /* store in r1 the improved difference (short clockwise move, not unnecessary long counterclockwise move) */
     elif_positive_detour: sub r1, r0, #+400  /* store in r1 the improved difference (short counterclockwise move, not unnecessary long clockwise move) */
-    else: ldr r1, r0                         /* store in r1 the difference even if it was prior already the shortest move to the destination */
+    else: mov r1, r0                         /* store in r1 the difference even if it was prior already the shortest move to the destination */
     
     @ current information in register r1
     @ sign: charackterizes wethere clockwise or counterclockwise direction
