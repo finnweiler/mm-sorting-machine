@@ -247,6 +247,13 @@ hw_init:
     mov     r1, #50
     bl      stepColorWheel */
 
+    ldr     r1, [r10], #+64
+
+    mov     r0, #0
+    mov     r1, #3
+    bl      stepColorWheel
+
+/*
     mov     r0, #0
     mov     r1, #3
     bl      stepColorWheel
@@ -254,7 +261,7 @@ hw_init:
 
     bl      calibrateColorWheel
 
-    bl      testFunction
+    bl      testFunction */
     
     b       end_of_app
 

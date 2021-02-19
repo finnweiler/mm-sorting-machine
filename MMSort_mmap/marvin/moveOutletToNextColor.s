@@ -19,25 +19,25 @@ colorIndizeToOutletPosition:
     cmp COLREG, #0 
     beq if_no_color_got_detected
     cmp COLREG, #1
-    beq if_desination_is_blue
+    beq if_destination_is_blue
     cmp COLREG, #2      
-    beq if_desination_is_green
+    beq if_destination_is_green
     cmp COLREG, #3      
-    beq if_desination_is_yellow
+    beq if_destination_is_yellow
     cmp COLREG, #4      
-    beq if_desination_is_orange
+    beq if_destination_is_orange
     cmp COLREG, #5      
-    beq if_desination_is_red
+    beq if_destination_is_red
     cmp COLREG, #6      
-    beq if_desination_is_brown
+    beq if_destination_is_brown
 
     if_no_color_got_detected: mov r0, #-1
-    if_desination_is_blue: mov r0, #0
-    if_desination_is_green: mov r0, #67
-    if_desination_is_yellow: mov r0, #133
-    if_desination_is_orange: mov r0, #200
-    if_desination_is_red: mov r0, #267
-    if_desination_is_brown: mov r0, #333
+    if_destination_is_blue: mov r0, #0
+    if_destination_is_green: mov r0, #67
+    if_destination_is_yellow: mov r0, #133
+    if_destination_is_orange: mov r0, #200
+    if_destination_is_red: mov r0, #267
+    if_destination_is_brown: mov r0, #333
 
     ldr lr, [sp], #+8 @ pop initial lr from the stack and leave the whole colorIndizeToOutletPosition function
     bx lr
