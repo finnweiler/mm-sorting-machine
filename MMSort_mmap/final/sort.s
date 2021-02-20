@@ -20,6 +20,9 @@ sort:
     ldr     r0, =startSortMessage
     bl      printf
 
+    bl      calibrateOutlet
+    bl      calibrateColorWheel
+    
     @ starts the feeder and sets the pins for the motors an co-processor
     bl      startFeeder
     bl      setMotorPins
