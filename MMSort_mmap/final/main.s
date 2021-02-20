@@ -225,8 +225,8 @@ hw_init:
     ldr     r1, =gpio_mmap_adr          @ reload the addr for accessing the GPIOs
     ldr     GPIOREG, [r1]
 
-    /* 
-
+    
+/*
                 @Pins 9  8  7  6  5  4  3  2  1  0
     ldr     r0, =#0b000000001001001001001001000000
     str     r0, [GPIOREG] @Function Select Register 0 (Pin 0 - 9)
@@ -237,9 +237,9 @@ hw_init:
 
                 @          27 26 25 24 23 22 21 20
     ldr     r0, =#0b000000001001000000000000000000
-    str     r0, [GPIOREG, #8] @Function Select Register 1 (Pin 20 - 29)
+    str     r0, [GPIOREG, #8] @Function Select Register 1 (Pin 20 - 29)*/
 
-    */
+    
 
     @ NUR ZUM TESTEN 
                 @Pins 9  8  7  6  5  4  3  2  1  0

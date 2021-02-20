@@ -40,16 +40,16 @@ colorIndizeToOutletPosition:
         mov r0, #67
         b end_colorIndizeToOutletPosition
     if_destination_is_yellow:
-        mov r0, #133
+        ldr r0, =#133
         b end_colorIndizeToOutletPosition
     if_destination_is_orange:
-        mov r0, #200
+        ldr r0, =#200
         b end_colorIndizeToOutletPosition
     if_destination_is_red: 
-        mov r0, #267
+        ldr r0, =#267
         b end_colorIndizeToOutletPosition
     if_destination_is_brown: 
-        mov r0, #333
+        ldr r0, =#333
         b end_colorIndizeToOutletPosition
 
     end_colorIndizeToOutletPosition:

@@ -36,11 +36,9 @@ sort:
         blt     sortLoop
 
     sortLoop:
-        bl      moveOutletBackFromColor
-
         @ turns the color wheel 90 degrees clockwise
         mov     r0, #0
-        mov     r1, #100
+        mov     r1, #400
         bl      stepColorWheel
 
         @ starts the color detection
