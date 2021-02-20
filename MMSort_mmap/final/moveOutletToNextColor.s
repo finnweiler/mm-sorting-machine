@@ -70,7 +70,6 @@ moveOutletToNextColor:
     ldr r1, address_of_currentPositionOfOutlet
     ldr r1, [r1] /* load in r1 the absolute current position */
 
-
     bl colorIndizeToOutletPosition /* after the return of function: in r0 is the absolute destination position stored */ 
     mov r3, r0 /* storing the absolute destination position also in r3 to use it later again, to store in the current position variable the destinationPosition  */
 
@@ -86,10 +85,10 @@ moveOutletToNextColor:
     beq if_again_same_color
     @ elif: checks whether computed difference suggests a unnecessary long counterclockwise move instead of a shorter clockwise move
     cmp r0, #-200
-    blt elif_negative_detour  
+    bmi elif_negative_detour  
     @ elif: checks whether computed difference suggests a unnecessary long clockwise move instead of a shorter counterclockwise move
     cmp r0, #+200
-    bgt elif_positive_detour  
+    bpl elif_positive_detour  
     @ else: 
     b else
 
@@ -119,20 +118,17 @@ moveOutletToNextColor:
         if_moving_clockwise:
             mov r0, #0                
             bl stepOutlet
-            b updateCurrentPosition
 
         else_moving_counterclockwise:
             mov r0, #1
             mov r2, #0
             sub r1, r2, r1                 
-            bl stepOutlet
-            b updateCurrentPosition
+            bl stepOutlet 
 
-        updateCurrentPosition:
-            @ the outlet was successfully moved from its oldposition to its new position, threfore: currentPosition = destinationPosition
-            ldr r0, address_of_currentPositionOfOutlet
-            str r3, [r0]
-            b end_moveOutletToNextColor 
+        @ the outlet was successfully moved from its oldposition to its new position, threfore: currentPosition = destinationPosition
+        ldr r0, address_of_currentPositionOfOutlet
+        str r3, [r0]
+        b end_moveOutletToNextColor 
 
     end_moveOutletToNextColor:
         @ pop initial lr from the stack and leave the whole moveOutletToNextColor function
