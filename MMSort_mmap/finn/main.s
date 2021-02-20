@@ -263,45 +263,11 @@ hw_init:
     mov     r1, #50
     bl      stepColorWheel */
 
-    mov     r0, #0
-    mov     r1, #400
-    bl      stepColorWheel
-
-    bl      colorDetection
+    mov     r1, #0
+    mov     r2,  #1
     ldr     r0, =colorDetected
-    mov     r1, r11
+    sub     r1, r1, r2
     bl      printf
-
-    mov     r0, #0
-    mov     r1, #400
-    bl      stepColorWheel
-
-    bl      colorDetection
-    ldr     r0, =colorDetected
-    mov     r1, r11
-    bl      printf
-
-    mov     r0, #0
-    mov     r1, #400
-    bl      stepColorWheel
-
-    bl      colorDetection
-    ldr     r0, =colorDetected
-    mov     r1, r11
-    bl      printf
-
-    mov     r0, #0
-    mov     r1, #400
-    bl      stepColorWheel
-
-    bl      colorDetection
-    ldr     r0, =colorDetected
-    mov     r1, r11
-    bl      printf
-
-    mov     r0, #0
-    mov     r1, #100
-    bl      stepOutlet
 
     /*
     mov     r0, #0

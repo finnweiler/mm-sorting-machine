@@ -18,9 +18,5 @@ colorDetection:
     mov     r1, #0b111
     and     r11, r1, r0
 
-    ldr     r0, =colorDetected
-    mov     r1, r11
-    bl      printf
-
     ldr     lr, [sp], #+8
     bx      lr
