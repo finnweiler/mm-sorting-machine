@@ -245,6 +245,56 @@ hw_init:
     mov COLREG, #+2
 
     bl moveOutletToNextColor
+
+
+    ldr r0, address_of_currentPositionOfOutlet 
+    str #5, [r0]
+    mov COLREG, #+2
+
+    bl moveOutletToNextColor
+
+    ldr r0, address_of_currentPositionOfOutlet 
+    str #2, [r0]
+    mov COLREG, #+5
+
+    bl moveOutletToNextColor
+
+    ldr r0, address_of_currentPositionOfOutlet 
+    str #3, [r0]
+    mov COLREG, #+1
+
+    bl moveOutletToNextColor
+
+    ldr r0, address_of_currentPositionOfOutlet 
+    str #1, [r0]
+    mov COLREG, #+3
+
+    bl moveOutletToNextColor
+
+
+    ldr r0, address_of_currentPositionOfOutlet 
+    str #5, [r0]
+    mov COLREG, #+0
+
+    bl moveOutletToNextColor
+
+
+    ldr r0, address_of_currentPositionOfOutlet 
+    str #0, [r0]
+    mov COLREG, #+5
+
+    bl moveOutletToNextColor
+
+
+    ldr r0, address_of_currentPositionOfOutlet 
+    str #4, [r0]
+    mov COLREG, #+4
+
+    ldr r0, address_of_currentPositionOfOutlet 
+    str #4, [r0]
+    mov COLREG, #+0
+
+    bl moveOutletToNextColor
     b       end_of_app
 
 
