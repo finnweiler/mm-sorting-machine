@@ -71,6 +71,9 @@ testMsg1:
 testMsg2:
     .asciz    "test 2\n"
 
+colorDetected:
+    .asciz    "Color detected: %d\n"
+
     .balign   4
 gpio_mmap_adr:
     .word     0           @ ...
@@ -248,7 +251,7 @@ hw_init:
     str     r0, [GPIOREG, #4] @Function Select Register 1 (Pin 10 - 19) 
 
                 @          27 26 25 24 23 22 21 20
-    ldr     r0, =#0b000000001001000000000000001001
+    ldr     r0, =#0b000000001001000001001001001001
     str     r0, [GPIOREG, #8] @Function Select Register 1 (Pin 20 - 29)
     
     /*
@@ -261,8 +264,40 @@ hw_init:
     bl      stepColorWheel */
 
     mov     r0, #0
-    mov     r1, #100
+    mov     r1, #400
     bl      stepColorWheel
+
+    bl      colorDetection
+    ldr     r0, =colorDetected
+    mov     r1, r11
+    bl      printf
+
+    mov     r0, #0
+    mov     r1, #400
+    bl      stepColorWheel
+
+    bl      colorDetection
+    ldr     r0, =colorDetected
+    mov     r1, r11
+    bl      printf
+
+    mov     r0, #0
+    mov     r1, #400
+    bl      stepColorWheel
+
+    bl      colorDetection
+    ldr     r0, =colorDetected
+    mov     r1, r11
+    bl      printf
+
+    mov     r0, #0
+    mov     r1, #400
+    bl      stepColorWheel
+
+    bl      colorDetection
+    ldr     r0, =colorDetected
+    mov     r1, r11
+    bl      printf
 
     mov     r0, #0
     mov     r1, #100
