@@ -5,22 +5,19 @@
 @       r10 <- GPIO register
     
     
-    .data
-    .balign     4
+.data
+.balign 4
 
 stepMessage:
-    .asciz      "outlet stepping\n"
+    .asciz  "outlet stepping\n"
 endMessage:
-    .asciz      "end\n"
+    .asciz  "end\n"
 
-    .text
-
-    .extern usleep
-
-    .balign   4
-    .global   stepOutlet
-    .type     stepOutlet, %function
-
+.text
+.extern usleep
+.balign   4
+.global   stepOutlet
+.type     stepOutlet, %function
 stepOutlet:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!
