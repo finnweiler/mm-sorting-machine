@@ -241,8 +241,8 @@ hw_init:
     @ register COLREG : destinationColorInformation with range 0,1,2,...,6 , where 0 : no color detected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown
     
     ldr r0, address_of_currentPositionOfOutlet 
-    str #5, [r0]
-    mov COLREG, #+2
+    str #2, [r0]
+    mov COLREG, #+5
 
     bl moveOutletToNextColor
 
