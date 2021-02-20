@@ -134,3 +134,5 @@ moveOutletToNextColor:
         @ pop initial lr from the stack and leave the whole moveOutletToNextColor function
         ldr lr, [sp], #+8
         bx lr
+
+address_of_currentPositionOfOutlet : .word currentPositionOfOutlet
