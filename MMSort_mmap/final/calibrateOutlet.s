@@ -1,4 +1,4 @@
-@ calibrateColorWheel.s
+@ calibrateOutlet.s
 @ Parameters: 
 @       r10 <- GPIO register
 
@@ -11,17 +11,17 @@ loop:
     .text
 
     .balign   4
-    .global   calibrateColorWheel
-    .type     calibrateColorWheel, %function
+    .global   calibrateOutlet
+    .type     calibrateOutlet, %function
 
-calibrateColorWheel:
+calibrateOutlet:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!
 
     mov     r4, #0
 
     findContact:
-        mov     r0, #20
+        mov     r0, #21
         bl      readPin
 
         cmp     r0, #0
@@ -29,12 +29,12 @@ calibrateColorWheel:
 
         mov     r0, #0
         mov     r1, #1
-        bl      stepColorWheel
+        bl      stepOutlet
 
         b       findContact
 
     findRightEdge:
-        mov     r0, #20
+        mov     r0, #21
         bl      readPin
 
         cmp     r0, #0
@@ -42,18 +42,18 @@ calibrateColorWheel:
 
         mov     r0, #1
         mov     r1, #1
-        bl      stepColorWheel
+        bl      stepOutlet
 
         b       findRightEdge
 
     findLeftEdge:
         mov     r0, #0
         mov     r1, #1
-        bl      stepColorWheel
+        bl      stepOutlet
 
         add     r4, r4, #1
 
-        mov     r0, #20
+        mov     r0, #21
         bl      readPin
 
         cmp     r0, #0
@@ -64,7 +64,7 @@ calibrateColorWheel:
 
         mov     r0, #1
         mov     r1, r4, lsr #1
-        bl      stepColorWheel
+        bl      stepOutlet
 
 
     ldr     r4, [sp], #+4

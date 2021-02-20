@@ -225,6 +225,7 @@ hw_init:
     ldr     r1, =gpio_mmap_adr          @ reload the addr for accessing the GPIOs
     ldr     GPIOREG, [r1]
 
+/* 
                 @Pins 9  8  7  6  5  4  3  2  1  0
     ldr     r0, =#0b000000001001001001001001000000
     str     r0, [GPIOREG] @Function Select Register 0 (Pin 0 - 9)
@@ -236,7 +237,19 @@ hw_init:
                 @          27 26 25 24 23 22 21 20
     ldr     r0, =#0b000000001001000000000000000000
     str     r0, [GPIOREG, #8] @Function Select Register 1 (Pin 20 - 29)
+*/
 
+                @Pins 9  8  7  6  5  4  3  2  1  0
+    ldr     r0, =#0b000000001001001001001001000000
+    str     r0, [GPIOREG] @Function Select Register 0 (Pin 0 - 9)
+
+                @    19 18 17 16 15 14 13 12 11 10
+    ldr     r0, =#0b001001001001000000001001001000
+    str     r0, [GPIOREG, #4] @Function Select Register 1 (Pin 10 - 19) 
+
+                @          27 26 25 24 23 22 21 20
+    ldr     r0, =#0b000000001001000000000000001001
+    str     r0, [GPIOREG, #8] @Function Select Register 1 (Pin 20 - 29)
     
     /*
     mov     r0, #0
@@ -247,21 +260,24 @@ hw_init:
     mov     r1, #50
     bl      stepColorWheel */
 
-    ldr     r1, [r10], #+64
-
     mov     r0, #0
-    mov     r1, #3
+    mov     r1, #100
     bl      stepColorWheel
 
-/*
+    mov     r0, #0
+    mov     r1, #100
+    bl      stepOutlet
+
+    /*
     mov     r0, #0
     mov     r1, #3
-    bl      stepColorWheel
+    bl      stepColorWheel */
     
 
     bl      calibrateColorWheel
+    bl      calibrateOutlet
 
-    bl      testFunction */
+    @bl      testFunction 
     
     b       end_of_app
 
