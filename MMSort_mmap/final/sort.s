@@ -20,9 +20,12 @@ sort:
     ldr     r0, =startSortMessage
     bl      printf
 
+    bl      setMotorPins
+    bl      calibrateOutlet
+    bl      calibrateColorWheel
+
     @ starts the feeder and sets the pins for the motors an co-processor
     bl      startFeeder
-    bl      setMotorPins
 
     @ infinite loop to turn the colorwheel and sort the m&ms with the color detection and outlet
     sortFor:
