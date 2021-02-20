@@ -140,11 +140,3 @@ moveOutletToNextColor:
         bx lr
 
 address_of_currentPositionOfOutlet : .word currentPositionOfOutlet
-
-
-.balign 4
-.global moveOutletToNextColor
-.type moveOutletToNextColor, %function
-moveOutletToNextColor:
-
-ldr 
