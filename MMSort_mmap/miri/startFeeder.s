@@ -1,6 +1,8 @@
 @ startFeeder.s
 @ no parameters needed
 
+GPIOREG .req      r10
+
     .data
     .balign     4
 

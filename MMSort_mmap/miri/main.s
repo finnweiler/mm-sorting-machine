@@ -226,15 +226,18 @@ main:
 
         @ regulates the sequence of the machine's functions
         application_code:
-                bl      start_feeder
-                bl      color_wheel_turn_90_degrees
+                bl      startFeeder
+                bl      setMotorPins
+                @bl      calibrateColorWheel
+                @bl      color_wheel_turn_90_degrees
                 @@@@ test values for the motors
-                mov     r4, #2  @ 2 steps
-                mov     r2, #1  @ turn counter-clockwise
+                mov     r1, #400  @ 400 steps
+                mov     r0, #1  @ turn counter-clockwise
                 @@@@
-                @bl      steps_motor_color_wheel
-                bl      steps_motor_outlet
-                bl      stop_feeder
+                bl      stepColorWheel
+                bl      stepOutlet
+                bl      clearMotorPins
+                bl      stopFeeder
                 b       end_of_app
 
         @ starts the feeder by setting Pin 19 to high level

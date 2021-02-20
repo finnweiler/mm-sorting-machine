@@ -1,0 +1,3 @@
+as -o moveOutletToNextColor.o moveOutletToNextColor.s
+gcc -o moveOutletToNextColor moveOutletToNextColor.o
+./moveOutletToNextColor; echo $?
