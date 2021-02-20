@@ -40,7 +40,7 @@ sort:
         bl      stepColorWheel
 
         @ starts the color detection
-        bl      colordetection
+        bl      colorDetection
         
         @ moves the outlet dependent on the detected color
         bl      moveOutletToNextColor

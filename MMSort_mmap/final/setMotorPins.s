@@ -21,17 +21,17 @@ setMotorPins:
     @ set Pin 11 to high level
     mov     r1, #1
     mov     r0, r1, lsl #11
-    str     r0, [GPIOREG, #28]
+    str     r0, [r10, #28]
 
     @ set Pin 17 to high level
     mov     r1, #1
     mov     r0, r1, lsl #17
-    str     r0, [GPIOREG, #28]
+    str     r0, [r10, #28]
 
     @ set Pin 27 to high-level
     mov     r1, #1
     mov     r0, r1, lsl #27
-    str     r0, [GPIOREG, #28]
+    str     r0, [r10, #28]
 
     ldr     r0, =setPinsMessage
     bl      printf

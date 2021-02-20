@@ -21,7 +21,7 @@ stopFeeder:
 
     mov     r1, #1
     mov     r0, r1, lsl #19
-    str     r0, [GPIOREG, #40]
+    str     r0, [r10, #40]
 
     ldr     r0, =stopMessage
     bl      printf

@@ -21,17 +21,17 @@ clearMotorPins:
     @ set Pin 11 to low level
     mov     r1, #1
     mov     r0, r1, lsl #11
-    str     r0, [GPIOREG, #40]
+    str     r0, [r10, #40]
 
     @ set Pin 17 to low level
     mov     r1, #1
     mov     r0, r1, lsl #17
-    str     r0, [GPIOREG, #40]
+    str     r0, [r10, #40]
 
     @ set Pin 27 to low level
     mov     r1, #1
     mov     r0, r1, lsl #27
-    str     r0, [GPIOREG, #40]
+    str     r0, [r10, #40]
 
     ldr     r0, =clearPinsMessage
     bl      printf
