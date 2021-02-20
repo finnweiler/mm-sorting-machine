@@ -69,6 +69,7 @@ moveOutletToNextColor:
 
     ldr r1, address_of_currentPositionOfOutlet
     ldr r1, [r1] /* load in r1 the absolute current position */
+    
 
     bl colorIndizeToOutletPosition /* after the return of function: in r0 is the absolute destination position stored */ 
     mov r3, r0 /* storing the absolute destination position also in r3 to use it later again, to store in the current position variable the destinationPosition  */
