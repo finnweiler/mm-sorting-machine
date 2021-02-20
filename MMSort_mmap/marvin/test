@@ -5,4 +5,4 @@ as -o out/moveOutletToNextColor.o moveOutletToNextColor.s &&
 as -o out/stepOutlet.o stepOutlet.s && 
 # gcc -o out/main out/main.o out/moveOutletToNextColor.o out/mmCounterIncrementAndPrintMessageFunctions.o out/stepOutlet.o &&
 gcc -o out/main out/main.o out/moveOutletToNextColor.o out/stepOutlet.o
-./main #gdb --argsls
+./out/main #gdb --argsls
