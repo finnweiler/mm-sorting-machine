@@ -5,5 +5,6 @@ as -o out/readPin.o readPin.s &&
 as -o out/testFunction.o testFunction.s && 
 as -o out/calibrateOutlet.o calibrateOutlet.s && 
 as -o out/stepOutlet.o stepOutlet.s &&
-gcc -o out/main out/main.o out/stepColorWheel.o out/calibrateColorWheel.o out/testFunction.o out/readPin.o out/calibrateOutlet.o out/stepOutlet.o &&
+as -o out/colorDetection.o colorDetection.s &&
+gcc -o out/main out/main.o out/stepColorWheel.o out/calibrateColorWheel.o out/testFunction.o out/readPin.o out/calibrateOutlet.o out/stepOutlet.o out/colorDetection.o &&
 ./out/main #gdb --args 
