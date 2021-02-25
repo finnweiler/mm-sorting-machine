@@ -29,8 +29,7 @@ sort:
     @ starts the feeder and sets the pins for the motors an co-processor
     bl      startFeeder
 
-    mov     r5, #0
-    @ loop does the sort loop 10 times
+    @ does the sortLoop function 10 times
     sortLoop:
         @ turns the color wheel 90 degrees clockwise
         mov     r0, #0
@@ -43,17 +42,19 @@ sort:
         @ moves the outlet dependent on the detected color
         bl      moveOutletToNextColor
 
-        cmp     r5, #9
+        ldr     r5, address_of_mmCounterVariable
+        ldr     r5, [r5]
+        cmp     r5, #10
         beq     endSort
-        add     r5, r5, #1
-        blt     sortLoop
+        blt     
+
     
     endSort:
         @ stops the feeder and clears the pins for the motors and co-processor
         bl      clearMotorPins
         bl      stopFeeder
 
-        @leaves the function sort
+        @ leaves the function sort
         ldr     r4, [sp], #+4
         ldr     lr, [sp], #+4   @Pop the top of the stack and put it in lr
         bx      lr
