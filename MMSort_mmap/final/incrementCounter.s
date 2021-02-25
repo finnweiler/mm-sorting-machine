@@ -37,6 +37,8 @@ incrementCounter:
 @ Function that prints into the console (stdout) the current number of successfully allocated m&m's
 @ no necessary input registers
 @ example output: MM-Counter: 21
+.global   printMMCounterIntoConsole
+.type     printMMCounterIntoConsole, %function
 printMMCounterIntoConsole:
     str lr, [sp, #-8]!
     
