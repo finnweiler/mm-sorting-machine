@@ -58,6 +58,12 @@ sortTest1:
         beq     endSort
         sub     r11, r11, #1
         bgt     sortLoop2
+    
+
+    @ explicit Test Strecke
+    @ from 1 (start calibration) 
+
+
 
 
     endSort:
