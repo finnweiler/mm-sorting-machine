@@ -61,7 +61,7 @@ stepOutlet:
         str     r0, [r10, #28]
 
         @ add short delay
-        ldr     r0, =#200000 @ sleep 50 ms
+        ldr     r0, =#25000 @ sleep 50 ms
         bl      usleep
 
         @ set 'Step' Pin 12 to low level
@@ -70,7 +70,7 @@ stepOutlet:
         str     r0, [r10, #40]
 
         @ add short delay
-        ldr     r0, =#200000 @ sleep 50 ms
+        ldr     r0, =#25000 @ sleep 50 ms
         bl      usleep
 
         b       nextOutletStep
