@@ -13,6 +13,5 @@ as -o out/colorDetection.o colorDetection.s &&
 as -o out/moveOutletToNextColor.o moveOutletToNextColor.s && 
 as -o out/calibrateOutlet.o calibrateOutlet.s && 
 as -o out/calibrateColorWheel.o calibrateColorWheel.s && 
-as -o out/moveOutletToNextPosition.o moveOutletToNextPosition.s &&
-gcc -o out/main out/main.o out/stepOutlet.o out/stepColorWheel.o out/startFeeder.o out/stopFeeder.o out/setMotorPins.o out/clearMotorPins.o out/colorDetection.o out/moveOutletToNextColor.o out/sort.o out/calibrateColorWheel.o out/calibrateOutlet.o out/readPin.o out/moveOutletToNextPosition.o &&
+gcc -o out/main out/main.o out/stepOutlet.o out/stepColorWheel.o out/startFeeder.o out/stopFeeder.o out/setMotorPins.o out/clearMotorPins.o out/colorDetection.o out/moveOutletToNextColor.o out/sort.o out/calibrateColorWheel.o out/calibrateOutlet.o out/readPin.o &&
 ./out/main #gdb --args 
