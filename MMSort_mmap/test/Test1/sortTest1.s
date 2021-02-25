@@ -41,7 +41,7 @@ sortTest1:
         bl      sleep
 
         mov     r11, r5
-        bl      moveOutletToNextPosition
+        bl      moveOutletToNextColor
         cmp     r5, #6
         beq     sortLoop2
         add     r5, r5, #1
@@ -55,7 +55,7 @@ sortTest1:
         bl      sleep
 
         mov     r11, r5
-        bl      moveOutletToNextPosition
+        bl      moveOutletToNextColor
         cmp     r5, #1
         beq     endSort
         sub     r5, r5, #1
