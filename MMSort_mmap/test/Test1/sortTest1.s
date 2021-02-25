@@ -8,6 +8,7 @@ startSortMessage:
     .asciz      "started sort Test 1\n"
 
     .text
+    .extern sleep
 
     .balign   4
     .global   sortTest1
@@ -27,13 +28,17 @@ sortTest1:
     @ starts the feeder and sets the pins for the motors an co-processor
     bl      startFeeder
 
+    @ turns the color wheel 90 degrees clockwise
+    mov     r0, #0
+    mov     r1, #400
+    bl      stepColorWheel
+
     mov     r5, #1
     @ loop that counts the colors from 1 to 6 and tests the function moveOutletToNextPosition
     sortLoop1:
-        @ turns the color wheel 90 degrees clockwise
-        mov     r0, #0
-        mov     r1, #400
-        bl      stepColorWheel
+        @ add short delay
+        ldr     r0, =#2 @ sleep 2 s
+        bl      sleep
 
         mov     r11, r5
         bl      moveOutletToNextPosition
@@ -45,10 +50,9 @@ sortTest1:
     mov     r5, #5
     @ loop that counts the colors from 5 to 1 and tests the function moveOutletToNextPosition
     sortLoop2:
-        @ turns the color wheel 90 degrees clockwise
-        mov     r0, #0
-        mov     r1, #400
-        bl      stepColorWheel
+        @ add short delay
+        ldr     r0, =#2 @ sleep 2 s
+        bl      sleep
 
         mov     r11, r5
         bl      moveOutletToNextPosition
