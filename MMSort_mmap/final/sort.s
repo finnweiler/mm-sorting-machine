@@ -26,11 +26,18 @@ sort:
     @bl      calibrateOutlet
     @bl      calibrateColorWheel
 
-    @ starts the feeder and sets the pins for the motors an co-processor
+    @ starts the feeder and sets the pins for the motors an co-processor 
     bl      startFeeder
 
     @ does the sortLoop function 10 times
     sortLoop:
+       
+
+        ldr     r5, address_of_mmCounterVariable
+        ldr     r5, [r5]
+        cmp     r5, #10
+        beq     endSort
+
         @ turns the color wheel 90 degrees clockwise
         mov     r0, #0
         mov     r1, #400
@@ -42,13 +49,15 @@ sort:
         @ moves the outlet dependent on the detected color
         bl      moveOutletToNextColor
 
-        ldr     r5, address_of_mmCounterVariable
-        ldr     r5, [r5]
-        cmp     r5, #10
-        beq     endSort
-        blt     
+        @ turns the color wheel 90 degrees clockwise
+        mov     r0, #0
+        mov     r1, #400
+        bl      stepColorWheel
 
-    
+        bl      incrementCounter
+        bl      printMMCounterIntoConsole
+        b       sortLoop
+
     endSort:
         @ stops the feeder and clears the pins for the motors and co-processor
         bl      clearMotorPins
