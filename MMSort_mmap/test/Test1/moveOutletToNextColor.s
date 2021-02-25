@@ -1,6 +1,6 @@
 @ Marvin, 13.02.21, 19.02.21
 
-COLREG  .req    r11
+@ COLREG  .req    r11
 
 .data
 .balign 4
@@ -15,19 +15,19 @@ currentPositionOfOutlet: .word 0 /* stores the absolute position of outlet. valu
 colorIndizeToOutletPosition:
     str lr, [sp, #-8]! /* lr needs to be stored (pushed on stack), because a subfunction gets called within this function */
 
-    cmp COLREG, #0 
+    cmp r11, #0 
     beq if_no_color_got_detected
-    cmp COLREG, #1
+    cmp r11, #1
     beq if_destination_is_blue
-    cmp COLREG, #2      
+    cmp r11, #2      
     beq if_destination_is_green
-    cmp COLREG, #3      
+    cmp r11, #3      
     beq if_destination_is_yellow
-    cmp COLREG, #4      
+    cmp r11, #4      
     beq if_destination_is_orange
-    cmp COLREG, #5      
+    cmp r11, #5      
     beq if_destination_is_red
-    cmp COLREG, #6      
+    cmp r11, #6      
     beq if_destination_is_brown
 
     if_no_color_got_detected:
