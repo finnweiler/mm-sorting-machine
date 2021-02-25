@@ -15,7 +15,7 @@ startSortMessage:
     .type     sortTest1, %function
 
 @ Test1: sort without the calibration and colorDetection
-@ 3 colors are entered manually in the COLREG to test the moveOutletToNextPosition function
+@ 3 colors are entered manually in the COLREG to test the moveOutletToNextColor function
 sortTest1:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!
@@ -34,28 +34,28 @@ sortTest1:
     bl      stepColorWheel
 
     mov     r5, #1
-    @ loop that counts the colors from 1 to 6 and tests the function moveOutletToNextPosition
+    @ loop that counts the colors from 1 to 6 and tests the function moveOutletToNextColor
     sortLoop1:
         @ add short delay
         ldr     r0, =#2 @ sleep 2 s
         bl      sleep
 
         mov     r11, r5
-        bl      moveOutletToNextPosition
+        bl      moveOutletToNextColor
         cmp     r5, #6
         beq     sortLoop2
         add     r5, r5, #1
         blt     sortLoop1
     
     mov     r5, #5
-    @ loop that counts the colors from 5 to 1 and tests the function moveOutletToNextPosition
+    @ loop that counts the colors from 5 to 1 and tests the function moveOutletToNextColor
     sortLoop2:
         @ add short delay
         ldr     r0, =#2 @ sleep 2 s
         bl      sleep
 
         mov     r11, r5
-        bl      moveOutletToNextPosition
+        bl      moveOutletToNextColor
         cmp     r5, #1
         beq     endSort
         sub     r5, r5, #1
