@@ -7,5 +7,11 @@ as -o out/startFeeder.o startFeeder.s &&
 as -o out/stopFeeder.o stopFeeder.s &&
 as -o out/setMotorPins.o setMotorPins.s &&
 as -o out/clearMotorPins.o clearMotorPins.s && 
-gcc -o out/main out/main.o out/stepOutlet.o out/stepColorWheel.o out/startFeeder.o out/stopFeeder.o out/setMotorPins.o out/clearMotorPins.o &&
+as -o out/calibrateOutlet.o calibrateOutlet.s && 
+as -o out/calibrateColorWheel.o calibrateColorWheel.s && 
+as -o out/moveOutletToNextPosition.o moveOutletToNextPosition.s &&
+as -o out/colorDetection.o colorDetection.s &&
+as -o out/readPin.o readPin.s &&
+as -o out/sort.o sort.s &&
+gcc -o out/main out/main.o out/stepOutlet.o out/stepColorWheel.o out/startFeeder.o out/stopFeeder.o out/setMotorPins.o out/clearMotorPins.o out/moveOutletToNextPosition.o out/calibrateColorWheel.o out/calibrateOutlet.o out/sort.o out/readPin.o out/colorDetection.o &&
 ./out/main #gdb --args 
