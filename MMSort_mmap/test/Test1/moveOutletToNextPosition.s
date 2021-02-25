@@ -20,7 +20,8 @@ currentPosition:
 .global colorToPosition
 .type colorToPosition, %function
 colorToPosition:
-    str lr, [sp, #-8]! /* lr needs to be stored (pushed on stack), because a subfunction gets called within this function */
+    str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
+    str     r4, [sp, #-4]!
 
     cmp r11, #0 
     beq clear
@@ -60,8 +61,9 @@ colorToPosition:
         b endColorToPosition
 
     endColorToPosition:
-        ldr lr, [sp], #+8 @ pop initial lr from the stack and leave the whole colorIndizeToOutletPosition function
-        bx lr
+        ldr     r4, [sp], #+4
+        ldr     lr, [sp], #+4  /* Pop the top of the stack and put it in lr */
+        bx      lr
 
 
 

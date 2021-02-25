@@ -5,7 +5,7 @@
     .balign     4
 
 startSortMessage:
-    .asciz      "started sort Test1\n"
+    .asciz      "started sort Test 1\n"
 
     .text
 
@@ -27,7 +27,7 @@ sortTest1:
     @ starts the feeder and sets the pins for the motors an co-processor
     bl      startFeeder
 
-    mov     r4, #1
+    mov     r5, #1
     @ loop that counts the colors from 1 to 6 and tests the function moveOutletToNextPosition
     sortLoop1:
         @ turns the color wheel 90 degrees clockwise
@@ -35,14 +35,14 @@ sortTest1:
         mov     r1, #400
         bl      stepColorWheel
 
-        mov     r11, r4
+        mov     r11, r5
         bl      moveOutletToNextPosition
-        cmp     r4, #6
+        cmp     r5, #6
         beq     sortLoop2
-        add     r4, r4, #1
+        add     r5, r5, #1
         blt     sortLoop1
     
-    mov     r4, #5
+    mov     r5, #5
     @ loop that counts the colors from 5 to 1 and tests the function moveOutletToNextPosition
     sortLoop2:
         @ turns the color wheel 90 degrees clockwise
@@ -50,11 +50,11 @@ sortTest1:
         mov     r1, #400
         bl      stepColorWheel
 
-        mov     r11, r4
+        mov     r11, r5
         bl      moveOutletToNextPosition
-        cmp     r4, #1
+        cmp     r5, #1
         beq     endSort
-        sub     r4, r4, #1
+        sub     r5, r5, #1
         bgt     sortLoop2
 
 
