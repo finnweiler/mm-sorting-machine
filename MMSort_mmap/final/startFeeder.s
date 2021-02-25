@@ -1,6 +1,8 @@
 @ startFeeder.s
 @ no parameters needed
 
+GPIOREG .req      r10
+
     .data
     .balign     4
 
@@ -20,7 +22,7 @@ startFeeder:
 
     mov     r1, #1
     mov     r0, r1, lsl #19
-    str     r0, [r10, #28]
+    str     r0, [GPIOREG, #28]
 
     ldr     r0, =startMessage
     bl      printf
