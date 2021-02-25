@@ -478,7 +478,7 @@ hw_init:
         @ WARNING:
         @   call "end_of_app" if you're done with your application
 
-        bl      sort
+        bl      sortTest1
         b       end_of_app
 
 @ --------------------------------------------------------------------------------------------------------------------

@@ -5,8 +5,8 @@
     .data
     .balign     4
 
-loop:
-    .asciz      "loop\n"
+calibrateOutletMsg:
+    .asciz      "outlet calibrated\n"
 
     .text
 
@@ -66,7 +66,8 @@ calibrateOutlet:
         mov     r1, r4, lsr #1
         bl      stepOutlet
 
-
+    ldr     r0, =calibrateOutletMsg
+    bl      printf
     ldr     r4, [sp], #+4
     ldr     lr, [sp], #+4  /* Pop the top of the stack and put it in lr */
     bx      lr

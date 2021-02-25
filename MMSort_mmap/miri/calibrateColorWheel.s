@@ -5,8 +5,8 @@
     .data
     .balign     4
 
-loop:
-    .asciz      "loop\n"
+calibrateColorWheelMsg:
+    .asciz      "Color Wheel calibrated\n"
 
     .text
 
@@ -66,7 +66,8 @@ calibrateColorWheel:
         mov     r1, r4, lsr #1
         bl      stepColorWheel
 
-
+    ldr     r0, =calibrateColorWheelMsg
+    bl      printf
     ldr     r4, [sp], #+4
     ldr     lr, [sp], #+4  /* Pop the top of the stack and put it in lr */
     bx      lr

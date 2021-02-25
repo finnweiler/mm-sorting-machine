@@ -1,6 +1,6 @@
-@ stepColorWheel.s
+@ stepOutlet.s
 @ Parameters: 
-@       r0  <- direction to turn the color wheel in (0=clockwise, 1=counter-clockwise)
+@       r0  <- direction to turn the outlet in (0=clockwise, 1=counter-clockwise)
 @       r1  <- number of steps that shall be done
 @       r10 <- GPIO register
     
@@ -9,8 +9,8 @@
     .balign     4
 
 stepMessage:
-    .asciz      "color wheel stepping\n"
-clockwise:
+    .asciz      "outlet stepping\n"
+endMessage:
     .asciz      "end\n"
 
     .text
@@ -18,62 +18,62 @@ clockwise:
     .extern usleep
 
     .balign   4
-    .global   stepColorWheel
-    .type     stepColorWheel, %function
+    .global   stepOutlet
+    .type     stepOutlet, %function
 
-stepColorWheel:
+stepOutlet:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!
 
     mov     r4, r1
     
-    setColorWheelDirection:
+    setOutletDirection:
         cmp     r0, #1
         beq     setDirectionCounterClockwise
-        @ set Pin 16 to low level to turn the color wheel clockwise
+        @ set Pin 26 to low level to turn the outlet clockwise
         setDirectionClockwise:
             mov     r2, #1
-            mov     r0, r2, lsl #16
+            mov     r0, r2, lsl #26
             str     r0, [r10, #40] 
-            b       nextColorWheelStep
-        @ set Pin 16 to high level to turn the color wheel counter-clockwise
+            b       nextOutletStep
+        @ set Pin 26 to high level to turn the outlet counter-clockwise
         setDirectionCounterClockwise:
             mov     r2, #1
-            mov     r0, r2, lsl #16
+            mov     r0, r2, lsl #26
             str     r0, [r10, #28]
     
-    nextColorWheelStep:
+    nextOutletStep:
         cmp     r4, #0
-        beq     endStepColorWheel
+        beq     endStepOutlet
         sub     r4, r4, #1
 
         ldr     r0, =stepMessage
         bl      printf 
 
-        @ set 'Step' Pin 13 to high and then to low level to do one step with the color wheel
-        @ set 'Step' Pin 13 to high level
+        @ set 'Step' Pin 12 to high and then to low level to do one step with the outlet
+        @ set 'Step' Pin 12 to high level
         mov     r2, #1
-        mov     r0, r2, lsl #13
+        mov     r0, r2, lsl #12
         str     r0, [r10, #28]
 
         @ add short delay
-        ldr     r0, =#10000 @ sleep 10 ms
+        ldr     r0, =#50000 @ sleep 50 ms
         bl      usleep
 
-        @ set 'Step' Pin 13 to low level
+        @ set 'Step' Pin 12 to low level
         mov     r2, #1
-        mov     r0, r2, lsl #13
+        mov     r0, r2, lsl #12
         str     r0, [r10, #40]
 
         @ add short delay
-        ldr     r0, =#10000 @ sleep 10 ms
+        ldr     r0, =#50000 @ sleep 50 ms
         bl      usleep
 
-        b       nextColorWheelStep
+        b       nextOutletStep
     
-    @leaves the function stepColorWheel
-    endStepColorWheel:
-        ldr     r0, =clockwise
+    @leaves the function stepOutlet
+    endStepOutlet:
+        ldr     r0, =endMessage
         bl      printf 
         ldr     r4, [sp], #+4
         ldr     lr, [sp], #+4  /* Pop the top of the stack and put it in lr */

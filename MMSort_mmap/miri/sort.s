@@ -5,7 +5,7 @@
     .balign     4
 
 startSortMessage:
-    .asciz      "started sort"
+    .asciz      "started sort\n"
 colorDetected:
     .asciz    "Color detected: %d\n"
 
@@ -23,18 +23,13 @@ sort:
     bl      printf
 
     bl      setMotorPins
-    bl      calibrateOutlet
-    bl      calibrateColorWheel
+    @bl      calibrateOutlet
+    @bl      calibrateColorWheel
 
     @ starts the feeder and sets the pins for the motors an co-processor
     bl      startFeeder
 
     @ infinite loop to turn the colorwheel and sort the m&ms with the color detection and outlet
-    sortFor:
-        mov     r4, #1
-        cmp     r4, #2
-        blt     sortLoop
-
     sortLoop:
         @ turns the color wheel 90 degrees clockwise
         mov     r0, #0
@@ -46,7 +41,7 @@ sort:
         
         @ moves the outlet dependent on the detected color
         bl      moveOutletToNextPosition
-        b       sortFor
+        b       sortLoop
 
     @ stops the feeder and clears the pins for the motors and co-processor
     bl      clearMotorPins
