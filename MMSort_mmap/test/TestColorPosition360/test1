@@ -7,7 +7,7 @@ as -o out/startFeeder.o startFeeder.s &&
 as -o out/stopFeeder.o stopFeeder.s &&
 as -o out/setMotorPins.o setMotorPins.s &&
 as -o out/clearMotorPins.o clearMotorPins.s && 
-as -o out/moveOutletToNextPosition.o moveOutletToNextPosition.s &&
+as -o out/moveOutletToNextColor.o moveOutletToNextColor.s &&
 as -o out/sortTest1.o sortTest1.s &&
-gcc -o out/mainTest1 out/mainTest1.o out/stepOutlet.o out/stepColorWheel.o out/startFeeder.o out/stopFeeder.o out/setMotorPins.o out/clearMotorPins.o out/moveOutletToNextPosition.o out/sortTest1.o &&
+gcc -o out/mainTest1 out/mainTest1.o out/stepOutlet.o out/stepColorWheel.o out/startFeeder.o out/stopFeeder.o out/setMotorPins.o out/clearMotorPins.o out/moveOutletToNextColor.o out/sortTest1.o &&
 ./out/mainTest1 #gdb --args 

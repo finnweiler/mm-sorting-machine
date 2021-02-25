@@ -70,8 +70,11 @@ moveOutletToNextColor:
     ldr r1, address_of_currentPositionOfOutlet
     ldr r1, [r1] /* load in r1 the absolute current position */
 
-    bl colorIndizeToOutletPosition /* after the return of function: in r0 is the absolute destination position stored */ 
-    mov r3, r0 /* storing the absolute destination position also in r3 to use it later again, to store in the current position variable the destinationPosition  */
+    bl colorIndizeToOutletPosition /* after the return of function: in r0 is the absolute destination position stored */
+
+    @ the outlet was successfully moved from its oldposition to its new position, threfore: currentPosition = destinationPosition 
+    ldr r3, address_of_currentPositionOfOutlet
+    str r0, [r3]
 
     cmp r0, #-1 /* if no color got detected (colorIndizeToOutletPosition function returns -1), then don't move the outlet */
     beq end_moveOutletToNextColor
@@ -124,11 +127,6 @@ moveOutletToNextColor:
             mov r2, #0
             sub r1, r2, r1                 
             bl stepOutlet 
-
-        @ the outlet was successfully moved from its oldposition to its new position, threfore: currentPosition = destinationPosition
-        ldr r0, address_of_currentPositionOfOutlet
-        str r3, [r0]
-        b end_moveOutletToNextColor 
 
     end_moveOutletToNextColor:
         @ pop initial lr from the stack and leave the whole moveOutletToNextColor function
