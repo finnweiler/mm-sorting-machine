@@ -16,6 +16,7 @@ mmCounterVariable:
 .text
 
 .balign   4
+.global   address_of_mmCounterVariable
 .global   incrementCounter
 .type     incrementCounter, %function
 

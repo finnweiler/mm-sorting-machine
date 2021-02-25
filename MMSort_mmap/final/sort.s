@@ -10,7 +10,6 @@ colorDetected:
     .asciz    "Color detected: %d\n"
 
     .text
-
     .balign   4
     .global   sort
     .type     sort, %function
@@ -33,7 +32,7 @@ sort:
     sortLoop:
        
 
-        ldr     r5, address_of_mmCounterVariable
+        ldr     r5, =address_of_mmCounterVariable
         ldr     r5, [r5]
         cmp     r5, #10
         beq     endSort
