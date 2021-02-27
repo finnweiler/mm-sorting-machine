@@ -21,10 +21,19 @@ mmCounterVariable:
 .global   checkCounter
 .type     checkCounter, %function
 
-
 @ Function that increments the mmCounter Variable by 1 to indicate a successful m&m allocation
 @ no necessary input registers and no ouput
 checkCounter:
+@ Reading Pin from Objectsensor
+    mov r0, #22
+    ldr     r1, [r10, #52]
+    mov     r2, #1
+    mov     r2, r2, lsl r0
+    and     r0, r2, r1
+@ check whether Object detected, if detected don't move to Counter
+    cmp r0, #1
+    beq end_checkCounter
+
     str lr, [sp, #-8]!
 
     cmp     r11, #0
