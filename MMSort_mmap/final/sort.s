@@ -32,9 +32,9 @@ sort:
     sortLoop:
        
 
-        ldr     r5, =address_of_mmCounterVariable
+        ldr     r5, =mmCounterVariable
         ldr     r5, [r5]
-        cmp     r5, #10
+        cmp     r5, #30
         beq     endSort
 
         @ turns the color wheel 90 degrees clockwise
@@ -47,13 +47,8 @@ sort:
         
         @ moves the outlet dependent on the detected color
         bl      moveOutletToNextColor
+        bl      checkCounter
 
-        @ turns the color wheel 90 degrees clockwise
-        mov     r0, #0
-        mov     r1, #400
-        bl      stepColorWheel
-
-        bl      incrementCounter
         bl      printMMCounterIntoConsole
         b       sortLoop
 

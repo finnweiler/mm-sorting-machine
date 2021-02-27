@@ -8,10 +8,10 @@
     .data
     .balign     4
 
-stepMessage:
-    .asciz      "outlet stepping\n"
-endMessage:
-    .asciz      "end\n"
+stepLeftMsg:
+    .asciz      "outlet stepping %d left\n"
+stepRightMsg:
+    .asciz      "outlet stepping %d right\n"
 
     .text
 
@@ -32,12 +32,19 @@ stepOutlet:
         beq     setDirectionCounterClockwise
         @ set Pin 26 to low level to turn the outlet clockwise
         setDirectionClockwise:
+            ldr     r0, =stepRightMsg
+            bl      printf 
+
             mov     r2, #1
             mov     r0, r2, lsl #26
-            str     r0, [r10, #40] 
+            str     r0, [r10, #40]
+
             b       nextOutletStep
         @ set Pin 26 to high level to turn the outlet counter-clockwise
         setDirectionCounterClockwise:
+            ldr     r0, =stepLeftMsg
+            bl      printf
+
             mov     r2, #1
             mov     r0, r2, lsl #26
             str     r0, [r10, #28]
@@ -47,9 +54,6 @@ stepOutlet:
         beq     endStepOutlet
         sub     r4, r4, #1
 
-        ldr     r0, =stepMessage
-        bl      printf 
-
         @ set 'Step' Pin 12 to high and then to low level to do one step with the outlet
         @ set 'Step' Pin 12 to high level
         mov     r2, #1
@@ -57,7 +61,7 @@ stepOutlet:
         str     r0, [r10, #28]
 
         @ add short delay
-        ldr     r0, =#50000 @ sleep 50 ms
+        ldr     r0, =#25000 @ sleep 50 ms
         bl      usleep
 
         @ set 'Step' Pin 12 to low level
@@ -66,15 +70,13 @@ stepOutlet:
         str     r0, [r10, #40]
 
         @ add short delay
-        ldr     r0, =#50000 @ sleep 50 ms
+        ldr     r0, =#25000 @ sleep 50 ms
         bl      usleep
 
         b       nextOutletStep
     
     @leaves the function stepOutlet
     endStepOutlet:
-        ldr     r0, =endMessage
-        bl      printf 
         ldr     r4, [sp], #+4
         ldr     lr, [sp], #+4  /* Pop the top of the stack and put it in lr */
         bx      lr

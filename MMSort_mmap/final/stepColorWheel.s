@@ -47,8 +47,8 @@ stepColorWheel:
         beq     endStepColorWheel
         sub     r4, r4, #1
 
-        ldr     r0, =stepMessage
-        bl      printf 
+        @ldr     r0, =stepMessage
+        @bl      printf 
 
         @ set 'Step' Pin 13 to high and then to low level to do one step with the color wheel
         @ set 'Step' Pin 13 to high level

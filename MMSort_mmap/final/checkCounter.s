@@ -10,29 +10,34 @@ mmCounterMessage:
     .asciz      "MM-Counter: %d\n"
 
 @ Counter Integer Variable to store in the current number of successfully allocated m&m's
+.global mmCounterVariable
 mmCounterVariable: 
-    .word       0 
+    .word       -1 
 
 .text
 
 .balign   4
 .global   address_of_mmCounterVariable
-.global   incrementCounter
-.type     incrementCounter, %function
+.global   checkCounter
+.type     checkCounter, %function
 
 
 @ Function that increments the mmCounter Variable by 1 to indicate a successful m&m allocation
 @ no necessary input registers and no ouput
-incrementCounter:
+checkCounter:
     str lr, [sp, #-8]!
+
+    cmp     r11, #0
+    beq     end_checkCounter
 
     ldr     r0, address_of_mmCounterVariable
     ldr     r1, [r0]
     add     r1, r1, #1
     str     r1, [r0]
     
-    ldr lr, [sp], #+8
-    bx      lr
+    end_checkCounter:
+        ldr lr, [sp], #+8
+        bx      lr
 
 
 @ Function that prints into the console (stdout) the current number of successfully allocated m&m's
@@ -53,6 +58,7 @@ printMMCounterIntoConsole:
 
 
 @ Address of Counter Integer Variable to store in the current number of successfully allocated m&m's
+.global address_of_mmCounterVariable
 address_of_mmCounterVariable : .word mmCounterVariable
 
 @ Address of Message String onto Console to see the current number of successfully allocated m&m's

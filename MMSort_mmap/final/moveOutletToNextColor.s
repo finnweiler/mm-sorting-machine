@@ -17,17 +17,17 @@ colorIndizeToOutletPosition:
 
     cmp r11, #0 
     beq if_no_color_got_detected
-    cmp r11, #1
+    cmp r11, #3
     beq if_destination_is_blue
-    cmp r11, #2      
-    beq if_destination_is_green
-    cmp r11, #3      
-    beq if_destination_is_yellow
     cmp r11, #4      
-    beq if_destination_is_orange
+    beq if_destination_is_green
     cmp r11, #5      
-    beq if_destination_is_red
+    beq if_destination_is_yellow
     cmp r11, #6      
+    beq if_destination_is_orange
+    cmp r11, #1      
+    beq if_destination_is_red
+    cmp r11, #2     
     beq if_destination_is_brown
 
     if_no_color_got_detected:
@@ -121,12 +121,14 @@ moveOutletToNextColor:
         if_moving_clockwise:
             mov r0, #0                
             bl stepOutlet
+            b   end_moveOutletToNextColor
 
         else_moving_counterclockwise:
             mov r0, #1
             mov r2, #0
             sub r1, r2, r1                 
-            bl stepOutlet 
+            bl stepOutlet
+            b end_moveOutletToNextColor
 
     end_moveOutletToNextColor:
         @ pop initial lr from the stack and leave the whole moveOutletToNextColor function
