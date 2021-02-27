@@ -17,17 +17,17 @@ colorIndizeToOutletPosition:
 
     cmp r11, #0 
     beq if_no_color_got_detected
-    cmp r11, #3
+    cmp r11, #1
     beq if_destination_is_blue
-    cmp r11, #4      
+    cmp r11, #2      
     beq if_destination_is_green
-    cmp r11, #5      
+    cmp r11, #3      
     beq if_destination_is_yellow
-    cmp r11, #6      
+    cmp r11, #4      
     beq if_destination_is_orange
-    cmp r11, #1      
+    cmp r11, #5      
     beq if_destination_is_red
-    cmp r11, #2     
+    cmp r11, #6     
     beq if_destination_is_brown
 
     if_no_color_got_detected:
