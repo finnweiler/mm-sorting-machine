@@ -224,16 +224,6 @@ main:
         @ initialize all other hardware
         b         hw_init
 
-        led:
-                push    {GPIOREG}
-                bl      WS2812RPi_Init
-                mov     r0, #50
-                bl      WS2812RPi_SetBrightness
-                bl      WS2812RPi_Show
-                bl      WS2812RPi_DeInit
-                pop     {GPIOREG}
-
-
 hw_init:
         ldr       r1, =gpio_mmap_adr          @ reload the addr for accessing the GPIOs
         ldr       GPIOREG, [r1]
@@ -261,7 +251,9 @@ hw_init:
         @ WARNING:
         @   call "end_of_app" if you're done with your application
 
-        b       led
+        bl      initLed
+        bl      changeColorLed
+        bl      deinitLed
         b       end_of_app
 
 @ --------------------------------------------------------------------------------------------------------------------
