@@ -37,6 +37,12 @@ sort:
         cmp     r5, #30
         beq     endSort
 
+        @ stops if Object was missing ten times in a row
+        ldr     r5, =missingObjectVariable
+        ldr     r5, [r5]
+        cmp     r5, #10
+        beq     endSort
+
         @ turns the color wheel 90 degrees clockwise
         mov     r0, #0
         mov     r1, #400
