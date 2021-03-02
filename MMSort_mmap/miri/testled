@@ -1,0 +1,3 @@
+#!/bin/bash
+
+gcc main.s led.s src/libwiringPi.so src/libwiringPi.so.2.46 src/libwiringPiDev.so src/libws2812RPi.so src/libws2812RPi.so.0 src/libws2812RPi.so.0.1 -o main #gdb --args 
