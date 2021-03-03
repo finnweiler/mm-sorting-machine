@@ -251,13 +251,23 @@ hw_init:
         @ WARNING:
         @   call "end_of_app" if you're done with your application
 
-        @bl      initLed
+        @ test color
+        mov     COLREG, #2
+
+        push    {GPIOREG}
+        bl      initLed
+        pop     {GPIOREG}
+
         @ GPIOREG pushed on stack to save the content of the register
         push    {GPIOREG}
         bl      changeColorLed
         @ pops the content of the stack back into the GPIOREG
         pop     {GPIOREG}
-        @bl      deinitLed
+
+        push    {GPIOREG}
+        bl      deinitLed
+        pop     {GPIOREG}
+
         b       end_of_app
 
 @ --------------------------------------------------------------------------------------------------------------------
