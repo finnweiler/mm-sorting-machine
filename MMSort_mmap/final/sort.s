@@ -10,7 +10,6 @@ colorDetected:
     .asciz    "Color detected: %d\n"
 
     .text
-
     .balign   4
     .global   sort
     .type     sort, %function
@@ -23,19 +22,27 @@ sort:
     bl      printf
 
     bl      setMotorPins
-    bl      calibrateOutlet
-    bl      calibrateColorWheel
+    @bl      calibrateOutlet
+    @bl      calibrateColorWheel
 
-    @ starts the feeder and sets the pins for the motors an co-processor
+    @ starts the feeder and sets the pins for the motors an co-processor 
     bl      startFeeder
 
-    @ infinite loop to turn the colorwheel and sort the m&ms with the color detection and outlet
-    sortFor:
-        mov     r4, #1
-        cmp     r4, #2
-        blt     sortLoop
-
+    @ does the sortLoop function 10 times
     sortLoop:
+       
+
+        ldr     r5, =mmCounterVariable
+        ldr     r5, [r5]
+        cmp     r5, #30
+        beq     endSort
+
+        @ stops if Object was missing ten times in a row
+        ldr     r5, =missingObjectVariable
+        ldr     r5, [r5]
+        cmp     r5, #10
+        beq     endSort
+
         @ turns the color wheel 90 degrees clockwise
         mov     r0, #0
         mov     r1, #400
@@ -46,13 +53,17 @@ sort:
         
         @ moves the outlet dependent on the detected color
         bl      moveOutletToNextColor
-        b       sortFor
+        bl      checkCounter
 
-    @ stops the feeder and clears the pins for the motors and co-processor
-    bl      clearMotorPins
-    bl      stopFeeder
+        bl      printMMCounterIntoConsole
+        b       sortLoop
 
-    @leaves the function sort
-    ldr     r4, [sp], #+4
-    ldr     lr, [sp], #+4   @Pop the top of the stack and put it in lr
-    bx      lr
+    endSort:
+        @ stops the feeder and clears the pins for the motors and co-processor
+        bl      clearMotorPins
+        bl      stopFeeder
+
+        @ leaves the function sort
+        ldr     r4, [sp], #+4
+        ldr     lr, [sp], #+4   @Pop the top of the stack and put it in lr
+        bx      lr

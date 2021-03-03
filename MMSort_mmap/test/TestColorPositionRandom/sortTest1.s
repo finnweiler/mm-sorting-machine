@@ -90,7 +90,6 @@ sortTest1:
     bl      moveOutletToNextColor
 
 
-
     endSort:
         @ stops the feeder and clears the pins for the motors and co-processor
         bl      clearMotorPins

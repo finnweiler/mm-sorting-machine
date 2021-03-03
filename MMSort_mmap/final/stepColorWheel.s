@@ -9,7 +9,7 @@
     .balign     4
 
 stepMessage:
-    .asciz      "stepping\n"
+    .asciz      "color wheel stepping\n"
 clockwise:
     .asciz      "end\n"
 
@@ -47,8 +47,8 @@ stepColorWheel:
         beq     endStepColorWheel
         sub     r4, r4, #1
 
-        ldr     r0, =stepMessage
-        bl      printf 
+        @ldr     r0, =stepMessage
+        @bl      printf 
 
         @ set 'Step' Pin 13 to high and then to low level to do one step with the color wheel
         @ set 'Step' Pin 13 to high level
@@ -57,7 +57,7 @@ stepColorWheel:
         str     r0, [r10, #28]
 
         @ add short delay
-        ldr     r0, =#100000 @ sleep 50 ms
+        ldr     r0, =#10000 @ sleep 10 ms
         bl      usleep
 
         @ set 'Step' Pin 13 to low level
@@ -66,7 +66,7 @@ stepColorWheel:
         str     r0, [r10, #40]
 
         @ add short delay
-        ldr     r0, =#100000 @ sleep 50 ms
+        ldr     r0, =#10000 @ sleep 10 ms
         bl      usleep
 
         b       nextColorWheelStep
