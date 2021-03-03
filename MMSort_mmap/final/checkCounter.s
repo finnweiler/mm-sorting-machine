@@ -91,3 +91,6 @@ address_of_mmCounterVariable : .word mmCounterVariable
 
 @ Address of Message String onto Console to see the current number of successfully allocated m&m's
 address_of_mmCounterMessage : .word mmCounterMessage
+
+.global address_of_missingObjectVariable
+address_of_missingObjectVariable: .word missingObjectVariable

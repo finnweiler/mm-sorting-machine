@@ -13,7 +13,7 @@ deinitLedMsg:
     .asciz      "Leds deinitiated\n"
 
 colorLedMsg:
-    .asciz      "Color and position of leds changed"
+    .asciz      "Color and position of leds changed\n"
 
 
     .text
@@ -36,9 +36,6 @@ colorLedMsg:
 changeColorLed:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!
-
-    @ GPIOREG pushed on stack to save the content of the register
-    push    {GPIOREG}
     
     @ sets the position and the color of the leds
     mov     r1, COLREG
@@ -61,37 +58,43 @@ changeColorLed:
     caseRed:
         mov     r0, #6
         ldr     r1, =#15712392
+        b       setLed
     caseGreen:
         mov     r0, #1
         ldr     r1, =#10020736
+        b       setLed
     caseBlue:
         mov     r0, #2
         ldr     r1, =#8451815
+        b       setLed
     caseBrown:
         mov     r0, #4
         ldr     r1, =#8431776
+        b       setLed
     caseOrange:
         mov     r0, #5
         ldr     r1, =#15198896
+        b       setLed
     caseYellow:
         mov     r0, #3
         ldr     r1, =#16316544
+        b       setLed
     
-    bl      WS2812RPi_AllOff
+    setLed:
+        bl      WS2812RPi_AllOff
 
-    bl      WS2812RPi_SetSingle
-    bl      WS2812RPi_Show
+        bl      WS2812RPi_SetSingle
+        bl      WS2812RPi_Show
 
-    @ sets the brightness of the leds to 70
-    mov     r0, #70
-    bl      WS2812RPi_SetBrightness
-    bl      WS2812RPi_Show
+        @ sets the brightness of the leds to 70
+        mov     r0, #70
+        bl      WS2812RPi_SetBrightness
+        bl      WS2812RPi_Show
 
     endChangeColorLed:
         ldr     r0, =colorLedMsg
         bl      printf
-        @ pops the content of the stack back into the GPIOREG
-        pop     {GPIOREG}
+        
         ldr     r4, [sp], #+4
         ldr     lr, [sp], #+4  /* Pop the top of the stack and put it in lr */
         bx      lr

@@ -10,6 +10,7 @@
 
 stepMessage:
     .asciz      "outlet stepping\n"
+
 endMessage:
     .asciz      "end\n"
 
