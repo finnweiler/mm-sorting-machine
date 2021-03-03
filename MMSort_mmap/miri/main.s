@@ -254,20 +254,11 @@ hw_init:
         @ test color
         mov     COLREG, #2
 
-        push    {GPIOREG}
+        
         bl      initLed
-        pop     {GPIOREG}
-          
-        @ GPIOREG pushed on stack to save the content of the register
-        push    {GPIOREG}
         bl      changeColorLed
-        @ pops the content of the stack back into the GPIOREG
-        pop     {GPIOREG}
-
-        push    {GPIOREG}
         bl      deinitLed
-        pop     {GPIOREG}
-
+        
         b       end_of_app
 
 @ --------------------------------------------------------------------------------------------------------------------

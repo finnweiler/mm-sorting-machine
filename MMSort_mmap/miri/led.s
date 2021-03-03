@@ -36,6 +36,7 @@ colorLedMsg:
 changeColorLed:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!
+    push    {GPIOREG}
     
     @ sets the position and the color of the leds
     mov     r1, COLREG
@@ -95,6 +96,7 @@ changeColorLed:
         ldr     r0, =colorLedMsg
         bl      printf
         
+        pop     {GPIOREG}
         ldr     r4, [sp], #+4
         ldr     lr, [sp], #+4  /* Pop the top of the stack and put it in lr */
         bx      lr
@@ -109,11 +111,13 @@ changeColorLed:
 initLed:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!
+    push    {GPIOREG}
 
     bl      WS2812RPi_Init
     ldr     r0, =initLedMsg
     bl      printf
 
+    pop     {GPIOREG}
     ldr     r4, [sp], #+4
     ldr     lr, [sp], #+4  /* Pop the top of the stack and put it in lr */
     bx      lr
@@ -128,12 +132,14 @@ initLed:
 deinitLed:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!
+    push    {GPIOREG}
 
     bl      WS2812RPi_AllOff
     bl      WS2812RPi_DeInit
     ldr     r0, =deinitLedMsg
     bl      printf
 
+    pop     {GPIOREG}
     ldr     r4, [sp], #+4
     ldr     lr, [sp], #+4  /* Pop the top of the stack and put it in lr */
     bx      lr
