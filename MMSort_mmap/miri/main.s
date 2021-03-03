@@ -257,7 +257,8 @@ hw_init:
         push    {GPIOREG}
         bl      initLed
         pop     {GPIOREG}
-
+        
+        /* 
         @ GPIOREG pushed on stack to save the content of the register
         push    {GPIOREG}
         bl      changeColorLed
@@ -269,7 +270,7 @@ hw_init:
         pop     {GPIOREG}
 
         b       end_of_app
-
+        */
 @ --------------------------------------------------------------------------------------------------------------------
 @
 @ ADDRESSES: Further definitions.
