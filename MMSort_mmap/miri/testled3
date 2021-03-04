@@ -1,7 +1,0 @@
-#!/bin/bash
-
-as -o out/main.o main.s && 
-as -o out/led.o led.s &&
-gcc -L/usr/lib -Wall -o out/main out/main.o out/led.o -lws2812RPi
-./out/main #gdb --args 
-

@@ -252,7 +252,7 @@ hw_init:
         @   call "end_of_app" if you're done with your application
 
         @ test color
-        mov     COLREG, #2
+        mov     COLREG, #5
 
         
         bl      initLed
