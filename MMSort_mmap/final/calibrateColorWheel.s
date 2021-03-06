@@ -6,13 +6,13 @@
     .balign     4
 
 rightEdge:
-    .asciz      "!! searching for right edge\n"
+    .asciz      "searching for right edge\n"
 
 leftEdge:
-    .asciz      "!! searching for left edge\n"
+    .asciz      "searching for left edge\n"
 
 center:
-    .asciz      "!! moving to center, total steps made: %d\n"
+    .asciz      "moving to center, total steps made: %d\n"
 
     .text
 

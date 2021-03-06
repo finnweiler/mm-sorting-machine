@@ -1,0 +1,7 @@
+as -o out/main.o main.s && 
+as -o out/readPin.o readPin.s && 
+as -o out/stepColorWheel.o stepColorWheel.s &&
+as -o out/setMotorPins.o setMotorPins.s &&
+as -o out/waitForStartButton.o waitForStartButton.s &&
+gcc -o out/main out/main.o out/readPin.o out/stepColorWheel.o out/setMotorPins.o out/waitForStartButton.o &&
+./out/main #gdb --args 

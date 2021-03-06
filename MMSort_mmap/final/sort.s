@@ -5,7 +5,7 @@
     .balign     4
 
 startSortMessage:
-    .asciz      "started sort"
+    .asciz      "Start sorting"
 colorDetected:
     .asciz    "Color detected: %d\n"
 
@@ -25,12 +25,14 @@ sort:
     bl      calibrateOutlet
     bl      calibrateColorWheel
 
+    @ wait till start button is pressesd
+    bl      waitForStartButton
+
     @ starts the feeder and sets the pins for the motors an co-processor 
     bl      startFeeder
 
     @ does the sortLoop function 10 times
     sortLoop:
-       
 
         @ stops if Object was missing ten times in a row
         ldr     r5, =missingObjectVariable
