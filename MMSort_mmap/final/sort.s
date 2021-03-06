@@ -32,11 +32,6 @@ sort:
     sortLoop:
        
 
-        ldr     r5, =mmCounterVariable
-        ldr     r5, [r5]
-        cmp     r5, #30
-        beq     endSort
-
         @ stops if Object was missing ten times in a row
         ldr     r5, =missingObjectVariable
         ldr     r5, [r5]
