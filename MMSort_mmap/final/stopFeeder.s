@@ -1,10 +1,10 @@
 @ stopFeeder.s
 @ no parameters needed
 
-GPIOREG .req      r10
-
     .data
     .balign     4
+
+GPIOREG .req      r10
 
 stopMessage:
     .asciz      "feeder stopped\n"

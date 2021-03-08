@@ -1,10 +1,10 @@
 @ setMotorPins.s
 @ no parameters needed
 
-GPIOREG .req      r10
-
     .data
     .balign     4
+
+GPIOREG .req      r10
 
 setPinsMessage:
     .asciz      "motor pins 11, 17 and 27 set\n"

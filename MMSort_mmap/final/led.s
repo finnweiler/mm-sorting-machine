@@ -1,4 +1,6 @@
 @ led.s
+@ Parameters:
+@       color stored in r11 (COLREG)
 
     .data
     .balign     4
@@ -33,6 +35,7 @@ colorLedMsg:
     .global   changeColorLed
     .type     changeColorLed, %function
 
+@ changes the color and the position of the led dependent on the recognized color
 changeColorLed:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!
@@ -41,8 +44,7 @@ changeColorLed:
     bl      WS2812RPi_AllOff
     bl      WS2812RPi_Show
 
-    decision:
-    @ sets the position and the color of the leds
+    @ sets the position and the color of the leds dependent on the color stored in COLREG
     mov     r1, COLREG
 
     cmp     r1, #1
@@ -84,9 +86,10 @@ changeColorLed:
         mov     r0, #3
         ldr     r1, =#0xf0fc00
         b       setLed
+
     
     setLed:
-
+        @ sets the led to the position and color, which have been stored in r0 and r1
         bl      WS2812RPi_SetSingle
         bl      WS2812RPi_Show
 
@@ -95,6 +98,7 @@ changeColorLed:
         bl      WS2812RPi_SetBrightness
         bl      WS2812RPi_Show
 
+    @ leaves the function changeColorLed
     endChangeColorLed:
         ldr     r0, =colorLedMsg
         bl      printf
@@ -110,7 +114,7 @@ changeColorLed:
     .global   initLed
     .type     initLed, %function
 
-@ leds need to be initiated before using them the first time
+@ initiates the leds before using them for the first time
 initLed:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!
@@ -131,7 +135,7 @@ initLed:
     .global   deinitLed
     .type     deinitLed, %function
 
-@ leds need to be deinitiated when they're not needed anymore
+@ deinitiates the leds when they're not needed anymore
 deinitLed:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!

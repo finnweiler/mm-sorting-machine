@@ -1,10 +1,10 @@
 @ clearMotorPins.s
 @ no parameters needed
 
-GPIOREG .req      r10
-
     .data
     .balign     4
+
+GPIOREG .req      r10
 
 clearPinsMessage:
     .asciz      "motor pins 11, 17 and 27 cleared\n"
@@ -15,7 +15,7 @@ clearPinsMessage:
     .global   clearMotorPins
     .type     clearMotorPins, %function
 
-@ clears the outlet and color wheel motor pins 11, 17 and 27 to low level
+@ sets the outlet and color wheel motor pins 11, 17 and 27 to low level
 clearMotorPins:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!

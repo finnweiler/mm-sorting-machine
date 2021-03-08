@@ -253,16 +253,7 @@ hw_init:
                 @          27 26 25 24 23 22 21 20
     ldr     r0, =#0b000000001001000001001001001001
     str     r0, [GPIOREG, #8] @Function Select Register 1 (Pin 20 - 29)
-    
-    
-    /*
-    mov     r0, #1
-    mov     r1, #50
-    bl      stepColorWheel
-    mov     r0, #1
-    mov     r1, #100
-    bl      stepOutlet
-        */
+
 
     bl      sort
 

@@ -1,5 +1,5 @@
-@ Jessy 14.2.2021
-@ Color Detection Code
+@ colorDetection.s
+@ no parameters needed
 
 .data 
 colorDetected:
@@ -10,6 +10,7 @@ colorDetected:
 .global colorDetection
 .type colorDetection, %function
 
+@ reads the color code of the pins 22, 23 and 24 and stores them in r11
 colorDetection:
     str     lr, [sp, #-8]!
 

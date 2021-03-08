@@ -8,8 +8,6 @@
     .data
     .balign     4
 
-stepMessage:
-    .asciz      "color wheel stepping\n"
 clockwise:
     .asciz      "end\n"
 
@@ -27,6 +25,7 @@ stepColorWheel:
 
     mov     r4, r1
     
+    @ sets the direction of the color wheel according to the direction stored in r0
     setColorWheelDirection:
         cmp     r0, #1
         beq     setDirectionCounterClockwise
@@ -42,13 +41,11 @@ stepColorWheel:
             mov     r0, r2, lsl #16
             str     r0, [r10, #28]
     
+    @ lets the color wheel do one step until the number of steps stored in r1 is reached
     nextColorWheelStep:
         cmp     r4, #0
         beq     endStepColorWheel
-        sub     r4, r4, #1
-
-        @ldr     r0, =stepMessage
-        @bl      printf 
+        sub     r4, r4, #1 
 
         @ set 'Step' Pin 13 to high and then to low level to do one step with the color wheel
         @ set 'Step' Pin 13 to high level

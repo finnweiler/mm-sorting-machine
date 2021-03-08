@@ -27,6 +27,7 @@ stepOutlet:
 
     mov     r4, r1
     
+    @ sets the direction of the outlet according to the direction stored in r0
     setOutletDirection:
         cmp     r0, #1
         beq     setDirectionCounterClockwise
@@ -49,6 +50,7 @@ stepOutlet:
             mov     r0, r2, lsl #26
             str     r0, [r10, #28]
     
+    @ lets the outlet do one step until the number of steps stored in r1 is reached
     nextOutletStep:
         cmp     r4, #0
         beq     endStepOutlet

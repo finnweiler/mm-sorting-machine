@@ -6,14 +6,13 @@
 
 startSortMessage:
     .asciz      "Start sorting"
-colorDetected:
-    .asciz    "Color detected: %d\n"
 
     .text
     .balign   4
     .global   sort
     .type     sort, %function
 
+@ manages the entire sorting process
 sort:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!
@@ -21,6 +20,7 @@ sort:
     ldr     r0, =startSortMessage
     bl      printf
 
+    @ necessary pins are set, the calibration of the motors is done and the leds are initiated
     bl      setMotorPins
     bl      calibrateOutlet
     bl      calibrateColorWheel
@@ -32,7 +32,7 @@ sort:
     @ starts the feeder and sets the pins for the motors an co-processor 
     bl      startFeeder
 
-    @ does the sortLoop function 10 times
+    @ sortLoop is run until no M&Ms were recognized 10 times
     sortLoop:
 
         @ stops if Object was missing ten times in a row
@@ -49,18 +49,20 @@ sort:
         @ starts the color detection
         bl      colorDetection
 
-        @ changed led color according to detected color
+        @ changes led color according to detected color
         bl      changeColorLed
         
-        @ moves the outlet dependent on the detected color
+        @ moves the outlet according to detected color
         bl      moveOutletToNextColor
-        bl      checkCounter
 
+        @ Counter is increased by one if a color was detected successfully and the object sensor didn't recognize a M&M
+        bl      checkCounter
         bl      printMMCounterIntoConsole
+
         b       sortLoop
 
     endSort:
-        @ stops the feeder and clears the pins for the motors and co-processor
+        @ stops the feeder, clears the pins for the motors and co-processor and deinitiates the leds
         bl      clearMotorPins
         bl      deinitLed
         bl      stopFeeder
