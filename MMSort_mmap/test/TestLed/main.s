@@ -255,7 +255,43 @@ hw_init:
     str     r0, [GPIOREG, #8] @Function Select Register 1 (Pin 20 - 29)
     */
 
-    bl      sort
+    bl      initLed
+
+    @ Leds color brown
+    mov     r11, #4
+    bl      changeColorLed
+    mov     r0, #5
+    bl      sleep
+
+    @ Leds color red
+    mov     r11, #1
+    bl      changeColorLed
+    mov     r0, #5
+    bl      sleep
+
+    @ Leds color orange
+    mov     r11, #5
+    bl      changeColorLed
+    mov     r0, #5
+    bl      sleep
+
+    @ Leds color yellow
+    mov     r11, #6
+    bl      changeColorLed
+    mov     r0, #5
+    bl      sleep
+
+    @ Leds color green
+    mov     r11, #2
+    bl      changeColorLed
+    mov     r0, #5
+    bl      sleep
+
+    @ Leds color blue
+    mov     r11, #3
+    bl      changeColorLed
+    mov     r0, #5
+    bl      sleep
 
     b       end_of_app
 
