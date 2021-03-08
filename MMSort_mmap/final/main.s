@@ -247,7 +247,7 @@ hw_init:
     str     r0, [GPIOREG] @Function Select Register 0 (Pin 0 - 9)
 
                 @    19 18 17 16 15 14 13 12 11 10
-    ldr     r0, =#0b001001001001000000001001001000
+    ldr     r0, =#0b001000001001000000001001001000
     str     r0, [GPIOREG, #4] @Function Select Register 1 (Pin 10 - 19) 
 
                 @          27 26 25 24 23 22 21 20
