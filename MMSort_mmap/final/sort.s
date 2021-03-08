@@ -24,6 +24,7 @@ sort:
     bl      setMotorPins
     bl      calibrateOutlet
     bl      calibrateColorWheel
+    bl      initLed
 
     @ wait till start button is pressesd
     bl      waitForStartButton
@@ -47,6 +48,9 @@ sort:
 
         @ starts the color detection
         bl      colorDetection
+
+        @ changed led color according to detected color
+        bl      changeColorLed
         
         @ moves the outlet dependent on the detected color
         bl      moveOutletToNextColor
@@ -58,6 +62,7 @@ sort:
     endSort:
         @ stops the feeder and clears the pins for the motors and co-processor
         bl      clearMotorPins
+        bl      deinitLed
         bl      stopFeeder
 
         @ leaves the function sort
