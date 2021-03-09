@@ -57,6 +57,9 @@ stepColorWheel:
         ldr     r0, =#10000 @ sleep 10 ms
         bl      usleep
 
+        @ call tickUpdate to handle background tasks
+        bl      tickUpdate
+
         @ set 'Step' Pin 13 to low level
         mov     r2, #1
         mov     r0, r2, lsl #13

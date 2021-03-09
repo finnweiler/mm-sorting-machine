@@ -16,5 +16,6 @@ as -o out/calibrateColorWheel.o calibrateColorWheel.s &&
 as -o out/checkCounter.o checkCounter.s && 
 as -o out/waitForStartButton.o waitForStartButton.s && 
 as -o out/led.o led.s &&
-gcc -o out/main out/main.o out/stepOutlet.o out/stepColorWheel.o out/startFeeder.o out/stopFeeder.o out/setMotorPins.o out/clearMotorPins.o out/colorDetection.o out/moveOutletToNextColor.o out/sort.o out/calibrateColorWheel.o out/calibrateOutlet.o out/readPin.o out/checkCounter.o out/waitForStartButton.o out/led.o -lws2812RPi &&
+as -o out/tickUpdate.o tickUpdate.s &&
+gcc -o out/main out/main.o out/stepOutlet.o out/stepColorWheel.o out/startFeeder.o out/stopFeeder.o out/setMotorPins.o out/clearMotorPins.o out/colorDetection.o out/moveOutletToNextColor.o out/sort.o out/calibrateColorWheel.o out/calibrateOutlet.o out/readPin.o out/checkCounter.o out/waitForStartButton.o out/led.o out/tickUpdate.o -lws2812RPi &&
 ./out/main #gdb --args 

@@ -20,6 +20,9 @@ sort:
     ldr     r0, =startSortMessage
     bl      printf
 
+    @ set wait register to 0
+    mov     r8, #0
+
     @ necessary pins are set, the calibration of the motors is done and the leds are initiated
     bl      setMotorPins
     bl      calibrateOutlet
@@ -34,6 +37,10 @@ sort:
 
     @ sortLoop is run until no M&Ms were recognized 10 times
     sortLoop:
+
+        @ Check if stop button was pressed causing the sort to stop early
+        cmp     r8, #0
+        bne     endSort
 
         @ stops if Object was missing ten times in a row
         ldr     r5, =missingObjectVariable

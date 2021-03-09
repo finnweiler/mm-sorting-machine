@@ -63,8 +63,11 @@ stepOutlet:
         str     r0, [r10, #28]
 
         @ add short delay
-        ldr     r0, =#25000 @ sleep 50 ms
+        ldr     r0, =#10000 @ sleep 10 ms
         bl      usleep
+
+        @ call tickUpdate to handle background tasks
+        bl      tickUpdate
 
         @ set 'Step' Pin 12 to low level
         mov     r2, #1
@@ -72,7 +75,7 @@ stepOutlet:
         str     r0, [r10, #40]
 
         @ add short delay
-        ldr     r0, =#25000 @ sleep 50 ms
+        ldr     r0, =#10000 @ sleep 10 ms
         bl      usleep
 
         b       nextOutletStep
