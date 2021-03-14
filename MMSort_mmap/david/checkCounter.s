@@ -49,6 +49,10 @@ checkCounter:
     ldr     r1, [r0]
     add     r1, r1, #1
     str     r1, [r0]
+    @ Update 7Segment Display
+    bl getDecimalPlacesOfCounterVariable
+    bl prepareSevenSegmentDisplayQueue
+    bl refreshSevenSegmentDisplay
 
     ldr     r0, address_of_missingObjectVariable
     ldr     r1, [r0]
@@ -61,11 +65,7 @@ checkCounter:
         ldr     r0, address_of_missingObjectVariable
         ldr     r1, [r0]
         add     r1, r1, #1
-        str     r1, [r0]
-        @ Update 7Segment Display
-        bl getDecimalPlacesOfCounterVariable
-        bl prepareSevenSegmentDisplayQueue
-        bl refreshSevenSegmentDisplay
+        str     r1, [r0]    
 
     end_checkCounter:
         ldr lr, [sp], #+8
