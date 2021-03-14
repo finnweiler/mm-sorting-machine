@@ -8,12 +8,7 @@
 .global   initSevenSegmentDisplay
 .type     initSevenSegmentDisplay, %function
 
-@ Function refreshes each of the four digits according to the 7segment binary configuration information stored in r2 
-@ input: r2 contains the four 8bit 7segment binary configuration of the mmCounter Variable
-@ whereas the first 8bits (MSB) represent thousand digit binary segment configuration
-@ the second 8bits represent hundred digit binary segment configuration
-@ the third 8bits represent decimal digit binary segment configuration
-@ the fourth 8bits (LSB) represent single digit binary segment configuration
+@ Function initializes each of the four digits of the 7segment and prints four zeros
 initSevenSegmentDisplay:
     str lr, [sp, #-8]!
   
