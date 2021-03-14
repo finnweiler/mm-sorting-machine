@@ -136,7 +136,7 @@ refreshSevenSegmentDisplay:
                 mov     r0, #1
                 lsl     r0, r0, #5 
                 str     r0, [r10, #28]
-                @ set GPIO Pin 4 (nSRCLR) low - a Low-High-Pulse on Pin nSRCLR resets the contents of each Flip-Flop of the Schieberegister
+                @ set GPIO Pin 4 (nSRCLR) low - a Low Level on Pin nSRCLR resets the contents of each Flip-Flop of the Schieberegister
                 mov     r0, #1
                 lsl     r0, r0, #4 
                 str     r0, [r10, #40]
