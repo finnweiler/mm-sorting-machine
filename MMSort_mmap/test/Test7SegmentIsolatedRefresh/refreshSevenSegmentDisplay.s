@@ -141,7 +141,7 @@ refreshSevenSegmentDisplay:
                     str     r0, [r10, #40]
             
                     @ add short delay
-                    ldr     r0, =#250000 @ sleep 50 ms
+                    ldr     r0, =#50000 @ sleep 50 ms
                     bl      usleep
 
                     add r1, r1, #+1
