@@ -195,7 +195,7 @@ refreshSevenSegmentDisplay:
             mov r1, #0 @ counter within range 0,1,2,3,4,5,6,7 to indicate each setting of a different bit (8bits) of a different FlipFlop into the Schieberegister 
             fillingTheSchieberegisterLoop:
 
-                @ Delay with pushing and restoring the working registers r0-r3 on the stack
+                @ Delay with pushing and restoring the working registers r0-r3 on and from the stack
                 str r0, [sp, #-8]!
                 str r1, [sp, #-8]!
                 str r2, [sp, #-8]!
