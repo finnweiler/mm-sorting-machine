@@ -12,7 +12,7 @@ mmCounterMessage:
 @ Counter Integer Variable to store in the current number of successfully allocated m&m's
 .global mmCounterVariable
 mmCounterVariable: 
-    .word       1234 
+    .word       0 
 
 @ Counter Integer Variable to store in the current number of unsuccessfully detected m&m's a row
 .global missingObjectVariable

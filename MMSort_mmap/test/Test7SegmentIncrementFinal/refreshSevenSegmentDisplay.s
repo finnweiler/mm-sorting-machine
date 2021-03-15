@@ -56,6 +56,20 @@ refreshSevenSegmentDisplay:
             mov     r0, #1
             lsl     r0, r0, #6 
             str     r0, [r10, #40]
+            @ Delay with pushing and restoring the working registers r0-r3 on the stack
+            str r0, [sp, #-8]!
+            str r1, [sp, #-8]!
+            str r2, [sp, #-8]!
+            str r3, [sp, #-8]!
+
+            ldr     r0, =#10000 @ sleep 50 ms
+            bl      usleep
+
+            ldr r3, [sp], #+8
+            ldr r2, [sp], #+8
+            ldr r1, [sp], #+8
+            ldr r0, [sp], #+8
+            @ end Delay
             @ set GPIO Pin 7 low
             mov     r0, #1
             lsl     r0, r0, #7 
@@ -67,6 +81,20 @@ refreshSevenSegmentDisplay:
             mov     r0, #1
             lsl     r0, r0, #6 
             str     r0, [r10, #28]
+            @ Delay with pushing and restoring the working registers r0-r3 on the stack
+            str r0, [sp, #-8]!
+            str r1, [sp, #-8]!
+            str r2, [sp, #-8]!
+            str r3, [sp, #-8]!
+
+            ldr     r0, =#10000 @ sleep 50 ms
+            bl      usleep
+
+            ldr r3, [sp], #+8
+            ldr r2, [sp], #+8
+            ldr r1, [sp], #+8
+            ldr r0, [sp], #+8
+            @ end Delay
             @ set GPIO Pin 7 low
             mov     r0, #1
             lsl     r0, r0, #7 
@@ -78,6 +106,20 @@ refreshSevenSegmentDisplay:
             mov     r0, #1
             lsl     r0, r0, #6 
             str     r0, [r10, #40]
+            @ Delay with pushing and restoring the working registers r0-r3 on the stack
+            str r0, [sp, #-8]!
+            str r1, [sp, #-8]!
+            str r2, [sp, #-8]!
+            str r3, [sp, #-8]!
+
+            ldr     r0, =#10000 @ sleep 50 ms
+            bl      usleep
+
+            ldr r3, [sp], #+8
+            ldr r2, [sp], #+8
+            ldr r1, [sp], #+8
+            ldr r0, [sp], #+8
+            @ end Delay
             @ set GPIO Pin 7 high
             mov     r0, #1
             lsl     r0, r0, #7 
@@ -89,6 +131,20 @@ refreshSevenSegmentDisplay:
             mov     r0, #1
             lsl     r0, r0, #6 
             str     r0, [r10, #28]
+            @ Delay with pushing and restoring the working registers r0-r3 on the stack
+            str r0, [sp, #-8]!
+            str r1, [sp, #-8]!
+            str r2, [sp, #-8]!
+            str r3, [sp, #-8]!
+
+            ldr     r0, =#10000 @ sleep 50 ms
+            bl      usleep
+
+            ldr r3, [sp], #+8
+            ldr r2, [sp], #+8
+            ldr r1, [sp], #+8
+            ldr r0, [sp], #+8
+            @ end Delay
             @ set GPIO Pin 7 high
             mov     r0, #1
             lsl     r0, r0, #7 
@@ -115,6 +171,22 @@ refreshSevenSegmentDisplay:
             mov     r0, #1
             lsl     r0, r0, #4 
             str     r0, [r10, #28]
+
+            @ Delay with pushing and restoring the working registers r0-r3 on the stack
+            str r0, [sp, #-8]!
+            str r1, [sp, #-8]!
+            str r2, [sp, #-8]!
+            str r3, [sp, #-8]!
+
+            ldr     r0, =#10000 @ sleep 50 ms
+            bl      usleep
+
+            ldr r3, [sp], #+8
+            ldr r2, [sp], #+8
+            ldr r1, [sp], #+8
+            ldr r0, [sp], #+8
+            @ end Delay
+
             @ set GPIO Pin 5 (RCLK) low
             mov     r0, #1
             lsl     r0, r0, #5 
@@ -123,7 +195,7 @@ refreshSevenSegmentDisplay:
             mov r1, #0 @ counter within range 0,1,2,3,4,5,6,7 to indicate each setting of a different bit (8bits) of a different FlipFlop into the Schieberegister 
             fillingTheSchieberegisterLoop:
 
-                @ Delay with pushing and restoring the working registers r0-r3 on the stack
+                @ Delay with pushing and restoring the working registers r0-r3 on and from the stack
                 str r0, [sp, #-8]!
                 str r1, [sp, #-8]!
                 str r2, [sp, #-8]!
@@ -215,6 +287,20 @@ refreshSevenSegmentDisplay:
                 mov     r0, #1
                 lsl     r0, r0, #5 
                 str     r0, [r10, #28]
+                @ Delay with pushing and restoring the working registers r0-r3 on the stack
+                str r0, [sp, #-8]!
+                str r1, [sp, #-8]!
+                str r2, [sp, #-8]!
+                str r3, [sp, #-8]!
+
+                ldr     r0, =#10000 @ sleep 50 ms
+                bl      usleep
+
+                ldr r3, [sp], #+8
+                ldr r2, [sp], #+8
+                ldr r1, [sp], #+8
+                ldr r0, [sp], #+8
+                @ end Delay
                 @ set GPIO Pin 4 (nSRCLR) low - a Low Level on Pin nSRCLR resets the contents of each Flip-Flop of the Schieberegister
                 mov     r0, #1
                 lsl     r0, r0, #4 
