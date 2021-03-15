@@ -146,7 +146,7 @@ refreshSevenSegmentDisplay:
 
                     add r1, r1, #+1
 
-                    ldr r0, address_of_outerLoopCompleted
+                    ldr r0, address_of_innerLoopCompleted
                     bl printf
                     b fillingTheSchieberegisterLoop
 
@@ -159,11 +159,13 @@ refreshSevenSegmentDisplay:
                 mov     r0, #1
                 lsl     r0, r0, #4 
                 str     r0, [r10, #40]
-                    
-        add r3, r3, #+1
-        ldr r0, address_of_innerLoopCompleted
-        bl printf
-        b decimalPlacePrintLoop
+                b updateInnerLoopCounter
+
+        updateInnerLoopCounter:            
+            add r3, r3, #+1
+            ldr r0, address_of_innerLoopCompleted
+            bl printf
+            b decimalPlacePrintLoop
             
     
     end_refreshSevenSegmentDisplay:
