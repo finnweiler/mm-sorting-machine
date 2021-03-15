@@ -39,8 +39,10 @@ sort:
     sortLoop:
 
         @ Check if stop button was pressed causing the sort to stop early
-        cmp     r8, #0
-        bne     endSort
+        ldr     r5, =endButtonPressed
+        ldr     r5, [r5]
+        cmp     r5, #1
+        beq     endSort
 
         @ stops if Object was missing ten times in a row
         ldr     r5, =missingObjectVariable
