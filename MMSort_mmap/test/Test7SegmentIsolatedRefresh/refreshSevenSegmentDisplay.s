@@ -1,6 +1,13 @@
 @ David & Marvin, 12.03.21
 
 .data
+.balign 4
+outerLoopCompleted: 
+    .asciz      "outerLoopCompleted \n"
+.balign 4
+innerLoopCompleted: 
+    .asciz      "innerLoopCompleted \n"
+
 
 .text
 .extern usleep
@@ -144,13 +151,20 @@ refreshSevenSegmentDisplay:
                 str     r0, [r10, #40]
                     
         add r3, r3, #+1
+        ldr r0, address_of_innerLoopCompleted
+        bl printf
         b decimalPlacePrintLoop
             
     
     end_refreshSevenSegmentDisplay:
+        ldr r0, address_of_outerLoopCompleted
+        bl printf
         ldr lr, [sp], #+8
         bx      lr
 
+address_of_outerLoopCompleted : .word outerLoopCompleted
+
+address_of_innerLoopCompleted : .word innerLoopCompleted
 
 
 @Gewünschtes Level (0 oder 1) an Pin „SER“ anlegen und nSRCLR auf
