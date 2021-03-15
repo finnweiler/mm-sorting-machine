@@ -105,6 +105,7 @@ refreshSevenSegmentDisplay:
             fillingTheSchieberegisterLoop:
                 cmp r1, #+8
                 beq end_fillingTheSchieberegisterLoop
+                add r1, r1, #+1
                 @ set GPIO Pin 3 (SRCLK) low 
                 mov     r0, #1
                 lsl     r0, r0, #3 
@@ -144,7 +145,7 @@ refreshSevenSegmentDisplay:
                     ldr     r0, =#50000 @ sleep 50 ms
                     bl      usleep
 
-                    add r1, r1, #+1
+                    
 
                     ldr r0, address_of_innerLoopCompleted
                     bl printf
