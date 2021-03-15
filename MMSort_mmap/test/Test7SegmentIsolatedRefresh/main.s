@@ -257,22 +257,19 @@ hw_init:
 
 
 @ --------------
-
+    /*
     ldr r0, =mmCounterVariable
     ldr r1, =1234
-    str r1, [r0]
+    str r1, [r0]*/
 
     bl initSevenSegmentDisplay
 
     @ Test refreshSevenSegmentDisplay
-    mov r0, #0
     refresh7SegmentDisplayLoop:
-        ldr r1, =10000
-        cmp r0, r1
-        beq end_of_app
         bl getDecimalPlacesOfCounterVariable
         bl prepareSevenSegmentDisplayQueue
         bl refreshSevenSegmentDisplay
+        b refresh7SegmentDisplayLoop
     
     
 @ --------------
