@@ -262,6 +262,8 @@ hw_init:
     ldr r1, =1234
     str r1, [r0]
 
+    bl initSevenSegmentDisplay
+
     @ Test refreshSevenSegmentDisplay
     mov r0, #0
     refresh7SegmentDisplayLoop:
