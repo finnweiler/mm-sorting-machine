@@ -103,7 +103,7 @@ refreshSevenSegmentDisplay:
 
             mov r1, #0 @ counter within range 0,1,2,3,4,5,6,7 to indicate each setting of a different bit (8bits) of a different FlipFlop into the Schieberegister 
             fillingTheSchieberegisterLoop:
-                cmp r1, #8
+                cmp r1, #+8
                 beq end_fillingTheSchieberegisterLoop
                 @ set GPIO Pin 3 (SRCLK) low 
                 mov     r0, #1
