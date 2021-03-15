@@ -96,7 +96,8 @@ refreshSevenSegmentDisplay:
                 lsl     r0, r0, #3 
                 str     r0, [r10, #40]
 
-                and r0, r2, #00000000 00000000 00000000 00000001
+                mov     r0, #0
+                and r0, r2, #0b00000000000000000000000000000001
                 asr r2, r2, #1
 
                 cmp r0, #0
@@ -128,6 +129,7 @@ refreshSevenSegmentDisplay:
                     @ add short delay
                     ldr     r0, =#25000 @ sleep 50 ms
                     bl      usleep
+
                     add r1, r1, #+1
                     b fillingTheSchieberegisterLoop
 

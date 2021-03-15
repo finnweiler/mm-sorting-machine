@@ -96,7 +96,7 @@ refreshSevenSegmentDisplay:
                 lsl     r0, r0, #3 
                 str     r0, [r10, #40]
 
-                and r0, r2, #00000000 00000000 00000000 00000001
+                and r0, r2, #0b00000000000000000000000000000001
                 asr r2, r2, #1
 
                 cmp r0, #0

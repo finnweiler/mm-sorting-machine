@@ -50,9 +50,9 @@ checkCounter:
     add     r1, r1, #1
     str     r1, [r0]
     @ Update 7Segment Display
-    bl getDecimalPlacesOfCounterVariable
-    bl prepareSevenSegmentDisplayQueue
-    bl refreshSevenSegmentDisplay
+    @ bl getDecimalPlacesOfCounterVariable
+    @ bl prepareSevenSegmentDisplayQueue
+    @ bl refreshSevenSegmentDisplay
 
     ldr     r0, address_of_missingObjectVariable
     ldr     r1, [r0]
@@ -87,6 +87,34 @@ printMMCounterIntoConsole:
 
     ldr lr, [sp], #+8
     bx lr
+
+.global   printMMCounterFour4BitIntoConsole
+.type     printMMCounterFour4BitIntoConsole, %function
+printMMCounterFour4BitIntoConsole:
+    str lr, [sp, #-8]!
+    
+    ldr r0, address_of_mmCounterMessage
+    @ ldr r1, address_of_mmCounterVariable
+    @ ldr r1, [r1]
+    @ mov r1, r1
+    bl printf
+
+    ldr lr, [sp], #+8
+    bx lr
+
+.global   printMMCounterFour8BitSegmentConfiguration
+.type     printMMCounterFour8BitSegmentConfiguration, %function
+printMMCounterFour8BitSegmentConfiguration:
+    str lr, [sp, #-8]!
+    
+    ldr r0, address_of_mmCounterMessage
+    mov r1, r2
+    bl printf
+
+    ldr lr, [sp], #+8
+    bx lr
+
+
 
 
 @ Address of Counter Integer Variable to store in the current number of successfully allocated m&m's

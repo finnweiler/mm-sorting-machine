@@ -128,7 +128,7 @@ refreshSevenSegmentDisplay:
                     @ add short delay
                     ldr     r0, =#25000 @ sleep 50 ms
                     bl      usleep
-                    add r1, r1, #+1
+
                     b fillingTheSchieberegisterLoop
 
             end_fillingTheSchieberegisterLoop:
