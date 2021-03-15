@@ -62,7 +62,7 @@ refreshSevenSegmentDisplay:
             str r2, [sp, #-8]!
             str r3, [sp, #-8]!
 
-            ldr     r0, =#10000 @ sleep 50 ms
+            ldr     r0, =#100000 @ sleep 50 ms
             bl      usleep
 
             ldr r3, [sp], #+8
@@ -87,7 +87,7 @@ refreshSevenSegmentDisplay:
             str r2, [sp, #-8]!
             str r3, [sp, #-8]!
 
-            ldr     r0, =#10000 @ sleep 50 ms
+            ldr     r0, =#100000 @ sleep 50 ms
             bl      usleep
 
             ldr r3, [sp], #+8
@@ -112,7 +112,7 @@ refreshSevenSegmentDisplay:
             str r2, [sp, #-8]!
             str r3, [sp, #-8]!
 
-            ldr     r0, =#10000 @ sleep 50 ms
+            ldr     r0, =#100000 @ sleep 50 ms
             bl      usleep
 
             ldr r3, [sp], #+8
@@ -137,7 +137,7 @@ refreshSevenSegmentDisplay:
             str r2, [sp, #-8]!
             str r3, [sp, #-8]!
 
-            ldr     r0, =#10000 @ sleep 50 ms
+            ldr     r0, =#100000 @ sleep 50 ms
             bl      usleep
 
             ldr r3, [sp], #+8
@@ -158,7 +158,7 @@ refreshSevenSegmentDisplay:
             str r2, [sp, #-8]!
             str r3, [sp, #-8]!
 
-            ldr     r0, =#10000 @ sleep 50 ms
+            ldr     r0, =#100000 @ sleep 50 ms
             bl      usleep
 
             ldr r3, [sp], #+8
@@ -178,7 +178,7 @@ refreshSevenSegmentDisplay:
             str r2, [sp, #-8]!
             str r3, [sp, #-8]!
 
-            ldr     r0, =#10000 @ sleep 50 ms
+            ldr     r0, =#100000 @ sleep 50 ms
             bl      usleep
 
             ldr r3, [sp], #+8
@@ -201,7 +201,7 @@ refreshSevenSegmentDisplay:
                 str r2, [sp, #-8]!
                 str r3, [sp, #-8]!
 
-                ldr     r0, =#10000 @ sleep 50 ms
+                ldr     r0, =#100000 @ sleep 50 ms
                 bl      usleep
 
                 ldr r3, [sp], #+8
@@ -256,7 +256,7 @@ refreshSevenSegmentDisplay:
                     str r2, [sp, #-8]!
                     str r3, [sp, #-8]!
 
-                    ldr     r0, =#10000 @ sleep 50 ms
+                    ldr     r0, =#100000 @ sleep 50 ms
                     bl      usleep
 
                     ldr r3, [sp], #+8
@@ -274,7 +274,7 @@ refreshSevenSegmentDisplay:
                 str r2, [sp, #-8]!
                 str r3, [sp, #-8]!
 
-                ldr     r0, =#10000 @ sleep 50 ms
+                ldr     r0, =#100000 @ sleep 50 ms
                 bl      usleep
 
                 ldr r3, [sp], #+8
@@ -293,7 +293,7 @@ refreshSevenSegmentDisplay:
                 str r2, [sp, #-8]!
                 str r3, [sp, #-8]!
 
-                ldr     r0, =#10000 @ sleep 50 ms
+                ldr     r0, =#100000 @ sleep 50 ms
                 bl      usleep
 
                 ldr r3, [sp], #+8
