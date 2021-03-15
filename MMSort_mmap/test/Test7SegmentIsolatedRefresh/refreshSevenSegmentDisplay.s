@@ -2,12 +2,23 @@
 
 .data
 .balign 4
+outerLoopBegin: 
+    .asciz      "outerRefreshLoopBegin \n"
+.balign 4
 outerLoopCompleted: 
-    .asciz      "outerLoopCompleted \n"
+    .asciz      "outerRefreshLoopCompleted \n"
+.balign 4
+innerLoopBegin: 
+    .asciz      "innerRefreshLoopBegin \n"
 .balign 4
 innerLoopCompleted: 
-    .asciz      "innerLoopCompleted \n"
-
+    .asciz      "innerRefreshLoopCompleted \n"
+.balign 4
+refreshBegin: 
+    .asciz      "refreshBegin \n"
+.balign 4
+refreshCompleted: 
+    .asciz      "refreshCompleted \n"
 
 .text
 .extern usleep
@@ -24,12 +35,15 @@ innerLoopCompleted:
 refreshSevenSegmentDisplay:
     str lr, [sp, #-8]!
     
-    ldr r0, address_of_outerLoopCompleted
+    ldr r0, address_of_refreshBegin
     bl printf
   
     
     mov r3, #0 @ counter within range 0,1,2,3 to indicate each decimal place from single, decimal, hundreds, thousand
     decimalPlacePrintLoop:
+        ldr r0, address_of_outerLoopBegin
+        bl printf
+        
         cmp r3, #4
         beq end_refreshSevenSegmentDisplay
         cmp r3, #0
@@ -51,8 +65,6 @@ refreshSevenSegmentDisplay:
             mov     r0, #1
             lsl     r0, r0, #7 
             str     r0, [r10, #40]
-            ldr r0, address_of_outerLoopCompleted
-            bl printf
             b refreshCurrentDigit
         
         if_decimalDigitShouldBeRefreshed:
@@ -97,12 +109,12 @@ refreshSevenSegmentDisplay:
             mov     r0, #1
             lsl     r0, r0, #5 
             str     r0, [r10, #40]
-            
-            ldr r0, address_of_outerLoopCompleted
-            bl printf
 
             mov r1, #0 @ counter within range 0,1,2,3,4,5,6,7 to indicate each setting of a different bit (8bits) of a different FlipFlop into the Schieberegister 
             fillingTheSchieberegisterLoop:
+                ldr r0, address_of_innerLoopBegin
+                bl printf
+
                 cmp r1, #+8
                 beq end_fillingTheSchieberegisterLoop
                 add r1, r1, #+1
@@ -141,11 +153,14 @@ refreshSevenSegmentDisplay:
                     lsl     r0, r0, #3 
                     str     r0, [r10, #40]
             
-                    @ add short delay
+                    @ Delay
+
+                    @ Delay A
                     ldr     r0, =#50000 @ sleep 50 ms
                     bl      usleep
-
-                    
+                    @ Delay B
+                    @ ldr     r0, =#10000 @ sleep 50 ms
+                    @ bl      usleep
 
                     ldr r0, address_of_innerLoopCompleted
                     bl printf
@@ -164,20 +179,25 @@ refreshSevenSegmentDisplay:
 
         updateInnerLoopCounter:            
             add r3, r3, #+1
-            ldr r0, address_of_innerLoopCompleted
+            ldr r0, address_of_outerLoopCompleted
             bl printf
             b decimalPlacePrintLoop
             
     
     end_refreshSevenSegmentDisplay:
-        ldr r0, address_of_outerLoopCompleted
+        ldr r0, address_of_refreshCompleted
         bl printf
         ldr lr, [sp], #+8
         bx      lr
 
+address_of_outerLoopBegin : .word outerLoopBegin
 address_of_outerLoopCompleted : .word outerLoopCompleted
 
+address_of_innerLoopBegin : .word innerLoopBegin
 address_of_innerLoopCompleted : .word innerLoopCompleted
+
+address_of_refreshBegin : .word refreshBegin
+address_of_refreshCompleted : .word refreshCompleted
 
 
 @Gewünschtes Level (0 oder 1) an Pin „SER“ anlegen und nSRCLR auf
