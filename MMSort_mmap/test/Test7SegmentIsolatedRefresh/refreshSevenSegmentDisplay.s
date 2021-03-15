@@ -23,6 +23,9 @@ innerLoopCompleted:
 @ the fourth 8bits (LSB) represent single digit binary segment configuration
 refreshSevenSegmentDisplay:
     str lr, [sp, #-8]!
+    
+    ldr r0, address_of_outerLoopCompleted
+    bl printf
   
     
     mov r3, #0 @ counter within range 0,1,2,3 to indicate each decimal place from single, decimal, hundreds, thousand
@@ -48,6 +51,8 @@ refreshSevenSegmentDisplay:
             mov     r0, #1
             lsl     r0, r0, #7 
             str     r0, [r10, #40]
+            ldr r0, address_of_outerLoopCompleted
+            bl printf
             b refreshCurrentDigit
         
         if_decimalDigitShouldBeRefreshed:
@@ -92,7 +97,9 @@ refreshSevenSegmentDisplay:
             mov     r0, #1
             lsl     r0, r0, #5 
             str     r0, [r10, #40]
-
+            
+            ldr r0, address_of_outerLoopCompleted
+            bl printf
 
             mov r1, #0 @ counter within range 0,1,2,3,4,5,6,7 to indicate each setting of a different bit (8bits) of a different FlipFlop into the Schieberegister 
             fillingTheSchieberegisterLoop:
@@ -138,6 +145,9 @@ refreshSevenSegmentDisplay:
                     bl      usleep
 
                     add r1, r1, #+1
+
+                    ldr r0, address_of_outerLoopCompleted
+                    bl printf
                     b fillingTheSchieberegisterLoop
 
             end_fillingTheSchieberegisterLoop:

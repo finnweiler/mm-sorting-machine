@@ -257,6 +257,7 @@ hw_init:
 
 
 @ --------------
+    bl printMMCounterIntoConsole
     /*
     ldr r0, =mmCounterVariable
     ldr r1, =1234
@@ -267,8 +268,17 @@ hw_init:
     @ Test refreshSevenSegmentDisplay
     refresh7SegmentDisplayLoop:
         bl getDecimalPlacesOfCounterVariable
+        bl printMMCounterFour4BitIntoConsole
+        
+        
+        bl getDecimalPlacesOfCounterVariable
+        bl prepareSevenSegmentDisplayQueue
+        bl printMMCounterFour8BitSegmentConfiguration
+
+        bl getDecimalPlacesOfCounterVariable
         bl prepareSevenSegmentDisplayQueue
         bl refreshSevenSegmentDisplay
+        
         b refresh7SegmentDisplayLoop
     
     
