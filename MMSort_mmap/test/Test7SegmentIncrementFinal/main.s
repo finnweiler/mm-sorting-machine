@@ -277,14 +277,14 @@ hw_init:
         bl prepareSevenSegmentDisplayQueue
         bl refreshSevenSegmentDisplay
 
-        ldr     r0, =#40000000 @ sleep 50 ms
+        ldr     r0, =#1000000 @ sleep 50 ms
         bl      usleep
 
         @ increment MMCounterVariable
-        @ ldr r0, =mmCounterVariable
-        @ ldr r1, [r0]
-        @ add r1, r1, #+1
-        @ str r1, [r0]
+        ldr r0, =mmCounterVariable
+        ldr r1, [r0]
+        add r1, r1, #+1
+        str r1, [r0]
         @ end increment MMCounterVariable
 
         b refresh7SegmentDisplayLoop
