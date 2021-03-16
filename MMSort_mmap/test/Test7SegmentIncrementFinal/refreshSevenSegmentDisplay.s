@@ -62,7 +62,7 @@ refreshSevenSegmentDisplay:
             str r2, [sp, #-8]!
             str r3, [sp, #-8]!
 
-            ldr     r0, =#100000 @ sleep 50 ms
+            ldr     r0, =#4000000 @ sleep 50 ms
             bl      usleep
 
             ldr r3, [sp], #+8
@@ -87,7 +87,7 @@ refreshSevenSegmentDisplay:
             str r2, [sp, #-8]!
             str r3, [sp, #-8]!
 
-            ldr     r0, =#100000 @ sleep 50 ms
+            ldr     r0, =#4000000 @ sleep 50 ms
             bl      usleep
 
             ldr r3, [sp], #+8
@@ -112,7 +112,7 @@ refreshSevenSegmentDisplay:
             str r2, [sp, #-8]!
             str r3, [sp, #-8]!
 
-            ldr     r0, =#100000 @ sleep 50 ms
+            ldr     r0, =#4000000 @ sleep 50 ms
             bl      usleep
 
             ldr r3, [sp], #+8
@@ -137,7 +137,7 @@ refreshSevenSegmentDisplay:
             str r2, [sp, #-8]!
             str r3, [sp, #-8]!
 
-            ldr     r0, =#100000 @ sleep 50 ms
+            ldr     r0, =#4000000 @ sleep 50 ms
             bl      usleep
 
             ldr r3, [sp], #+8
@@ -158,7 +158,7 @@ refreshSevenSegmentDisplay:
             str r2, [sp, #-8]!
             str r3, [sp, #-8]!
 
-            ldr     r0, =#100000 @ sleep 50 ms
+            ldr     r0, =#4000000 @ sleep 50 ms
             bl      usleep
 
             ldr r3, [sp], #+8
@@ -178,7 +178,7 @@ refreshSevenSegmentDisplay:
             str r2, [sp, #-8]!
             str r3, [sp, #-8]!
 
-            ldr     r0, =#100000 @ sleep 50 ms
+            ldr     r0, =#4000000 @ sleep 50 ms
             bl      usleep
 
             ldr r3, [sp], #+8
@@ -201,7 +201,7 @@ refreshSevenSegmentDisplay:
                 str r2, [sp, #-8]!
                 str r3, [sp, #-8]!
 
-                ldr     r0, =#100000 @ sleep 50 ms
+                ldr     r0, =#4000000 @ sleep 50 ms
                 bl      usleep
 
                 ldr r3, [sp], #+8
@@ -228,6 +228,20 @@ refreshSevenSegmentDisplay:
                 beq if_bitIsOne
 
                 if_bitIsZero:
+                    @ Delay with pushing and restoring the working registers r0-r3 on the stack
+                    str r0, [sp, #-8]!
+                    str r1, [sp, #-8]!
+                    str r2, [sp, #-8]!
+                    str r3, [sp, #-8]!
+
+                    ldr     r0, =#4000000 @ sleep 50 ms
+                    bl      usleep
+
+                    ldr r3, [sp], #+8
+                    ldr r2, [sp], #+8
+                    ldr r1, [sp], #+8
+                    ldr r0, [sp], #+8
+                    @ end Delay
                     @ set GPIO Pin 2 (SER) low 
                     mov     r0, #1
                     lsl     r0, r0, #2 
@@ -235,6 +249,20 @@ refreshSevenSegmentDisplay:
                     b setClockToSetNextFlipflopInSchieberegister
 
                 if_bitIsOne:
+                    @ Delay with pushing and restoring the working registers r0-r3 on the stack
+                    str r0, [sp, #-8]!
+                    str r1, [sp, #-8]!
+                    str r2, [sp, #-8]!
+                    str r3, [sp, #-8]!
+
+                    ldr     r0, =#4000000 @ sleep 50 ms
+                    bl      usleep
+
+                    ldr r3, [sp], #+8
+                    ldr r2, [sp], #+8
+                    ldr r1, [sp], #+8
+                    ldr r0, [sp], #+8
+                    @ end Delay
                     @ set GPIO Pin 2 (SER) high 
                     mov     r0, #1
                     lsl     r0, r0, #2 
@@ -242,11 +270,26 @@ refreshSevenSegmentDisplay:
                     b setClockToSetNextFlipflopInSchieberegister
 
                 setClockToSetNextFlipflopInSchieberegister:
+                    @ Delay with pushing and restoring the working registers r0-r3 on the stack
+                    str r0, [sp, #-8]!
+                    str r1, [sp, #-8]!
+                    str r2, [sp, #-8]!
+                    str r3, [sp, #-8]!
+
+                    ldr     r0, =#4000000 @ sleep 50 ms
+                    bl      usleep
+
+                    ldr r3, [sp], #+8
+                    ldr r2, [sp], #+8
+                    ldr r1, [sp], #+8
+                    ldr r0, [sp], #+8
+                    @ end Delay
+                    
                     @ set GPIO Pin 3 (SRCLK) high - a Low-High-Pulse on Pin SRCLK is used to shift the a) contents of each Flip-Flop from the Schieberegister into the successor Flip-Flop from the Schieberegister
                     @ and b) to set the SER bit to the first FlipFlop in the Schieberegister
                     mov     r0, #1
                     lsl     r0, r0, #3 
-                    str     r0, [r10, #40]
+                    str     r0, [r10, #28]
             
                     
 
@@ -256,7 +299,7 @@ refreshSevenSegmentDisplay:
                     str r2, [sp, #-8]!
                     str r3, [sp, #-8]!
 
-                    ldr     r0, =#100000 @ sleep 50 ms
+                    ldr     r0, =#4000000 @ sleep 50 ms
                     bl      usleep
 
                     ldr r3, [sp], #+8
@@ -274,7 +317,27 @@ refreshSevenSegmentDisplay:
                 str r2, [sp, #-8]!
                 str r3, [sp, #-8]!
 
-                ldr     r0, =#100000 @ sleep 50 ms
+                ldr     r0, =#4000000 @ sleep 50 ms
+                bl      usleep
+
+                ldr r3, [sp], #+8
+                ldr r2, [sp], #+8
+                ldr r1, [sp], #+8
+                ldr r0, [sp], #+8
+                @ end Delay
+
+                @ set GPIO Pin 3 (SRCLK) low 
+                mov     r0, #1
+                lsl     r0, r0, #3 
+                str     r0, [r10, #40]
+
+                @ Delay with pushing and restoring the working registers r0-r3 on the stack
+                str r0, [sp, #-8]!
+                str r1, [sp, #-8]!
+                str r2, [sp, #-8]!
+                str r3, [sp, #-8]!
+
+                ldr     r0, =#4000000 @ sleep 50 ms
                 bl      usleep
 
                 ldr r3, [sp], #+8
@@ -293,7 +356,7 @@ refreshSevenSegmentDisplay:
                 str r2, [sp, #-8]!
                 str r3, [sp, #-8]!
 
-                ldr     r0, =#100000 @ sleep 50 ms
+                ldr     r0, =#4000000 @ sleep 50 ms
                 bl      usleep
 
                 ldr r3, [sp], #+8
@@ -305,9 +368,9 @@ refreshSevenSegmentDisplay:
                 mov     r0, #1
                 lsl     r0, r0, #4 
                 str     r0, [r10, #40]
-                b updateInnerLoopCounter
+                b updateOuterLoopCounter
 
-        updateInnerLoopCounter:            
+        updateOuterLoopCounter:            
             add r3, r3, #+1
             b decimalPlacePrintLoop
             
