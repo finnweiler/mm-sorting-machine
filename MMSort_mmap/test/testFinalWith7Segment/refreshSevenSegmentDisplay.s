@@ -3,7 +3,7 @@
 .data
 
 .text
-.extern customSleep
+.extern usleep
 .balign   4
 .global   refreshSevenSegmentDisplay
 .type     refreshSevenSegmentDisplay, %function
@@ -22,39 +22,41 @@ refreshSevenSegmentDisplay:
     decimalPlacePrintLoop:
         emptySchiebegreister:
             @ set nSRCLR high
+            bl      customSleep
             mov     r0, #1
             lsl     r0, r0, #4 
             str     r0, [r10, #28]
-            bl      customSleep
             @ set RCLK low
+            bl      customSleep
             mov     r0, #1
             lsl     r0, r0, #5 
             str     r0, [r10, #40]
-            bl      customSleep
             @ set SRCLK low
+            bl      customSleep
             mov     r0, #1
             lsl     r0, r0, #3 
             str     r0, [r10, #40]
-            bl      customSleep
             @ set nSRCLR low
+            bl      customSleep
             mov     r0, #1
             lsl     r0, r0, #4 
             str     r0, [r10, #40]
-            bl      customSleep
             @ set SRCLK high
+            bl      customSleep
             mov     r0, #1
             lsl     r0, r0, #3 
             str     r0, [r10, #28]
-            bl      customSleep
             @ set SRCLK low
+            bl      customSleep
             mov     r0, #1
             lsl     r0, r0, #3 
-            str     r0, [r10, #40]
-            bl      customSleep
+            str     r0, [r10, #40]    
             @ set nSRCLR high
+            bl      customSleep
             mov     r0, #1
             lsl     r0, r0, #4 
             str     r0, [r10, #28]
+            bl      customSleep
 
         @ end Delay
         cmp r3, #4
@@ -71,82 +73,91 @@ refreshSevenSegmentDisplay:
         @ Multiplexer needs Signal A (GPIO Pin 6) and B (GPIO Pin 7) to select one of the four Schieberegisters to refresh either the single, decimal, hundred or thousand SevenSegment Digit 
         if_singleDigitShouldBeRefreshed:
             @ set GPIO Pin 6 low
+            bl      customSleep
             mov     r0, #1
             lsl     r0, r0, #6 
             str     r0, [r10, #40]
-            bl      customSleep
             @ set GPIO Pin 7 low
+            bl      customSleep
             mov     r0, #1
             lsl     r0, r0, #7 
             str     r0, [r10, #40]
+            bl      customSleep
             b refreshCurrentDigit
         
         if_decimalDigitShouldBeRefreshed:
             @ set GPIO Pin 6 high
+            bl      customSleep
             mov     r0, #1
             lsl     r0, r0, #6 
             str     r0, [r10, #28]
-            bl      customSleep
             @ set GPIO Pin 7 low
+            bl      customSleep
             mov     r0, #1
             lsl     r0, r0, #7 
             str     r0, [r10, #40]
+            bl      customSleep
             b refreshCurrentDigit
 
         if_hundredsDigitShouldBeRefreshed:
             @ set GPIO Pin 6 low
+            bl      customSleep
             mov     r0, #1
             lsl     r0, r0, #6 
             str     r0, [r10, #40]
-            bl      customSleep
             @ set GPIO Pin 7 high
+            bl      customSleep
             mov     r0, #1
             lsl     r0, r0, #7 
             str     r0, [r10, #28]
+            bl      customSleep
             b refreshCurrentDigit
         
         if_thousandDigitShouldBeRefreshed:
             @ set GPIO Pin 6 high
+            bl      customSleep
             mov     r0, #1
             lsl     r0, r0, #6 
             str     r0, [r10, #28]
-            bl      customSleep
             @ set GPIO Pin 7 high
+            bl      customSleep
             mov     r0, #1
             lsl     r0, r0, #7 
             str     r0, [r10, #28]
+            bl      customSleep
             b refreshCurrentDigit
         
         refreshCurrentDigit:
             shiftEmptySchieberegisterIntoOutputRegister:
                 @ set RCLK low
+                bl      customSleep
                 mov     r0, #1
                 lsl     r0, r0, #5 
                 str     r0, [r10, #40]
-                bl      customSleep
                 @ set RCLK high
+                bl      customSleep
                 mov     r0, #1
                 lsl     r0, r0, #5 
                 str     r0, [r10, #28]
-
-                bl      customSleep
                 @ set RCLK low
+                bl      customSleep
                 mov     r0, #1
                 lsl     r0, r0, #5 
                 str     r0, [r10, #40]
+                bl      customSleep
 
             mov r1, #0 @ counter within range 0,1,2,3,4,5,6,7 to indicate each setting of a different bit (8bits) of a different FlipFlop into the Schieberegister 
             fillingTheSchieberegisterLoop:
-
-                bl      customSleep
 
                 cmp r1, #+8
                 beq end_fillingTheSchieberegisterLoop
                 add r1, r1, #+1
                 @ set GPIO Pin 3 (SRCLK) low 
+                bl      customSleep
                 mov     r0, #1
                 lsl     r0, r0, #3 
                 str     r0, [r10, #40]
+                bl      customSleep
 
                 mov     r0, #0
                 and r0, r2, #0b00000000000000000000000000000001
@@ -158,54 +169,57 @@ refreshSevenSegmentDisplay:
                 beq if_bitIsOne
 
                 if_bitIsZero:
+                    @ set GPIO Pin 2 (SER) low
                     bl      customSleep
-                    @ set GPIO Pin 2 (SER) low 
                     mov     r0, #1
                     lsl     r0, r0, #2 
                     str     r0, [r10, #40]
+                    bl      customSleep
                     b setClockToSetNextFlipflopInSchieberegister
 
                 if_bitIsOne:
-                    bl      customSleep
                     @ set GPIO Pin 2 (SER) high 
+                    bl      customSleep
                     mov     r0, #1
                     lsl     r0, r0, #2 
                     str     r0, [r10, #28]
+                    bl      customSleep
                     b setClockToSetNextFlipflopInSchieberegister
 
-                setClockToSetNextFlipflopInSchieberegister:
-                    bl      customSleep
-                    
+                setClockToSetNextFlipflopInSchieberegister:                    
                     @ set GPIO Pin 3 (SRCLK) high - a Low-High-Pulse on Pin SRCLK is used to shift the a) contents of each Flip-Flop from the Schieberegister into the successor Flip-Flop from the Schieberegister
                     @ and b) to set the SER bit to the first FlipFlop in the Schieberegister
+                    bl      customSleep
                     mov     r0, #1
                     lsl     r0, r0, #3 
                     str     r0, [r10, #28]
-            
-                    bl      customSleep
+        
                     @ set GPIO Pin 3 (SRCLK) low 
+                    bl      customSleep
                     mov     r0, #1
                     lsl     r0, r0, #3 
                     str     r0, [r10, #40]            
-
+                    bl      customSleep
                     b fillingTheSchieberegisterLoop
 
             end_fillingTheSchieberegisterLoop:
-                shiftSchieberegisterIntoOutputRegister:
+                shiftSchieberegisterIntoOutputRegister:        
                     @ set RCLK low
+                    bl      customSleep
                     mov     r0, #1
                     lsl     r0, r0, #5 
                     str     r0, [r10, #40]
-                    bl      customSleep
                     @ set RCLK high
+                    bl      customSleep
                     mov     r0, #1
                     lsl     r0, r0, #5 
                     str     r0, [r10, #28]
-                    bl      customSleep
                     @ set RCLK low
+                    bl      customSleep
                     mov     r0, #1
                     lsl     r0, r0, #5 
                     str     r0, [r10, #40]
+                    bl      customSleep
                 add r3, r3, #+1
                 b decimalPlacePrintLoop
     
@@ -217,55 +231,77 @@ refreshSevenSegmentDisplay:
 customSleep:
     str lr, [sp, #-8]!
     
-    @ ldr r0, =#10
-    @ ldr r0, =#20
-    @ ldr r0, =#50
-
-    ldr r0, =#100
-    @ ldr r0, =#200
-    @ ldr r0, =#500
-
-    @ ldr r0, =#1000
-    @ ldr r0, =#2000
-    @ ldr r0, =#5000
-
-    @ ldr r0, =#10000
-    @ ldr r0, =#20000
-    @ ldr r0, =#50000
-
-    @ ldr r0, =#100000
-    @ ldr r0, =#200000
-    @ ldr r0, =#500000
-
-    @ ldr r0, =#1000000
-    @ ldr r0, =#2000000
-    @ ldr r0, =#5000000
-
-    @ ldr r0, =#10000000
-    @ ldr r0, =#20000000
-    @ ldr r0, =#50000000
-
-    @ ldr r0, =#100000000
-    @ ldr r0, =#200000000
-    @ ldr r0, =#500000000
-
-    @ ldr r0, =#1000000000
-    @ ldr r0, =#2000000000
-    @ ldr r0, =#5000000000
-
-    @ ldr r0, =#10000000000
-    @ ldr r0, =#20000000000
-    @ ldr r0, =#50000000000
+    str r0, [sp, #-8]!
+    str r1, [sp, #-8]!
+    str r2, [sp, #-8]!
+    str r3, [sp, #-8]!
     
+    ldr     r0, =#83 @ sleep 25 ms
+    bl      usleep
 
+    ldr r3, [sp], #+8
+    ldr r2, [sp], #+8
+    ldr r1, [sp], #+8
+    ldr r0, [sp], #+8
 
-    sleepLoop:
-        cmp r0, #0
-        beq end_customSleep
-        sub r0, r0, #1
-        b sleepLoop
-    
     end_customSleep:
         ldr lr, [sp], #+8
         bx      lr
+
+
+
+@ customSleep:
+@     str lr, [sp, #-8]!
+    
+@     @ ldr r0, =#10
+@     @ ldr r0, =#20
+@     @ ldr r0, =#50
+
+@     @ ldr r0, =#100
+@     @ ldr r0, =#200
+@     @ ldr r0, =#500
+
+@     @ ldr r0, =#1000
+@     ldr r0, =#2000
+@     @ ldr r0, =#5000
+
+@     @ ldr r0, =#10000
+@     @ ldr r0, =#20000
+@     @ ldr r0, =#50000
+
+@     @ ldr r0, =#100000
+@     @ ldr r0, =#200000
+@     @ ldr r0, =#500000
+
+@     @ ldr r0, =#1000000
+@     @ ldr r0, =#2000000
+@     @ ldr r0, =#5000000
+
+@     @ ldr r0, =#10000000
+@     @ ldr r0, =#20000000
+@     @ ldr r0, =#50000000
+
+@     @ ldr r0, =#100000000
+@     @ ldr r0, =#200000000
+@     @ ldr r0, =#500000000
+
+@     @ ldr r0, =#1000000000
+@     @ ldr r0, =#2000000000
+@     @ ldr r0, =#5000000000
+
+@     @ ldr r0, =#10000000000
+@     @ ldr r0, =#20000000000
+@     @ ldr r0, =#50000000000
+    
+
+
+@     sleepLoop:
+@         cmp r0, #0
+@         beq end_customSleep
+@         sub r0, r0, #1
+@         b sleepLoop
+    
+@     end_customSleep:
+@         ldr lr, [sp], #+8
+@         bx      lr
 
