@@ -56,7 +56,6 @@ refreshSevenSegmentDisplay:
             mov     r0, #1
             lsl     r0, r0, #4 
             str     r0, [r10, #28]
-            bl      customSleep
 
         @ end Delay
         cmp r3, #4
@@ -82,7 +81,6 @@ refreshSevenSegmentDisplay:
             mov     r0, #1
             lsl     r0, r0, #7 
             str     r0, [r10, #40]
-            bl      customSleep
             b refreshCurrentDigit
         
         if_decimalDigitShouldBeRefreshed:
@@ -96,7 +94,6 @@ refreshSevenSegmentDisplay:
             mov     r0, #1
             lsl     r0, r0, #7 
             str     r0, [r10, #40]
-            bl      customSleep
             b refreshCurrentDigit
 
         if_hundredsDigitShouldBeRefreshed:
@@ -110,7 +107,6 @@ refreshSevenSegmentDisplay:
             mov     r0, #1
             lsl     r0, r0, #7 
             str     r0, [r10, #28]
-            bl      customSleep
             b refreshCurrentDigit
         
         if_thousandDigitShouldBeRefreshed:
@@ -124,7 +120,6 @@ refreshSevenSegmentDisplay:
             mov     r0, #1
             lsl     r0, r0, #7 
             str     r0, [r10, #28]
-            bl      customSleep
             b refreshCurrentDigit
         
         refreshCurrentDigit:
@@ -144,7 +139,6 @@ refreshSevenSegmentDisplay:
                 mov     r0, #1
                 lsl     r0, r0, #5 
                 str     r0, [r10, #40]
-                bl      customSleep
 
             mov r1, #0 @ counter within range 0,1,2,3,4,5,6,7 to indicate each setting of a different bit (8bits) of a different FlipFlop into the Schieberegister 
             fillingTheSchieberegisterLoop:
@@ -157,7 +151,6 @@ refreshSevenSegmentDisplay:
                 mov     r0, #1
                 lsl     r0, r0, #3 
                 str     r0, [r10, #40]
-                bl      customSleep
 
                 mov     r0, #0
                 and r0, r2, #0b00000000000000000000000000000001
@@ -174,7 +167,6 @@ refreshSevenSegmentDisplay:
                     mov     r0, #1
                     lsl     r0, r0, #2 
                     str     r0, [r10, #40]
-                    bl      customSleep
                     b setClockToSetNextFlipflopInSchieberegister
 
                 if_bitIsOne:
@@ -183,7 +175,6 @@ refreshSevenSegmentDisplay:
                     mov     r0, #1
                     lsl     r0, r0, #2 
                     str     r0, [r10, #28]
-                    bl      customSleep
                     b setClockToSetNextFlipflopInSchieberegister
 
                 setClockToSetNextFlipflopInSchieberegister:                    
@@ -199,7 +190,6 @@ refreshSevenSegmentDisplay:
                     mov     r0, #1
                     lsl     r0, r0, #3 
                     str     r0, [r10, #40]            
-                    bl      customSleep
                     b fillingTheSchieberegisterLoop
 
             end_fillingTheSchieberegisterLoop:
@@ -219,7 +209,6 @@ refreshSevenSegmentDisplay:
                     mov     r0, #1
                     lsl     r0, r0, #5 
                     str     r0, [r10, #40]
-                    bl      customSleep
                 add r3, r3, #+1
                 b decimalPlacePrintLoop
     
@@ -236,7 +225,7 @@ customSleep:
     str r2, [sp, #-8]!
     str r3, [sp, #-8]!
     
-    ldr     r0, =#83 @ sleep 25 ms
+    ldr     r0, =#90 @ sleep 25 ms
     bl      usleep
 
     ldr r3, [sp], #+8
