@@ -221,7 +221,7 @@ customSleep:
     @ ldr r0, =#20
     @ ldr r0, =#50
 
-    @ ldr r0, =#100
+    ldr r0, =#100
     @ ldr r0, =#200
     @ ldr r0, =#500
 
@@ -237,7 +237,7 @@ customSleep:
     @ ldr r0, =#200000
     @ ldr r0, =#500000
 
-    ldr r0, =#1000000
+    @ ldr r0, =#1000000
     @ ldr r0, =#2000000
     @ ldr r0, =#5000000
 

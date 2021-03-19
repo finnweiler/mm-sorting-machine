@@ -18,8 +18,6 @@ tickUpdate:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!
     
-    bl meineFunktion
-
     @ check if button was pressed
     @ if it was pressed write 1 to the global variable endButtonPressed
     mov     r0, #9 @ read pin 9 / button 2
