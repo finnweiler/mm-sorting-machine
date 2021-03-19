@@ -20,7 +20,7 @@ refreshSevenSegmentDisplay:
     
     mov r3, #0 @ counter within range 0,1,2,3 to indicate each decimal place from single, decimal, hundreds, thousand
     decimalPlacePrintLoop:
-        emptySchiebegreister:
+        emptySchieberegister:
             @ set nSRCLR high
             bl      customSleep
             mov     r0, #1
@@ -57,70 +57,8 @@ refreshSevenSegmentDisplay:
             lsl     r0, r0, #4 
             str     r0, [r10, #28]
 
-        @ end Delay
         cmp r3, #4
         beq end_refreshSevenSegmentDisplay
-        cmp r3, #0
-        beq if_singleDigitShouldBeRefreshed
-        cmp r3, #1
-        beq if_decimalDigitShouldBeRefreshed
-        cmp r3, #2
-        beq if_hundredsDigitShouldBeRefreshed
-        cmp r3, #3
-        beq if_thousandDigitShouldBeRefreshed
-
-        @ Multiplexer needs Signal A (GPIO Pin 6) and B (GPIO Pin 7) to select one of the four Schieberegisters to refresh either the single, decimal, hundred or thousand SevenSegment Digit 
-        if_singleDigitShouldBeRefreshed:
-            @ set GPIO Pin 6 low
-            bl      customSleep
-            mov     r0, #1
-            lsl     r0, r0, #6 
-            str     r0, [r10, #40]
-            @ set GPIO Pin 7 low
-            bl      customSleep
-            mov     r0, #1
-            lsl     r0, r0, #7 
-            str     r0, [r10, #40]
-            b refreshCurrentDigit
-        
-        if_decimalDigitShouldBeRefreshed:
-            @ set GPIO Pin 6 high
-            bl      customSleep
-            mov     r0, #1
-            lsl     r0, r0, #6 
-            str     r0, [r10, #28]
-            @ set GPIO Pin 7 low
-            bl      customSleep
-            mov     r0, #1
-            lsl     r0, r0, #7 
-            str     r0, [r10, #40]
-            b refreshCurrentDigit
-
-        if_hundredsDigitShouldBeRefreshed:
-            @ set GPIO Pin 6 low
-            bl      customSleep
-            mov     r0, #1
-            lsl     r0, r0, #6 
-            str     r0, [r10, #40]
-            @ set GPIO Pin 7 high
-            bl      customSleep
-            mov     r0, #1
-            lsl     r0, r0, #7 
-            str     r0, [r10, #28]
-            b refreshCurrentDigit
-        
-        if_thousandDigitShouldBeRefreshed:
-            @ set GPIO Pin 6 high
-            bl      customSleep
-            mov     r0, #1
-            lsl     r0, r0, #6 
-            str     r0, [r10, #28]
-            @ set GPIO Pin 7 high
-            bl      customSleep
-            mov     r0, #1
-            lsl     r0, r0, #7 
-            str     r0, [r10, #28]
-            b refreshCurrentDigit
         
         refreshCurrentDigit:
             shiftEmptySchieberegisterIntoOutputRegister:
@@ -193,7 +131,70 @@ refreshSevenSegmentDisplay:
                     b fillingTheSchieberegisterLoop
 
             end_fillingTheSchieberegisterLoop:
-                shiftSchieberegisterIntoOutputRegister:        
+                setMultiplexer:
+                    cmp r3, #0
+                    beq if_singleDigitShouldBeRefreshed
+                    cmp r3, #1
+                    beq if_decimalDigitShouldBeRefreshed
+                    cmp r3, #2
+                    beq if_hundredsDigitShouldBeRefreshed
+                    cmp r3, #3
+                    beq if_thousandDigitShouldBeRefreshed
+
+                    @ Multiplexer needs Signal A (GPIO Pin 6) and B (GPIO Pin 7) to select one of the four Schieberegisters to refresh either the single, decimal, hundred or thousand SevenSegment Digit 
+                    if_singleDigitShouldBeRefreshed:
+                        @ set GPIO Pin 6 low
+                        bl      customSleep
+                        mov     r0, #1
+                        lsl     r0, r0, #6 
+                        str     r0, [r10, #40]
+                        @ set GPIO Pin 7 low
+                        bl      customSleep
+                        mov     r0, #1
+                        lsl     r0, r0, #7 
+                        str     r0, [r10, #40]
+                        b shiftSchieberegisterIntoOutputRegister
+                    
+                    if_decimalDigitShouldBeRefreshed:
+                        @ set GPIO Pin 6 high
+                        bl      customSleep
+                        mov     r0, #1
+                        lsl     r0, r0, #6 
+                        str     r0, [r10, #28]
+                        @ set GPIO Pin 7 low
+                        bl      customSleep
+                        mov     r0, #1
+                        lsl     r0, r0, #7 
+                        str     r0, [r10, #40]
+                        b shiftSchieberegisterIntoOutputRegister
+
+                    if_hundredsDigitShouldBeRefreshed:
+                        @ set GPIO Pin 6 low
+                        bl      customSleep
+                        mov     r0, #1
+                        lsl     r0, r0, #6 
+                        str     r0, [r10, #40]
+                        @ set GPIO Pin 7 high
+                        bl      customSleep
+                        mov     r0, #1
+                        lsl     r0, r0, #7 
+                        str     r0, [r10, #28]
+                        b shiftSchieberegisterIntoOutputRegister
+                    
+                    if_thousandDigitShouldBeRefreshed:
+                        @ set GPIO Pin 6 high
+                        bl      customSleep
+                        mov     r0, #1
+                        lsl     r0, r0, #6 
+                        str     r0, [r10, #28]
+                        @ set GPIO Pin 7 high
+                        bl      customSleep
+                        mov     r0, #1
+                        lsl     r0, r0, #7 
+                        str     r0, [r10, #28]
+                        b shiftSchieberegisterIntoOutputRegister
+
+                shiftSchieberegisterIntoOutputRegister:    
                     @ set RCLK low
                     bl      customSleep
                     mov     r0, #1
@@ -209,8 +210,10 @@ refreshSevenSegmentDisplay:
                     mov     r0, #1
                     lsl     r0, r0, #5 
                     str     r0, [r10, #40]
-                add r3, r3, #+1
-                b decimalPlacePrintLoop
+                
+                nextDecimalPlaceIteration:
+                    add r3, r3, #+1
+                    b decimalPlacePrintLoop
     
     end_refreshSevenSegmentDisplay:
         ldr lr, [sp], #+8
@@ -218,23 +221,24 @@ refreshSevenSegmentDisplay:
 
 
 customSleep:
-    str lr, [sp, #-8]!
+    str lr, [sp, #-4]!
     
-    str r0, [sp, #-8]!
-    str r1, [sp, #-8]!
-    str r2, [sp, #-8]!
+    str r0, [sp, #-4]!
+    str r1, [sp, #-4]!
+    str r2, [sp, #-4]!
     str r3, [sp, #-8]!
     
-    ldr     r0, =#90 @ sleep 25 ms
+    @ ldr     r0, =#90 @ sleep 90 mikro s
+    ldr     r0, =#1000000 @ sleep 90 mikro s
     bl      usleep
 
     ldr r3, [sp], #+8
-    ldr r2, [sp], #+8
-    ldr r1, [sp], #+8
-    ldr r0, [sp], #+8
+    ldr r2, [sp], #+4
+    ldr r1, [sp], #+4
+    ldr r0, [sp], #+4
 
     end_customSleep:
-        ldr lr, [sp], #+8
+        ldr lr, [sp], #+4
         bx      lr
 
 
