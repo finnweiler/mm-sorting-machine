@@ -61,22 +61,22 @@ refreshSevenSegmentDisplay:
         beq end_refreshSevenSegmentDisplay
         
         refreshCurrentDigit:
-            shiftEmptySchieberegisterIntoOutputRegister:
-                @ set RCLK low
-                bl      customSleep
-                mov     r0, #1
-                lsl     r0, r0, #5 
-                str     r0, [r10, #40]
-                @ set RCLK high
-                bl      customSleep
-                mov     r0, #1
-                lsl     r0, r0, #5 
-                str     r0, [r10, #28]
-                @ set RCLK low
-                bl      customSleep
-                mov     r0, #1
-                lsl     r0, r0, #5 
-                str     r0, [r10, #40]
+            @ shiftEmptySchieberegisterIntoOutputRegister:
+            @     @ set RCLK low
+            @     bl      customSleep
+            @     mov     r0, #1
+            @     lsl     r0, r0, #5 
+            @     str     r0, [r10, #40]
+            @     @ set RCLK high
+            @     bl      customSleep
+            @     mov     r0, #1
+            @     lsl     r0, r0, #5 
+            @     str     r0, [r10, #28]
+            @     @ set RCLK low
+            @     bl      customSleep
+            @     mov     r0, #1
+            @     lsl     r0, r0, #5 
+            @     str     r0, [r10, #40]
 
             mov r1, #0 @ counter within range 0,1,2,3,4,5,6,7 to indicate each setting of a different bit (8bits) of a different FlipFlop into the Schieberegister 
             fillingTheSchieberegisterLoop:
@@ -228,8 +228,8 @@ customSleep:
     str r2, [sp, #-4]!
     str r3, [sp, #-8]!
     
-    @ ldr     r0, =#90 @ sleep 90 mikro s
-    ldr     r0, =#1000000 @ sleep 90 mikro s
+    ldr     r0, =#90 @ sleep 90 mikro s
+    @ ldr     r0, =#1000000 @ sleep 1 s
     bl      usleep
 
     ldr r3, [sp], #+8
