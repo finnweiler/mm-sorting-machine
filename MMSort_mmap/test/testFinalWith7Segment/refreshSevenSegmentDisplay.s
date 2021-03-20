@@ -228,7 +228,8 @@ customSleep:
     str r2, [sp, #-4]!
     str r3, [sp, #-8]!
     
-    ldr     r0, =#90 @ sleep 90 mikro s
+    ldr     r0, =#30 @ sleep 30 mikro s
+    @ ldr     r0, =#90 @ sleep 90 mikro s
     @ ldr     r0, =#1000000 @ sleep 1 s
     bl      usleep
 
