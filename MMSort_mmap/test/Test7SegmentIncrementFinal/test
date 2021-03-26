@@ -24,6 +24,6 @@ as -o out/initSevenSegmentDisplay.o initSevenSegmentDisplay.s &&
 # gcc -o out/main out/main.o out/stepOutlet.o out/stepColorWheel.o out/startFeeder.o out/stopFeeder.o out/setMotorPins.o out/clearMotorPins.o out/colorDetection.o out/moveOutletToNextColor.o out/sort.o out/calibrateColorWheel.o out/calibrateOutlet.o out/readPin.o out/checkCounter.o out/waitForStartButton.o out/led.o out/tickUpdate.o -lws2812RPi &&
 gcc -o out/main out/main.o out/checkCounter.o out/getDecimalPlacesOfCounterVariable.o out/prepareSevenSegmentDisplayQueue.o out/refreshSevenSegmentDisplay.o out/initSevenSegmentDisplay.o &&
 ./out/main
-gdb --args ./out/main
+# gdb --args ./out/main
 
 # scp -r Test7SegmentHelperFunctions pi@192.168.178.99:/home/pi/SYSPROG/Test

@@ -1,27 +1,9 @@
 @ David & Marvin, 12.03.21
 
 .data
-.balign 4
-outerLoopBegin: 
-    .asciz      "outerRefreshLoopBegin \n"
-.balign 4
-outerLoopCompleted: 
-    .asciz      "outerRefreshLoopCompleted \n"
-.balign 4
-innerLoopBegin: 
-    .asciz      "innerRefreshLoopBegin \n"
-.balign 4
-innerLoopCompleted: 
-    .asciz      "innerRefreshLoopCompleted \n"
-.balign 4
-refreshBegin: 
-    .asciz      "refreshBegin \n"
-.balign 4
-refreshCompleted: 
-    .asciz      "refreshCompleted \n"
 
 .text
-.extern usleep
+.extern customSleep
 .balign   4
 .global   refreshSevenSegmentDisplay
 .type     refreshSevenSegmentDisplay, %function
@@ -38,7 +20,43 @@ refreshSevenSegmentDisplay:
     
     mov r3, #0 @ counter within range 0,1,2,3 to indicate each decimal place from single, decimal, hundreds, thousand
     decimalPlacePrintLoop:
-        
+        emptySchiebegreister:
+            @ set nSRCLR high
+            mov     r0, #1
+            lsl     r0, r0, #4 
+            str     r0, [r10, #28]
+            bl      customSleep
+            @ set RCLK low
+            mov     r0, #1
+            lsl     r0, r0, #5 
+            str     r0, [r10, #40]
+            bl      customSleep
+            @ set SRCLK low
+            mov     r0, #1
+            lsl     r0, r0, #3 
+            str     r0, [r10, #40]
+            bl      customSleep
+            @ set nSRCLR low
+            mov     r0, #1
+            lsl     r0, r0, #4 
+            str     r0, [r10, #40]
+            bl      customSleep
+            @ set SRCLK high
+            mov     r0, #1
+            lsl     r0, r0, #3 
+            str     r0, [r10, #28]
+            bl      customSleep
+            @ set SRCLK low
+            mov     r0, #1
+            lsl     r0, r0, #3 
+            str     r0, [r10, #40]
+            bl      customSleep
+            @ set nSRCLR high
+            mov     r0, #1
+            lsl     r0, r0, #4 
+            str     r0, [r10, #28]
+
+        @ end Delay
         cmp r3, #4
         beq end_refreshSevenSegmentDisplay
         cmp r3, #0
@@ -56,20 +74,7 @@ refreshSevenSegmentDisplay:
             mov     r0, #1
             lsl     r0, r0, #6 
             str     r0, [r10, #40]
-            @ Delay with pushing and restoring the working registers r0-r3 on the stack
-            str r0, [sp, #-8]!
-            str r1, [sp, #-8]!
-            str r2, [sp, #-8]!
-            str r3, [sp, #-8]!
-
-            ldr     r0, =#100000 @ sleep 50 ms
-            bl      usleep
-
-            ldr r3, [sp], #+8
-            ldr r2, [sp], #+8
-            ldr r1, [sp], #+8
-            ldr r0, [sp], #+8
-            @ end Delay
+            bl      customSleep
             @ set GPIO Pin 7 low
             mov     r0, #1
             lsl     r0, r0, #7 
@@ -81,20 +86,7 @@ refreshSevenSegmentDisplay:
             mov     r0, #1
             lsl     r0, r0, #6 
             str     r0, [r10, #28]
-            @ Delay with pushing and restoring the working registers r0-r3 on the stack
-            str r0, [sp, #-8]!
-            str r1, [sp, #-8]!
-            str r2, [sp, #-8]!
-            str r3, [sp, #-8]!
-
-            ldr     r0, =#100000 @ sleep 50 ms
-            bl      usleep
-
-            ldr r3, [sp], #+8
-            ldr r2, [sp], #+8
-            ldr r1, [sp], #+8
-            ldr r0, [sp], #+8
-            @ end Delay
+            bl      customSleep
             @ set GPIO Pin 7 low
             mov     r0, #1
             lsl     r0, r0, #7 
@@ -106,20 +98,7 @@ refreshSevenSegmentDisplay:
             mov     r0, #1
             lsl     r0, r0, #6 
             str     r0, [r10, #40]
-            @ Delay with pushing and restoring the working registers r0-r3 on the stack
-            str r0, [sp, #-8]!
-            str r1, [sp, #-8]!
-            str r2, [sp, #-8]!
-            str r3, [sp, #-8]!
-
-            ldr     r0, =#100000 @ sleep 50 ms
-            bl      usleep
-
-            ldr r3, [sp], #+8
-            ldr r2, [sp], #+8
-            ldr r1, [sp], #+8
-            ldr r0, [sp], #+8
-            @ end Delay
+            bl      customSleep
             @ set GPIO Pin 7 high
             mov     r0, #1
             lsl     r0, r0, #7 
@@ -131,20 +110,7 @@ refreshSevenSegmentDisplay:
             mov     r0, #1
             lsl     r0, r0, #6 
             str     r0, [r10, #28]
-            @ Delay with pushing and restoring the working registers r0-r3 on the stack
-            str r0, [sp, #-8]!
-            str r1, [sp, #-8]!
-            str r2, [sp, #-8]!
-            str r3, [sp, #-8]!
-
-            ldr     r0, =#100000 @ sleep 50 ms
-            bl      usleep
-
-            ldr r3, [sp], #+8
-            ldr r2, [sp], #+8
-            ldr r1, [sp], #+8
-            ldr r0, [sp], #+8
-            @ end Delay
+            bl      customSleep
             @ set GPIO Pin 7 high
             mov     r0, #1
             lsl     r0, r0, #7 
@@ -152,63 +118,27 @@ refreshSevenSegmentDisplay:
             b refreshCurrentDigit
         
         refreshCurrentDigit:
-            @ Delay with pushing and restoring the working registers r0-r3 on the stack
-            str r0, [sp, #-8]!
-            str r1, [sp, #-8]!
-            str r2, [sp, #-8]!
-            str r3, [sp, #-8]!
+            shiftEmptySchieberegisterIntoOutputRegister:
+                @ set RCLK low
+                mov     r0, #1
+                lsl     r0, r0, #5 
+                str     r0, [r10, #40]
+                bl      customSleep
+                @ set RCLK high
+                mov     r0, #1
+                lsl     r0, r0, #5 
+                str     r0, [r10, #28]
 
-            ldr     r0, =#100000 @ sleep 50 ms
-            bl      usleep
-
-            ldr r3, [sp], #+8
-            ldr r2, [sp], #+8
-            ldr r1, [sp], #+8
-            ldr r0, [sp], #+8
-            @ end Delay
-                
-            @ set GPIO Pin 4 (nSRCLR) high
-            mov     r0, #1
-            lsl     r0, r0, #4 
-            str     r0, [r10, #28]
-
-            @ Delay with pushing and restoring the working registers r0-r3 on the stack
-            str r0, [sp, #-8]!
-            str r1, [sp, #-8]!
-            str r2, [sp, #-8]!
-            str r3, [sp, #-8]!
-
-            ldr     r0, =#100000 @ sleep 50 ms
-            bl      usleep
-
-            ldr r3, [sp], #+8
-            ldr r2, [sp], #+8
-            ldr r1, [sp], #+8
-            ldr r0, [sp], #+8
-            @ end Delay
-
-            @ set GPIO Pin 5 (RCLK) low
-            mov     r0, #1
-            lsl     r0, r0, #5 
-            str     r0, [r10, #40]
+                bl      customSleep
+                @ set RCLK low
+                mov     r0, #1
+                lsl     r0, r0, #5 
+                str     r0, [r10, #40]
 
             mov r1, #0 @ counter within range 0,1,2,3,4,5,6,7 to indicate each setting of a different bit (8bits) of a different FlipFlop into the Schieberegister 
             fillingTheSchieberegisterLoop:
 
-                @ Delay with pushing and restoring the working registers r0-r3 on and from the stack
-                str r0, [sp, #-8]!
-                str r1, [sp, #-8]!
-                str r2, [sp, #-8]!
-                str r3, [sp, #-8]!
-
-                ldr     r0, =#100000 @ sleep 50 ms
-                bl      usleep
-
-                ldr r3, [sp], #+8
-                ldr r2, [sp], #+8
-                ldr r1, [sp], #+8
-                ldr r0, [sp], #+8
-                @ end Delay
+                bl      customSleep
 
                 cmp r1, #+8
                 beq end_fillingTheSchieberegisterLoop
@@ -228,6 +158,7 @@ refreshSevenSegmentDisplay:
                 beq if_bitIsOne
 
                 if_bitIsZero:
+                    bl      customSleep
                     @ set GPIO Pin 2 (SER) low 
                     mov     r0, #1
                     lsl     r0, r0, #2 
@@ -235,6 +166,7 @@ refreshSevenSegmentDisplay:
                     b setClockToSetNextFlipflopInSchieberegister
 
                 if_bitIsOne:
+                    bl      customSleep
                     @ set GPIO Pin 2 (SER) high 
                     mov     r0, #1
                     lsl     r0, r0, #2 
@@ -242,126 +174,61 @@ refreshSevenSegmentDisplay:
                     b setClockToSetNextFlipflopInSchieberegister
 
                 setClockToSetNextFlipflopInSchieberegister:
+                    bl      customSleep
+                    
                     @ set GPIO Pin 3 (SRCLK) high - a Low-High-Pulse on Pin SRCLK is used to shift the a) contents of each Flip-Flop from the Schieberegister into the successor Flip-Flop from the Schieberegister
                     @ and b) to set the SER bit to the first FlipFlop in the Schieberegister
                     mov     r0, #1
                     lsl     r0, r0, #3 
-                    str     r0, [r10, #40]
+                    str     r0, [r10, #28]
             
-                    
-
-                    @ Delay with pushing and restoring the working registers r0-r3 on the stack
-                    str r0, [sp, #-8]!
-                    str r1, [sp, #-8]!
-                    str r2, [sp, #-8]!
-                    str r3, [sp, #-8]!
-
-                    ldr     r0, =#100000 @ sleep 50 ms
-                    bl      usleep
-
-                    ldr r3, [sp], #+8
-                    ldr r2, [sp], #+8
-                    ldr r1, [sp], #+8
-                    ldr r0, [sp], #+8
-                    @ end Delay            
+                    bl      customSleep
+                    @ set GPIO Pin 3 (SRCLK) low 
+                    mov     r0, #1
+                    lsl     r0, r0, #3 
+                    str     r0, [r10, #40]            
 
                     b fillingTheSchieberegisterLoop
 
             end_fillingTheSchieberegisterLoop:
-                @ Delay with pushing and restoring the working registers r0-r3 on the stack
-                str r0, [sp, #-8]!
-                str r1, [sp, #-8]!
-                str r2, [sp, #-8]!
-                str r3, [sp, #-8]!
-
-                ldr     r0, =#100000 @ sleep 50 ms
-                bl      usleep
-
-                ldr r3, [sp], #+8
-                ldr r2, [sp], #+8
-                ldr r1, [sp], #+8
-                ldr r0, [sp], #+8
-                @ end Delay
-
-                @ set GPIO Pin 5 (RCLK) high - a Low-High-Pulse on Pin RCLK is used to load the content of each Flip-Flop from the Schieberegister into the Ausgangsregister
-                mov     r0, #1
-                lsl     r0, r0, #5 
-                str     r0, [r10, #28]
-                @ Delay with pushing and restoring the working registers r0-r3 on the stack
-                str r0, [sp, #-8]!
-                str r1, [sp, #-8]!
-                str r2, [sp, #-8]!
-                str r3, [sp, #-8]!
-
-                ldr     r0, =#100000 @ sleep 50 ms
-                bl      usleep
-
-                ldr r3, [sp], #+8
-                ldr r2, [sp], #+8
-                ldr r1, [sp], #+8
-                ldr r0, [sp], #+8
-                @ end Delay
-                @ set GPIO Pin 4 (nSRCLR) low - a Low Level on Pin nSRCLR resets the contents of each Flip-Flop of the Schieberegister
-                mov     r0, #1
-                lsl     r0, r0, #4 
-                str     r0, [r10, #40]
-                b updateInnerLoopCounter
-
-        updateInnerLoopCounter:            
-            add r3, r3, #+1
-            b decimalPlacePrintLoop
-            
+                shiftSchieberegisterIntoOutputRegister:
+                    @ set RCLK low
+                    mov     r0, #1
+                    lsl     r0, r0, #5 
+                    str     r0, [r10, #40]
+                    bl      customSleep
+                    @ set RCLK high
+                    mov     r0, #1
+                    lsl     r0, r0, #5 
+                    str     r0, [r10, #28]
+                    bl      customSleep
+                    @ set RCLK low
+                    mov     r0, #1
+                    lsl     r0, r0, #5 
+                    str     r0, [r10, #40]
+                add r3, r3, #+1
+                b decimalPlacePrintLoop
     
     end_refreshSevenSegmentDisplay:
         ldr lr, [sp], #+8
         bx      lr
 
-address_of_outerLoopBegin : .word outerLoopBegin
-address_of_outerLoopCompleted : .word outerLoopCompleted
 
-address_of_innerLoopBegin : .word innerLoopBegin
-address_of_innerLoopCompleted : .word innerLoopCompleted
-
-address_of_refreshBegin : .word refreshBegin
-address_of_refreshCompleted : .word refreshCompleted
-
-
-@Gewünschtes Level (0 oder 1) an Pin „SER“ anlegen und nSRCLR auf
-@ High-Level setzen. (Ein Low-Level würde zum Reset der Logik führen.)
-
-    @2. Generierung des Takts an Pin „SRCLK“ oder „SCK“
-    @1. Eine steigende Flanke an diesem Pin sorgt dafür, dass der aktuell an „SER“ anliegende Wert als
-    @ neuer Wert für Bit 0 übernommen wird.
-    @2. Alle anderen Werte werden von dem IC selbstständig „weitergeschoben“.
-
-@3. Erzeugung des Übernahmetaktes an Pin „RCLK“ oder „RCK“
-    @1. Ein Low-High Puls (d.h. eine steigende Flanke) sorgt dafür, dass die Inhalte der Schieberegister in das
-    @ Ausgangsregister übernommen werden
-
-@4. Pin „nSRCLR“ auf Low-Level setzen
+customSleep:
+    str lr, [sp, #-8]!
+    
+    @ ldr r0, =#1000000
+    @ longer time interval
+    ldr r0, =#100000000 
 
 
-@Raspberry Pi
-@(GPIO) Signal Label Hardware
-@2 Output SER 7-Segment
-@3 Output SRCLK 7-Segment
-@4 Output nSRCLR 7-Segment
-@5 Output RCLK 7-Segment
-@6 Output A 7-Segment
-@7 Output B 7-Segment
+    sleepLoop:
+        cmp r0, #0
+        beq end_customSleep
+        sub r0, r0, #1
+        b sleepLoop
+    
+    end_customSleep:
+        ldr lr, [sp], #+8
+        bx      lr
 
-
-@7-SegmentDisplay B A
-@1 0 0
-@2 0 1
-@3 1 0
-@4 1 1
-
-@ Hinweise:
-@- max. Clock-Frequenz: 5MHz
-@- 0b 1 1 1 1 1 1 1 1
-@ A B C D E F G DOT
-@d.h. das Level (0 = Low; 1 =
-@High) für den DOT wird zu
-@erst in das Schieberegister
-@gegeben.
