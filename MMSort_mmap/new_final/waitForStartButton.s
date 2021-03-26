@@ -1,7 +1,4 @@
-@ readPin.s
-@ Parameters: 
-@       r0  <- number of the pin
-@       r10 <- GPIO register
+@ waitForStartButton.s
     
     
     .data
@@ -18,15 +15,20 @@ clockwise:
     .global   waitForStartButton
     .type     waitForStartButton, %function
 
+@ this function runs as long the start button is not pressed
+@ when the start button is pressed it finshes
 waitForStartButton:
     str     lr, [sp, #-8]!
 
+    @ a loop that is repeated until the start button is pressed
     checkButton:
-        mov     r0, #8 @ read pin 8 / button 1
-        bl      readPin @ load value of button 2 in r0
+        @ read the value of the start button (GPIO pin 8)
+        mov     r0, #8
+        bl      readPin
 
-        cmp     r0, #0 @ compare sensor value to 0
-        bne     checkButton
+        cmp     r0, #0 @ check if the start button is off/on
+        bne     checkButton @ if the start button is off, jump back to the top of the loop
+                            @ else leave the function
 
 
     ldr     lr, [sp], #+8

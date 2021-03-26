@@ -226,7 +226,7 @@ hw_init:
     ldr     GPIOREG, [r1]
 
     
-
+    @ This section configures the GPIO Pins to be inputs and outputs.
                 @Pins 9  8  7  6  5  4  3  2  1  0
     ldr     r0, =#0b00000001001001001001001000000
     str     r0, [GPIOREG] @Function Select Register 0 (Pin 0 - 9)
@@ -240,7 +240,11 @@ hw_init:
     str     r0, [GPIOREG, #8] @Function Select Register 1 (Pin 20 - 29)*/
 
     
-    @ NUR ZUM TESTEN 
+    @ Diese Pin-Belegung dient nur zum Testen mir unser Simulation der Sortiermaschine
+    @ Diese unterstüzt bis auf die LED Steuerung alle Funktionen der M&M-Sortiermaschine
+    @ Falls Sie unsere selbst entwickelte Simulation interessiert, können Sie die gerne hier anschauen:
+    @ https://github.com/hans24o/mm-sorting-machine-simulation
+    /* 
                 @Pins 9  8  7  6  5  4  3  2  1  0
     ldr     r0, =#0b001001001001001001001001000000
     str     r0, [GPIOREG] @Function Select Register 0 (Pin 0 - 9)
@@ -252,7 +256,9 @@ hw_init:
                 @          27 26 25 24 23 22 21 20
     ldr     r0, =#0b000000001001000001001001001001
     str     r0, [GPIOREG, #8] @Function Select Register 1 (Pin 20 - 29)
+    */
 
+    @ branch to the function sort to start our sorting logic
     bl      sort
 
     b       end_of_app

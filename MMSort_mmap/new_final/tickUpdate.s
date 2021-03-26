@@ -13,7 +13,7 @@ endButtonPressed:
     .global   tickUpdate
     .type     tickUpdate, %function
 
-@ is run regulary to update button status
+@ this function is run regulary to update button status
 tickUpdate:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!

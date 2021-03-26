@@ -27,8 +27,8 @@ calibrateColorWheel:
     mov     r4, #0 @ clear r4 to use it as a counter later on
 
     findContact:
-        mov     r0, #20 @ read pin 20
-        bl      readPin @ load value of pin 20 in r0
+        mov     r0, #20
+        bl      readPin @ read value of hall sensor
 
         cmp     r0, #0 @ compare sensor value to 0
         beq     prepareRightEdge @ if hall sensor has contact, it can start searching for the right edge
@@ -38,7 +38,7 @@ calibrateColorWheel:
         mov     r1, #1 @ move 1 step
         bl      stepColorWheel @ make color wheel move
 
-        b       findContact @ repeat the loop
+        b       findContact  @ repeat the loop
 
     prepareRightEdge:
         ldr     r0, =rightEdge
@@ -58,7 +58,7 @@ calibrateColorWheel:
 
         b       findRightEdge @ repeat the loop
 
-    prepareLeftEdge: @ move outlet a bit to the right to make sure the hall sensor is avtive again
+    prepareLeftEdge: @ move color wheel a bit to the right to make sure the hall sensor has contact again
         ldr     r0, =leftEdge
         bl      printf
 
@@ -69,19 +69,20 @@ calibrateColorWheel:
         add     r4, r4, #5 @ add 5 steps to the counter
 
     findLeftEdge:
-        mov     r0, #0
-        mov     r1, #1
-        bl      stepColorWheel
+        mov     r0, #0 @ move clockwise
+        mov     r1, #1 @ move 1 step
+        bl      stepColorWheel @ make outlet move
 
-        add     r4, r4, #1
+        add     r4, r4, #1 @ increase the counter by 1
 
         mov     r0, #20
-        bl      readPin
+        bl      readPin @ read value of hall sensor
 
         cmp     r0, #0
-        bne     findCenter @ if hall sensor lost contact
+        bne     findCenter @ if hall sensor lost contact again, the left edge has been found
         b       findLeftEdge
 
+    @ move the color wheel back by half the value of the counter steps, to center the color wheel between the right and left edge
     findCenter:
         ldr     r0, =center
         mov     r1, r4

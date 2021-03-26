@@ -35,7 +35,7 @@ sort:
     @ starts the feeder and sets the pins for the motors an co-processor 
     bl      startFeeder
 
-    @ sortLoop is run until no M&Ms were recognized 10 times
+    @ sortLoop is run until no M&Ms were recognized 10 times or stop button is pressed
     sortLoop:
 
         @ Check if stop button was pressed causing the sort to stop early
