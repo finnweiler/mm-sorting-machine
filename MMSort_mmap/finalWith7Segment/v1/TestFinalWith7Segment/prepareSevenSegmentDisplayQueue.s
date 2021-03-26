@@ -62,7 +62,7 @@ prepareSevenSegmentDisplayQueue:
         if_DigitIsOne:
             lsl r2, r2, #8
             and r2, r2, #0b11111111111111111111111100000000
-            orr r2, r2, #0b00000000000000000000000000110000
+            orr r2, r2, #0b00000000000000000000000001100000
             b decimalPlaceLoop
             
         if_DigitIsTwo:
