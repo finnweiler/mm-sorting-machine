@@ -55,7 +55,7 @@ prepareSevenSegmentDisplayQueue:
             asr r2, r2, #8
             and r2, r2, #0b00000000111111111111111111111111
             @ and r2, r2, #16777215
-            orr r2, r2, #0b00000000000000000000000000000000
+            orr r2, r2, #0b11111100000000000000000000000000
             @orr r2, r2, #0
             b decimalPlaceLoop
             
