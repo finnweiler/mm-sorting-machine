@@ -239,21 +239,38 @@ hw_init:
     ldr     r0, =#0b000000001001000000000000000000
     str     r0, [GPIOREG, #8] @Function Select Register 1 (Pin 20 - 29)*/
 
-    /*
+    
     @ NUR ZUM TESTEN 
-                @Pins 9  8  7  6  5  4  3  2  1  0
-    ldr     r0, =#0b001001001001001001001001000000
-    str     r0, [GPIOREG] @Function Select Register 0 (Pin 0 - 9)
+    @             @Pins 9  8  7  6  5  4  3  2  1  0
+    @ ldr     r0, =#0b001001001001001001001001000000
+    @ str     r0, [GPIOREG] @Function Select Register 0 (Pin 0 - 9)
 
-                @    19 18 17 16 15 14 13 12 11 10
-    ldr     r0, =#0b001000001001000000001001001001
-    str     r0, [GPIOREG, #4] @Function Select Register 1 (Pin 10 - 19) 
+    @             @    19 18 17 16 15 14 13 12 11 10
+    @ ldr     r0, =#0b001000001001000000001001001001
+    @ str     r0, [GPIOREG, #4] @Function Select Register 1 (Pin 10 - 19) 
 
-                @          27 26 25 24 23 22 21 20
-    ldr     r0, =#0b000000001001000001001001001001
-    str     r0, [GPIOREG, #8] @Function Select Register 1 (Pin 20 - 29)
-    */
+    @             @          27 26 25 24 23 22 21 20
+    @ ldr     r0, =#0b000000001001000001001001001001
+    @ str     r0, [GPIOREG, #8] @Function Select Register 1 (Pin 20 - 29)
+    
+
+    @ counterLoop:
+    @     bl getDecimalPlacesOfCounterVariable
+    @     bl prepareSevenSegmentDisplayQueue
+    @     bl refreshSevenSegmentDisplay
+
+    @     ldr     r0, =mmCounterVariable
+    @     ldr     r1, [r0]
+    @     add     r1, r1, #1
+    @     str     r1, [r0]
+
+    @     ldr     r0, =#1000000 @ sleep 1 s
+    @     bl      usleep
+
+    @     b counterLoop
+
     bl      sort
+
 
     b       end_of_app
 
