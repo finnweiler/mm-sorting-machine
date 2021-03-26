@@ -49,7 +49,7 @@ stepColorWheel:
         str     r0, [r10, #28]
 
         @ add short delay
-        ldr     r0, =#25000 @ sleep 25 ms
+        ldr     r0, =#10000 @ sleep 10 ms
         bl      usleep
 
         @ call tickUpdate to handle background tasks
@@ -61,7 +61,7 @@ stepColorWheel:
         str     r0, [r10, #40]
 
         @ add short delay
-        ldr     r0, =#25000 @ sleep 25 ms
+        ldr     r0, =#10000 @ sleep 10 ms
         bl      usleep
 
         b       nextColorWheelStep
