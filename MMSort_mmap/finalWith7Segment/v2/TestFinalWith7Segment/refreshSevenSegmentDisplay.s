@@ -133,13 +133,13 @@ refreshSevenSegmentDisplay:
             end_fillingTheSchieberegisterLoop:
                 setMultiplexer:
                     cmp r3, #0
-                    beq if_singleDigitShouldBeRefreshed
-                    cmp r3, #1
-                    beq if_decimalDigitShouldBeRefreshed
-                    cmp r3, #2
-                    beq if_hundredsDigitShouldBeRefreshed
-                    cmp r3, #3
                     beq if_thousandDigitShouldBeRefreshed
+                    cmp r3, #1
+                    beq if_hundredsDigitShouldBeRefreshed
+                    cmp r3, #2
+                    beq if_decimalDigitShouldBeRefreshed
+                    cmp r3, #3
+                    beq if_singleDigitShouldBeRefreshed
 
                     @ Multiplexer needs Signal A (GPIO Pin 6) and B (GPIO Pin 7) to select one of the four Schieberegisters to refresh either the single, decimal, hundred or thousand SevenSegment Digit 
                     if_singleDigitShouldBeRefreshed:
@@ -228,9 +228,9 @@ customSleep:
     str r2, [sp, #-4]!
     str r3, [sp, #-8]!
     
-    ldr     r0, =#30 @ sleep 30 mikro s
+    @ ldr     r0, =#30 @ sleep 30 mikro s
     @ ldr     r0, =#90 @ sleep 90 mikro s
-    @ ldr     r0, =#1000000 @ sleep 1 s
+    ldr     r0, =#1000000 @ sleep 1 s
     bl      usleep
 
     ldr r3, [sp], #+8
