@@ -20,8 +20,7 @@ as -o out/tickUpdate.o tickUpdate.s &&
 as -o out/getDecimalPlacesOfCounterVariable.o getDecimalPlacesOfCounterVariable.s &&
 as -o out/prepareSevenSegmentDisplayQueue.o prepareSevenSegmentDisplayQueue.s &&
 as -o out/refreshSevenSegmentDisplay.o refreshSevenSegmentDisplay.s &&
-as -o out/initSevenSegmentDisplay.o initSevenSegmentDisplay.s &&
 as -o out/updateSevenSegmentDisplay.o updateSevenSegmentDisplay.s &&
-gcc -o out/main out/main.o out/stepOutlet.o out/stepColorWheel.o out/startFeeder.o out/stopFeeder.o out/setMotorPins.o out/clearMotorPins.o out/colorDetection.o out/moveOutletToNextColor.o out/sort.o out/calibrateColorWheel.o out/calibrateOutlet.o out/readPin.o out/checkCounter.o out/led.o out/waitForStartButton.o out/tickUpdate.o out/getDecimalPlacesOfCounterVariable.o out/prepareSevenSegmentDisplayQueue.o out/refreshSevenSegmentDisplay.o out/initSevenSegmentDisplay.o  out/updateSevenSegmentDisplay.o -lws2812RPi &&
+gcc -o out/main out/main.o out/stepOutlet.o out/stepColorWheel.o out/startFeeder.o out/stopFeeder.o out/setMotorPins.o out/clearMotorPins.o out/colorDetection.o out/moveOutletToNextColor.o out/sort.o out/calibrateColorWheel.o out/calibrateOutlet.o out/readPin.o out/checkCounter.o out/led.o out/waitForStartButton.o out/tickUpdate.o out/getDecimalPlacesOfCounterVariable.o out/prepareSevenSegmentDisplayQueue.o out/refreshSevenSegmentDisplay.o  out/updateSevenSegmentDisplay.o -lws2812RPi &&
 # gcc -o out/main out/main.o out/stepOutlet.o out/stepColorWheel.o out/startFeeder.o out/stopFeeder.o out/setMotorPins.o out/clearMotorPins.o out/colorDetection.o out/moveOutletToNextColor.o out/sort.o out/calibrateColorWheel.o out/calibrateOutlet.o out/readPin.o out/checkCounter.o out/waitForStartButton.o out/tickUpdate.o out/getDecimalPlacesOfCounterVariable.o out/prepareSevenSegmentDisplayQueue.o out/refreshSevenSegmentDisplay.o out/initSevenSegmentDisplay.o  out/updateSevenSegmentDisplay.o &&
 ./out/main #gdb --args 
