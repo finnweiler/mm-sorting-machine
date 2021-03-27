@@ -1,16 +1,9 @@
-@ readPin.s
+@ waitForStartButton.s
+@ This function runs until the start button is pressed.
 @ Parameters: 
-@       r0  <- number of the pin
-@       r10 <- GPIO register
-    
-    
-    .data
-    .balign     4
-
-stepMessage:
-    .asciz      "stepping\n"
-clockwise:
-    .asciz      "end\n"
+@       none
+@ Returns:
+@       none
 
     .text
 

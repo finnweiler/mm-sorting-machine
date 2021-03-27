@@ -1,5 +1,11 @@
-@ sort.s
-@ no parameters needed
+@ tickUpdate.s
+@ This functions is called regularly to update the status of the button.
+@ If the endbutton is pressed, a 1 is written to the global variable endButtonPressed.
+@ This will be used to stop the sorting when the current M&M is sorted.
+@ Parameters: 
+@       none
+@ Returns:
+@       none
 
     .data
     .balign     4
@@ -13,7 +19,6 @@ endButtonPressed:
     .global   tickUpdate
     .type     tickUpdate, %function
 
-@ is run regulary to update button status
 tickUpdate:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!

@@ -1,6 +1,12 @@
 @ calibrateOutlet.s
-@ Parameters: 
+@ This functions moves the Outlet to it's initial position
+@ Global Parameters:
 @       r10 <- GPIO register
+@ Parameters: 
+@       none
+@ Returns:
+@       none
+
 
     .data
     .balign     4
@@ -27,16 +33,16 @@ calibrateOutlet:
     mov     r4, #0 @ clear r4 to use it as a counter later on
 
     findContact:
-        mov     r0, #21 @ read pin 21
-        bl      readPin @ load value of pin 21 in r0
+        mov     r0, #21
+        bl      readPin @ read value of hall sensor
 
-        cmp     r0, #0 @ compare sensor value to 0
+        cmp     r0, #0 @ check hall sensor state
         beq     prepareRightEdge @ if hall sensor has contact, it can start searching for the right edge
 
         @ else:
-        mov     r0, #0 @ move clockwise
-        mov     r1, #1 @ move 1 step
-        bl      stepOutlet @ make outlet move
+        mov     r0, #0
+        mov     r1, #1
+        bl      stepOutlet @ move outlet 1 step clockwise
 
         b       findContact @ repeat the loop
 
@@ -45,42 +51,42 @@ calibrateOutlet:
         bl      printf
 
     findRightEdge:
-        mov     r0, #21 @ read pin 21
-        bl      readPin @ load value of pin 21 in r0
+        mov     r0, #21
+        bl      readPin @ read value of hall sensor
 
-        cmp     r0, #0  @ compare sensor value to 0
+        cmp     r0, #0  @ check hall sensor state
         bne     prepareLeftEdge @ if hall sensor lost contact, prepare to find left edge
 
         @ else:
-        mov     r0, #1 @ move counter-clockwise
-        mov     r1, #1 @ move 1 step
-        bl      stepOutlet @ make outlet move
+        mov     r0, #1
+        mov     r1, #1
+        bl      stepOutlet @ move outlet 1 step counter-clockwise
 
         b       findRightEdge @ repeat the loop
 
-    prepareLeftEdge: @ move outlet a bit to the right to make sure the hall sensor is avtive again
+    prepareLeftEdge: @ move outlet a bit clockwise to make sure the hall sensor has contact again
         ldr     r0, =leftEdge
         bl      printf
 
-        mov     r0, #0 @ move clockwise
-        mov     r1, #5 @ move 5 steps
-        bl      stepOutlet @ make outlet move
+        mov     r0, #0
+        mov     r1, #5
+        bl      stepOutlet @ move outlet 5 steps clockwise
 
         add     r4, r4, #5 @ add 5 steps to the counter
 
     findLeftEdge:
         mov     r0, #0
         mov     r1, #1
-        bl      stepOutlet
+        bl      stepOutlet @ move color wheel 1 step clockwise
 
-        add     r4, r4, #1
+        add     r4, r4, #1 @ increment step-counter by 1 step
 
         mov     r0, #21
-        bl      readPin
+        bl      readPin @ read value of hall sensor
 
-        cmp     r0, #0
-        bne     findCenter @ if hall sensor lost contact
-        b       findLeftEdge
+        cmp     r0, #0 @ check hall sensor state
+        bne     findCenter @ if hall sensor has lost contact both edges have been found.
+        b       findLeftEdge @ repeat the loop
 
     findCenter:
         ldr     r0, =center
@@ -89,7 +95,7 @@ calibrateOutlet:
 
         mov     r0, #1
         mov     r1, r4, lsr #1
-        bl      stepOutlet
+        bl      stepOutlet @ move color wheel to the center by moving it half the counters steps counter-clockwise
 
 
     ldr     r4, [sp], #+4
