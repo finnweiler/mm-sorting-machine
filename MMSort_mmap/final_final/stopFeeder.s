@@ -26,6 +26,7 @@ stopFeeder:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!
 
+    @ sets Pin 19 to low level
     mov     r1, #1
     mov     r0, r1, lsl #19
     str     r0, [GPIOREG, #40]

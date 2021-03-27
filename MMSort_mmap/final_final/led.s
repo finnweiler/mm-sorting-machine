@@ -46,11 +46,12 @@ changeColorLed:
     str     r4, [sp, #-4]!
     push    {GPIOREG}
     
+    @ turns all leds off
     bl      WS2812RPi_AllOff
     bl      WS2812RPi_Show
 
     decision:
-    @ sets the position and the color of the leds
+    @ checks which color was stored in the COLREG
     mov     r1, COLREG
 
     cmp     r1, #1
@@ -68,6 +69,7 @@ changeColorLed:
     cmp     r1, #0
     beq     endChangeColorLed
 
+    @ stores the color and position of the leds according to the recognized color
     caseRed:
         mov     r0, #6
         ldr     r1, =#0xFF0000
@@ -93,8 +95,8 @@ changeColorLed:
         ldr     r1, =#0xf0fc00
         b       setLed
     
+    @ sets the led to the stored color and position
     setLed:
-
         bl      WS2812RPi_SetSingle
         bl      WS2812RPi_Show
 
