@@ -1,5 +1,12 @@
 @ stopFeeder.s
-@ no parameters needed
+@ stops the feeder by setting Pin 19 to low level
+@ Global Parameters:
+@       r10 <- GPIO register
+@ Parameters:
+@           none
+@ Returns:
+@           none
+
 
 GPIOREG .req      r10
 
@@ -15,8 +22,6 @@ stopMessage:
     .global   stopFeeder
     .type     stopFeeder, %function
 
- 
-@ stops the feeder by setting Pin 19 to low level
 stopFeeder:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!

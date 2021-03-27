@@ -1,11 +1,10 @@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@     main.s
 @@@ ---------------------------------------------------------------------------
-@@@     author:  ...
+@@@     author:  Marvin Fuchs, Jessica Hieb, David Benjamin Kofler, Finn Weiler, Mirijam Flüs
 @@@     target:  Raspberry Pi
 @@@     project: MM-Sorting-Machine
-@@@     date:    YYYY/MM/DD
-@@@     version: ...
+@@@     date:    2021/03/27
 @@@ ---------------------------------------------------------------------------
 @@@ This program controls the MM-Sorting-Machine by reading two inputs,
 @@@ controlling the motors(, serving the 7-segment display) and interacting
@@ -252,25 +251,9 @@ hw_init:
     @             @          27 26 25 24 23 22 21 20
     @ ldr     r0, =#0b000000001001000001001001001001
     @ str     r0, [GPIOREG, #8] @Function Select Register 1 (Pin 20 - 29)
-    
 
-    @ counterLoop:
-    @     bl getDecimalPlacesOfCounterVariable
-    @     bl prepareSevenSegmentDisplayQueue
-    @     bl refreshSevenSegmentDisplay
-
-    @     ldr     r0, =mmCounterVariable
-    @     ldr     r1, [r0]
-    @     add     r1, r1, #1
-    @     str     r1, [r0]
-
-    @     ldr     r0, =#1000000 @ sleep 1 s
-    @     bl      usleep
-
-    @     b counterLoop
 
     bl      sort
-
 
     b       end_of_app
 

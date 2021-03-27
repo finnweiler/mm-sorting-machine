@@ -1,4 +1,12 @@
 @ led.s
+@ contains three led functions
+@ changeColorLed changes the color and position of the led according to the value stored in the COLREG
+@ Global Parameters:
+@       r10 <- GPIO register
+@ Parameters:
+@       r11 <- COLREG
+@ Returns:
+@       none    
 
     .data
     .balign     4
@@ -110,7 +118,7 @@ changeColorLed:
     .global   initLed
     .type     initLed, %function
 
-@ leds need to be initiated before using them the first time
+@ leds are initiated before using them the first time
 initLed:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!
@@ -131,7 +139,7 @@ initLed:
     .global   deinitLed
     .type     deinitLed, %function
 
-@ leds need to be deinitiated when they're not needed anymore
+@ leds are deinitiated when they're not needed anymore
 deinitLed:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!
