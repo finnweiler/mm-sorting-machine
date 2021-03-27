@@ -1,13 +1,27 @@
-@ Marvin, 13.02.21, 19.02.21
-
-@ COLREG  .req    r11
+@ moveOutletToNextColor.s (function is at the bottom of the file)
+@ This function computes the direction and number of steps to get from the current color position to the destination color position
+@ and then calls the steps_motor_outlet function with the computed parameters direction and number of steps
+@ Parameters:
+@       r12 <- currentPosition 
+@       r13 <- destinationPosition
+@       Both have an integer value inclusivly in between 0 and 5, as there are six colors
+@ Returns:
+@       none
 
 .data
 .balign 4
 currentPositionOfOutlet: .word 0 /* stores the absolute position of outlet. value range 0,1,2,...,399 is aquivalent to amount of outlet steps per cycle */
 
-@ function returns in r0 the absolute outlet position given an value in COLREG (r11) 
+@ HelperFunction
+@ colorIndizeToOutletPosition
+@ This function returns in r0 the absolute outlet position given a value in COLREG (r11)
 @ regarding this Rainbow Color Order {0: noColorDetected, 1 : blue, 2 : green, 3 : yellow, 4 : orange, 5 : red, 6 : brown}
+@ Global Parameters:
+@       r11 <- COLREG
+@ Parameters:
+@       none 
+@ Returns:
+@       r0  -> absolute outlet position of the recognized color
 .text
 .balign 4
 .global colorIndizeToOutletPosition
@@ -57,10 +71,6 @@ colorIndizeToOutletPosition:
         bx lr
 
 
-@ function computes the direction and number of steps to get from the current color position to the destination color position
-@ function then calls the steps_motor_outlet function with the computed parameters direction and number of steps
-@ function input: r12 - currentPosition, r13 - destinationPosition. Both have an integer value inclusivly in between 0 and 5, as there are six colors
-@ function returns nothing
 .balign 4
 .global moveOutletToNextColor
 .type moveOutletToNextColor, %function

@@ -1,4 +1,16 @@
-@ David & Marvin, 12.03.21
+@ getDecimalPlacesOfCounterVariable.s
+@ This Function converts the value of the mmCounter variable into four separate 4bit digits
+@ that each store either the thousand, hundred, decimal or single digit value in r1
+@ Parameters: 
+@       r0 <- mmCounterVariable 
+@                contains the number of m&ms which are already sorted
+
+@ Returns:
+@       r1 -> contains the four decimal digit values for the four 7 segment digits on the display
+@                therefore it stores 16 bits (for each digit it stores 4 bits, as 4 bits are needed to cover the number space from 0-9 )
+@                if r1 is for instance 
+@                0000 | 0000 | 0000 |  0000 |  t   t   t   t  |  h   h   h   h  |  d   d   d   d |  s   s   s   s
+@                ( n o t        n e e d e d )  thousand digit    hundred digit     decimal digit    single digit
 
 .data
 
@@ -7,9 +19,7 @@
 .global   getDecimalPlacesOfCounterVariable
 .type     getDecimalPlacesOfCounterVariable, %function
 
-@ Function converts the value of the mmCounter variable into four separate 4bit digits
-@ that each store either the thousand, hundred, decimal or single digit value
-@ in r1
+
 getDecimalPlacesOfCounterVariable:
     str lr, [sp, #-8]!
 

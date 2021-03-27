@@ -1,5 +1,11 @@
 @ startFeeder.s
-@ no parameters needed
+@ starts the feeder by setting Pin 19 to high level
+@ Global Parameters:
+@       r10 <- GPIO register
+@ Parameters:
+@       none
+@ Returns:
+@       none
 
 GPIOREG .req      r10
 
@@ -15,11 +21,11 @@ startMessage:
     .global   startFeeder
     .type     startFeeder, %function
 
-@ starts the feeder by setting Pin 19 to high level
 startFeeder:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!
 
+    @ sets pin 19 to high level
     mov     r1, #1
     mov     r0, r1, lsl #19
     str     r0, [GPIOREG, #28]

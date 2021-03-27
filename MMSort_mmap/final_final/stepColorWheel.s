@@ -1,8 +1,13 @@
 @ stepColorWheel.s
+@ stepper function of the color wheel, which performs the given amount of steps in the given direction
+@ in this function the updateSevenSegment display function is also called to update the diplay continuously
+@ Global Parameters:
+@       r10 <- GPIO register
 @ Parameters: 
 @       r0  <- direction to turn the color wheel in (0=clockwise, 1=counter-clockwise)
 @       r1  <- number of steps that shall be done
-@       r10 <- GPIO register
+@ Returns:
+@       none
     
     
     .data
@@ -22,6 +27,7 @@ stepColorWheel:
 
     mov     r4, r1
     
+    @ sets the direction of the color wheel according to the value stored in r0
     setColorWheelDirection:
         cmp     r0, #1
         beq     setDirectionCounterClockwise
@@ -37,12 +43,13 @@ stepColorWheel:
             mov     r0, r2, lsl #16
             str     r0, [r10, #28]
     
+    @ lets the color wheel do one step until the number of steps stored in r1 is reached
     nextColorWheelStep:
         cmp     r4, #0
         beq     endStepColorWheel
         sub     r4, r4, #1
 
-        @ set 'Step' Pin 13 to high and then to low level to do one step with the color wheel
+        @ 'Step' Pin 13 needs to be set to high and then to low level to perform one step with the color wheel
         @ set 'Step' Pin 13 to high level
         mov     r2, #1
         mov     r0, r2, lsl #13
@@ -71,7 +78,7 @@ stepColorWheel:
 
         b       nextColorWheelStep
     
-    @leaves the function stepColorWheel
+    @ leaves the function stepColorWheel
     endStepColorWheel:
         ldr     r4, [sp], #+4
         ldr     lr, [sp], #+4  /* Pop the top of the stack and put it in lr */

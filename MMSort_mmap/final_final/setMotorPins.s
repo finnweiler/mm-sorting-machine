@@ -1,5 +1,11 @@
 @ setMotorPins.s
-@ no parameters needed
+@ sets the outlet and color wheel motor pins 11, 17 and 27 to high level
+@ Global Parameters:
+@       r10 <- GPIO register
+@ Parameters:
+@       none
+@ Returns:
+@       none
 
 GPIOREG .req      r10
 
@@ -15,7 +21,6 @@ setPinsMessage:
     .global   setMotorPins
     .type     setMotorPins, %function
 
-@ sets the outlet and color wheel motor pins 11, 17 and 27 to high level
 setMotorPins:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!

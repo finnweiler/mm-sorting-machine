@@ -1,4 +1,12 @@
 @ led.s
+@ contains three led functions
+@ changeColorLed changes the color and position of the led according to the value stored in the COLREG
+@ Global Parameters:
+@       r10 <- GPIO register
+@ Parameters:
+@       r11 <- COLREG
+@ Returns:
+@       none    
 
     .data
     .balign     4
@@ -38,11 +46,12 @@ changeColorLed:
     str     r4, [sp, #-4]!
     push    {GPIOREG}
     
+    @ turns all leds off
     bl      WS2812RPi_AllOff
     bl      WS2812RPi_Show
 
     decision:
-    @ sets the position and the color of the leds
+    @ checks which color was stored in the COLREG
     mov     r1, COLREG
 
     cmp     r1, #1
@@ -60,6 +69,7 @@ changeColorLed:
     cmp     r1, #0
     beq     endChangeColorLed
 
+    @ stores the color and position of the leds according to the recognized color
     caseRed:
         mov     r0, #6
         ldr     r1, =#0xFF0000
@@ -85,8 +95,8 @@ changeColorLed:
         ldr     r1, =#0xf0fc00
         b       setLed
     
+    @ sets the led to the stored color and position
     setLed:
-
         bl      WS2812RPi_SetSingle
         bl      WS2812RPi_Show
 
@@ -110,7 +120,7 @@ changeColorLed:
     .global   initLed
     .type     initLed, %function
 
-@ leds need to be initiated before using them the first time
+@ leds are initiated before using them the first time
 initLed:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!
@@ -131,7 +141,7 @@ initLed:
     .global   deinitLed
     .type     deinitLed, %function
 
-@ leds need to be deinitiated when they're not needed anymore
+@ leds are deinitiated when they're not needed anymore
 deinitLed:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!

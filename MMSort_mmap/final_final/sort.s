@@ -1,5 +1,13 @@
 @ sort.s
-@ no parameters needed
+@ calls important funcitons to initiate the machine and the leds and starts the calibration
+@ regulates the sorting process, the counter, the buttons and the leds by calling the necessary functions in a loop
+@ deinitiates the machine and the leds, when the sorting process is over
+@ Parameters:
+@       none
+@ Global Parameters:
+@       r10 <- GPIO register
+@ Returns:
+@       none
 
     .data
     .balign     4
@@ -12,7 +20,6 @@ startSortMessage:
     .global   sort
     .type     sort, %function
 
-@ manages the entire sorting process
 sort:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!
@@ -32,7 +39,7 @@ sort:
     @ wait till start button is pressesd
     bl      waitForStartButton
 
-    @ starts the feeder and sets the pins for the motors an co-processor 
+    @ starts the feeder
     bl      startFeeder
 
     @ sortLoop is run until no M&Ms were recognized 10 times
