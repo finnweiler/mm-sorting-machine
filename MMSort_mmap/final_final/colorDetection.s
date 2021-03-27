@@ -1,7 +1,8 @@
 @ colorDetection.s
 @ this function loads the number related to the detected color in r11 (COLOR register)
-@ Parameters:
+@ Global Parameters:
 @       r10 <- GPIO register
+@ Parameters:
 @       r11 <- COLOR register
 @ Returns:
 @       r11 (COLOR register)
