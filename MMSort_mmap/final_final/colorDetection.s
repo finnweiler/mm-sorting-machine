@@ -1,5 +1,10 @@
-@ Jessy 14.2.2021
-@ Color Detection Code
+@ colorDetection.s
+@ this function loads the number related to the detected color in r11 (COLOR register)
+@ Parameters:
+@       r10 <- GPIO register
+@       r11 <- COLOR register
+@ Returns:
+@       r11 (COLOR register)
 
 .data 
 colorDetected:
@@ -17,6 +22,7 @@ colorDetection:
     mov     r0, r0, lsr #22
     mov     r1, #0b111
     and     r11, r1, r0
+    @ writes input of GPIO 22, 23, 24 into r11
 
     mov     r1, r11
     ldr     r0, =colorDetected
