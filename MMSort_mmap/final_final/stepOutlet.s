@@ -61,7 +61,7 @@ stepOutlet:
         beq     endStepOutlet
         sub     r4, r4, #1
 
-        @ set 'Step' Pin 12 to high and then to low level to do one step with the outlet
+        @ 'Step' Pin 12 needs to be set to high and then to low level to do one step with the outlet
         @ set 'Step' Pin 12 to high level
         mov     r2, #1
         mov     r0, r2, lsl #12
