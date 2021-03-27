@@ -1,4 +1,17 @@
-@ David & Marvin, 12.03.21
+@ refreshSevenSegmentDisplay.s
+
+@ This function refreshes each of the four digits according to the 7segment binary configuration information stored in r2 
+@ Global Parameters:
+@       r10 <- GPIO register
+@ Parameters:
+@       r2 <- four 8bit 7segment binary configuration of the mmCounter Variable
+@       whereas the first 8bits (MSB) represent thousand digit binary segment configuration
+@       the second 8bits represent hundred digit binary segment configuration
+@       the third 8bits represent decimal digit binary segment configuration
+@       the fourth 8bits (LSB) represent single digit binary segment configuration
+@ Returns:
+@       none
+
 
 .data
 
@@ -7,13 +20,6 @@
 .balign   4
 .global   refreshSevenSegmentDisplay
 .type     refreshSevenSegmentDisplay, %function
-
-@ Function refreshes each of the four digits according to the 7segment binary configuration information stored in r2 
-@ input: r2 contains the four 8bit 7segment binary configuration of the mmCounter Variable
-@ whereas the first 8bits (MSB) represent thousand digit binary segment configuration
-@ the second 8bits represent hundred digit binary segment configuration
-@ the third 8bits represent decimal digit binary segment configuration
-@ the fourth 8bits (LSB) represent single digit binary segment configuration
 refreshSevenSegmentDisplay:
     str lr, [sp, #-8]!
   
@@ -202,7 +208,13 @@ refreshSevenSegmentDisplay:
         ldr lr, [sp], #+8
         bx      lr
 
-
+@ HelperFunction
+@ customSleep
+@ This function pushes r0-r3 on the stack, sleeps for 3 mikro seconds and pops r0-r3 from the stack
+@ Parameters:
+@       none 
+@ Returns:
+@       none
 customSleep:
     str lr, [sp, #-4]!
     
@@ -211,9 +223,7 @@ customSleep:
     str r2, [sp, #-4]!
     str r3, [sp, #-8]!
     
-    ldr     r0, =#3 @ sleep 30 mikro s
-    @ ldr     r0, =#90 @ sleep 90 mikro s
-    @ ldr     r0, =#1000000 @ sleep 1 s
+    ldr     r0, =#3 @ sleeps 3 mikro seconds
     bl      usleep
 
     ldr r3, [sp], #+8
@@ -224,61 +234,3 @@ customSleep:
     end_customSleep:
         ldr lr, [sp], #+4
         bx      lr
-
-
-
-@ customSleep:
-@     str lr, [sp, #-8]!
-    
-@     @ ldr r0, =#10
-@     @ ldr r0, =#20
-@     @ ldr r0, =#50
-
-@     @ ldr r0, =#100
-@     @ ldr r0, =#200
-@     @ ldr r0, =#500
-
-@     @ ldr r0, =#1000
-@     ldr r0, =#2000
-@     @ ldr r0, =#5000
-
-@     @ ldr r0, =#10000
-@     @ ldr r0, =#20000
-@     @ ldr r0, =#50000
-
-@     @ ldr r0, =#100000
-@     @ ldr r0, =#200000
-@     @ ldr r0, =#500000
-
-@     @ ldr r0, =#1000000
-@     @ ldr r0, =#2000000
-@     @ ldr r0, =#5000000
-
-@     @ ldr r0, =#10000000
-@     @ ldr r0, =#20000000
-@     @ ldr r0, =#50000000
-
-@     @ ldr r0, =#100000000
-@     @ ldr r0, =#200000000
-@     @ ldr r0, =#500000000
-
-@     @ ldr r0, =#1000000000
-@     @ ldr r0, =#2000000000
-@     @ ldr r0, =#5000000000
-
-@     @ ldr r0, =#10000000000
-@     @ ldr r0, =#20000000000
-@     @ ldr r0, =#50000000000
-    
-
-
-@     sleepLoop:
-@         cmp r0, #0
-@         beq end_customSleep
-@         sub r0, r0, #1
-@         b sleepLoop
-    
-@     end_customSleep:
-@         ldr lr, [sp], #+8
-@         bx      lr
-

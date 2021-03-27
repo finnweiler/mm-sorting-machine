@@ -1,7 +1,9 @@
 @ updateSevenSegmentDisplay.s
-@ Parameters: 
-@       None
-    
+@ This function calls the three relevant 7Segemnt Functions to refresh the 7Segement Display
+@ Parameters:
+@       none
+@ Returns:
+@       none
     
 .data
 .text
@@ -11,16 +13,6 @@
 
 updateSevenSegmentDisplay:
     str     lr, [sp, #-8]!  @store value of lr in the stack to be able to return later 
-    
-    /*mov r0, #0
-    refreshLoop:
-        cmp r0, #+3
-        beq end_updateSevenSegmentDisplay
-        bl getDecimalPlacesOfCounterVariable
-        bl prepareSevenSegmentDisplayQueue
-        bl refreshSevenSegmentDisplay
-        add r0, r0, #+1
-        b refreshLoop*/
         
     bl getDecimalPlacesOfCounterVariable
     bl prepareSevenSegmentDisplayQueue
