@@ -1,6 +1,19 @@
-@ Marvin, 13.02.21
-@ Implementierung einer InkrementCounter Funktion, um die Anzahl an richtig sortierten m&m's einzusehen
-@ Implemenierung einer PrintCouner Funktion, um in der Konsole den Counter mit kurzer Message einzusehen
+@ checkCounter.s
+@ The checkCounter Function increments the mmCounterVariable by 1 to indicate a successful m&m allocation
+@ Global Parameters:
+@       r10 <- GPIO register 
+@       r0 <- address_of_mmCounterVariable
+@ Returns:
+@       mmCounterVariable -> contains the number of m&ms which are already sorted
+
+
+@ printMMCounterIntoConsole:
+@ The printMMCounterIntoConsole Function prints the current number of successfully allocated m&m's into the console (stdout) 
+@ Global Parameters: 
+@       r0 <- address_of_mmCounterMessage
+@       r1 <- address_of_mmCounterVariable
+@ Returns:
+@       r1 -> address_of_mmCounterVariable
 
 .data
 .balign 4
@@ -26,8 +39,7 @@ missingObjectVariable:
 .global   checkCounter
 .type     checkCounter, %function
 
-@ Function that increments the mmCounter Variable by 1 to indicate a successful m&m allocation
-@ no necessary input registers and no ouput
+
 checkCounter:
 
     str lr, [sp, #-8]!
@@ -68,9 +80,6 @@ checkCounter:
         bx      lr
 
 
-@ Function that prints into the console (stdout) the current number of successfully allocated m&m's
-@ no necessary input registers
-@ example output: MM-Counter: 21
 .global   printMMCounterIntoConsole
 .type     printMMCounterIntoConsole, %function
 printMMCounterIntoConsole:
