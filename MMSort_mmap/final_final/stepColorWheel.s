@@ -6,7 +6,6 @@
 @ Parameters: 
 @       r0  <- direction to turn the color wheel in (0=clockwise, 1=counter-clockwise)
 @       r1  <- number of steps that shall be done
-@       r10 <- GPIO register
 @ Returns:
 @       none
     
