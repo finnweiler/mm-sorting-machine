@@ -7,14 +7,6 @@
 @       mmCounterVariable -> contains the number of m&ms which are already sorted
 
 
-@ printMMCounterIntoConsole:
-@ The printMMCounterIntoConsole Function prints the current number of successfully allocated m&m's into the console (stdout) 
-@ Global Parameters: 
-@       r0 <- address_of_mmCounterMessage
-@       r1 <- address_of_mmCounterVariable
-@ Returns:
-@       r1 -> address_of_mmCounterVariable
-
 .data
 .balign 4
 
@@ -79,7 +71,14 @@ checkCounter:
         ldr lr, [sp], #+8
         bx      lr
 
-
+@ HelperFunction
+@ printMMCounterIntoConsole:
+@ The printMMCounterIntoConsole Function prints the current number of successfully allocated m&m's into the console (stdout) 
+@ Global Parameters: 
+@       r0 <- address_of_mmCounterMessage
+@       r1 <- address_of_mmCounterVariable
+@ Returns:
+@       r1 -> address_of_mmCounterVariable
 .global   printMMCounterIntoConsole
 .type     printMMCounterIntoConsole, %function
 printMMCounterIntoConsole:
