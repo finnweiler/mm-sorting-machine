@@ -1,8 +1,14 @@
 @ stepOutlet.s
+@ stepper function of the outlet, which performs the given amount of steps in the given direction
+@ in this function the updateSevenSegment display function is also called to update the diplay continuously
+@ Global Parameters:
+@       r10 <- GPIO register
 @ Parameters: 
-@       r0  <- direction to turn the outlet in (0=clockwise, 1=counter-clockwise)
+@       r0  <- direction to turn the color wheel in (0=clockwise, 1=counter-clockwise)
 @       r1  <- number of steps that shall be done
 @       r10 <- GPIO register
+@ Returns: 
+@       none
     
     
     .data

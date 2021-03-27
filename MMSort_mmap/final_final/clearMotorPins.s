@@ -1,5 +1,11 @@
 @ clearMotorPins.s
-@ no parameters needed
+@ clears the outlet and color wheel motor pins 11, 17 and 27 to low level
+@ Global Parameters:
+@       r10 <- GPIO register
+@ Parameters:
+@       none
+@ Returns:
+@       none
 
 GPIOREG .req      r10
 
@@ -15,7 +21,6 @@ clearPinsMessage:
     .global   clearMotorPins
     .type     clearMotorPins, %function
 
-@ clears the outlet and color wheel motor pins 11, 17 and 27 to low level
 clearMotorPins:
     str     lr, [sp, #-4]!  @store value of lr in the stack to be able to return later 
     str     r4, [sp, #-4]!
