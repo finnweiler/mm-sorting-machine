@@ -1,4 +1,20 @@
-@ David & Marvin, 12.03.21
+@ prepareSevenSegmentDisplayQueue.s
+@ This Function converts the four digits ( stored each as four bits in r1 (input) ) into four 8bit SevenSegmentDisplay Binary configurations
+@ the first 8 bits (MSB) represent the thousand digit binary segment configuration,
+@ the second 8 bits represent the hundred digit binary segment configuration,
+@ the third 8 bits represent the decimal digit binary segment configuration,
+@ the fourth 8 bits (LSB) represent the single digit binary segment configuration
+
+@ Parameters: 
+@       r1 <- contains the four decimal digit values for the four 7 segment digits on the display
+@                therefore it stores 16 bits (for each digit it stores 4 bits, as 4 bits are needed to cover the number space from 0-9 )
+@                if r1 is for instance 
+@                0000 | 0000 | 0000 |  0000 |  t   t   t   t  |  h   h   h   h  |  d   d   d   d |  s   s   s   s
+@                ( n o t        n e e d e d )  thousand digit    hundred digit     decimal digit    single digit
+
+@ Returns:
+@       r2 -> binary SevenSegmentDisplay configurations
+@                these 4 * 8bit binary SevenSegmentDisplay configurations are the output of the function and stored in r2 (32bit of information)
 
 .data
 
@@ -7,12 +23,7 @@
 .global   prepareSevenSegmentDisplayQueue
 .type     prepareSevenSegmentDisplayQueue, %function
 
-@ Function converts the four digits ( stored each as four bits in r1 (input) ) into four 8bit SevenSegmentDisplay Binary configurations
-@ these 4 * 8bit binary SevenSegmentDisplay configurations are the output of the function and stored in r2 (32bit of information)
-@ the first 8 bits (MSB) represent the thousand digit binary segment configuration,
-@ the second 8 bits represent the hundred digit binary segment configuration, ..., 
-@ the fourth 8 bits (LSB) represent the single digit binary segment configuration
-@ input is r1 with four 4bit decimal digits indicating the thousand, hundred, decimal and single values
+
 prepareSevenSegmentDisplayQueue:
     str lr, [sp, #-8]!
   
