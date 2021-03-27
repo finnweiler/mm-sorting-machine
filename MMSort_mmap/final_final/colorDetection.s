@@ -5,7 +5,7 @@
 @ Parameters:
 @       r11 <- COLOR register
 @ Returns:
-@       r11 (COLOR register)
+@       r11 -> (COLOR register)
 
 .data 
 colorDetected:
