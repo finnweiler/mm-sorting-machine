@@ -1,6 +1,3 @@
-@ Implementierung einer InkrementCounter Funktion, um die Anzahl an richtig sortierten m&m's einzusehen
-@ Implemenierung einer PrintCouner Funktion, um in der Konsole den Counter mit kurzer Message einzusehen
-
 @ checkCounter.s
 @ The checkCounter Function increments the mmCounterVariable by 1 to indicate a successful m&m allocation
 @ Global Parameters:
