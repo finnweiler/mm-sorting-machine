@@ -62,9 +62,11 @@ stepOutlet:
         mov     r0, r2, lsl #12
         str     r0, [r10, #28]
 
-        @ add short delay
-        ldr     r0, =#5000 @ sleep 10 ms
-        bl      usleep
+        @ Seven Segment Refresh should take about 25ms
+            @ @ add short delay
+            @ ldr     r0, =#25000 @ sleep 25 ms
+            @ bl      usleep
+        bl updateSevenSegmentDisplay
 
         @ call tickUpdate to handle background tasks
         bl      tickUpdate
@@ -74,9 +76,11 @@ stepOutlet:
         mov     r0, r2, lsl #12
         str     r0, [r10, #40]
 
-        @ add short delay
-        ldr     r0, =#5000 @ sleep 10 ms
-        bl      usleep
+        @ Seven Segment Refresh should take about 25ms
+            @ @ add short delay
+            @ ldr     r0, =#25000 @ sleep 25 ms
+            @ bl      usleep
+        bl updateSevenSegmentDisplay
 
         b       nextOutletStep
     
