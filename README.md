@@ -1,6 +1,6 @@
 # mm-sorting-machine
 
-This application simulates a physical device to sort M&Ms by their color. It receives input through the GPIO pins to control a browser-based physics simulation of the device. It was utilized during the development of a project within a low-level programming lecture.
+This application controls a physical device to sort M&Ms by their color. It is designed to run on a raspberry pi and controls the physical sorting device using GPIO pins. It was part of an assignment in a low-level programming lecture.
 
 ## program flow chart
 
